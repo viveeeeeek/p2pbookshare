@@ -1,0 +1,124 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+// to use dotenv inside androidmanifest.xml
+apply from: project(':flutter_config').projectDir.getPath()+'/dotenv.gradle'
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+   keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace "com.billionants.p2pbookshare"
+    compileSdkVersion flutter.compileSdkVersion
+    // ndkVersion flutter.ndkVersion
+    //Flutter tends to choose the appropriate default versions for various tools and dependencies, including the Android NDK, based on the Flutter SDK's configurations. However, some plugins or dependencies within Flutter packages might specify a minimum required version of the Android NDK that differs from the default.
+    // Even if your Flutter project is configured to use the latest NDK version by default, certain plugins or libraries might require specific NDK versions. When you encounter a warning or error related to the NDK version, it typically means that one of the dependencies or plugins in your project explicitly needs a different version than the default.
+    // To resolve this issue, you need to manually adjust the ndkVersion in your build.gradle file to match the required version specified in the warning or error message. This ensures that the particular dependency or plugin is compatible with the correct NDK version.
+    ndkVersion "25.1.8937393"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        //  Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.billionants.p2pbookshare"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdkVersion 23
+        targetSdkVersion 31
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+
+
+        debug {
+            // If buuild is runnig in codemagic it will fetch keystore file from ere else if lcoally then from below 'else' block
+              if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
+                 keyAlias System.getenv()["CM_KEY_ALIAS"]
+                  keyPassword System.getenv()["CM_KEY_PASSWORD"]
+                  storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
+                  storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
+               } else {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+              }
+
+
+           
+        }
+          release {
+              if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
+                  keyAlias System.getenv()["CM_KEY_ALIAS"]
+                  keyPassword System.getenv()["CM_KEY_PASSWORD"]
+                  storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
+                  storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
+              } else {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+              }
+    }
+      
+    }
+
+    buildTypes {
+            debug {
+            //  Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+        }
+        release {
+            //  Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
+}

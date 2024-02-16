@@ -1,0 +1,57 @@
+// //! IMPLEMENTED DYNAMICOLOUR SWITCH WITH PROVIDER (CURRENTLY ONLY FOR DARK DYNAMIC THEME)
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/apptheme_sprefs.provider.dart';
+import 'package:provider/provider.dart';
+
+ColorScheme getLightColorScheme(
+    BuildContext context, ColorScheme? lightDynamic) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  final appThemeSharedPrefsProvider =
+      Provider.of<ThemeSharedPreferences>(context);
+
+  bool isDynamic = appThemeSharedPrefsProvider.isDynamiThemeEnabled;
+
+  try {
+    if (lightDynamic != null && isDynamic == true) {
+      return lightDynamic.harmonized();
+    } else {
+      return ColorScheme.fromSeed(
+        seedColor: themeProvider.themeColor,
+        brightness: Brightness.light,
+      );
+    }
+  } catch (e) {
+    // print('Error getting light color scheme: $e');
+    return const ColorScheme.light(); // Return a default color scheme on error
+  }
+}
+
+ColorScheme getDarkColorScheme(BuildContext context, ColorScheme? darkDynamic) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  final themeSharedPreferences = Provider.of<ThemeSharedPreferences>(context);
+  bool isDynamicEnabled = themeSharedPreferences.isDynamiThemeEnabled;
+
+  try {
+    if (darkDynamic != null && isDynamicEnabled == true) {
+      return darkDynamic.harmonized();
+    } else {
+      return ColorScheme.fromSeed(
+        seedColor: themeProvider.themeColor,
+        brightness: Brightness.dark,
+      );
+    }
+  } catch (e) {
+    // print('Error getting dark color scheme: $e');
+    return const ColorScheme.dark(); // Return a default color scheme on error
+  }
+}
+
+TextTheme buildDarkTextTheme() {
+  return GoogleFonts.outfitTextTheme().apply(
+    bodyColor: Colors.white, // Set the text color for dark theme
+    displayColor: Colors.white, // Set the text color for dark theme
+  );
+}

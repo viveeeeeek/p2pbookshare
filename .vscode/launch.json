@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "p2pbookshare - securestoraage for keepoingloggedij",
+            "name": "p2pbookshare",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "p2pbookshare - securestoraage for keepoingloggedij (profile mode)",
+            "name": "p2pbookshare (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "p2pbookshare - securestoraage for keepoingloggedij (release mode)",
+            "name": "p2pbookshare (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

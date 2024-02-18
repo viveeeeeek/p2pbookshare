@@ -11,6 +11,7 @@ class YourBookDetailedScreen extends StatelessWidget {
     required this.bookCoverUrl,
     required this.bookPublication,
     required this.bookCondition,
+    this.bookID,
   });
 
   final String? uniqueImgKey,
@@ -18,7 +19,8 @@ class YourBookDetailedScreen extends StatelessWidget {
       bookAuthor,
       bookCoverUrl,
       bookPublication,
-      bookCondition;
+      bookCondition,
+      bookID;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,9 @@ class YourBookDetailedScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: CachedBookCoverImg(bookCoverImgUrl: bookCoverUrl!),
+                child: CachedImage(
+                  bookCoverImgUrl: bookCoverUrl!,
+                ),
               ),
               const Spacer(),
               Text(

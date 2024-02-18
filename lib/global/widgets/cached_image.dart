@@ -1,75 +1,39 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/extras/img_cache_handler.dart';
+import 'package:shimmer/shimmer.dart';
 
-class CachedBookCoverImg extends StatefulWidget {
+class CachedImage extends StatelessWidget {
   final String bookCoverImgUrl;
 
-  const CachedBookCoverImg({
-    super.key,
+  const CachedImage({
+    Key? key,
     required this.bookCoverImgUrl,
-  });
-
-  @override
-  _CachedBookCoverImgState createState() => _CachedBookCoverImgState();
-}
-
-class _CachedBookCoverImgState extends State<CachedBookCoverImg> {
-  // late Future<File?> _cachedFileFuture;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _cachedFileFuture =
-  //       CacheImageHandler.cacheAndRetrieveImage(widget.bookCoverImgUrl);
-  // }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<File?>(
-      // future: _cachedFileFuture,
-      future: CacheImageHandler.cacheAndRetrieveImage(widget.bookCoverImgUrl),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            height: 200,
-            width: 150,
-            color: Colors.transparent,
-          );
-        } else if (snapshot.hasError || snapshot.data == null) {
-          return SizedBox(
-            height: 170,
-            width: 130,
-            child: Container(
-              color: Colors.red,
-              child: const Center(
-                child: Text(
-                  'Failed to load image',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          );
-        } else {
-          return SizedBox(
-            height: 200,
-            width: 150,
-            child: Image.file(
-              snapshot.data!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: Colors.red,
-              ),
-            ),
-          );
-        }
-      },
+    return CachedNetworkImage(
+      imageUrl: bookCoverImgUrl,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Shimmer.fromColors(
+        baseColor:
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2),
+        highlightColor:
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+        child: Material(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: const SizedBox(
+            width: 100.0,
+            height: 100.0,
+          ),
+        ),
+      ),
+      errorWidget: (context, url, error) => Container(
+        color: Colors.red, // Placeholder for error case
+      ),
     );
   }
 }

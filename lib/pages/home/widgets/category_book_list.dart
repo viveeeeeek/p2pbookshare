@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/global/widgets/book_img_stack.dart';
+import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
 import 'package:p2pbookshare/pages/view_book/view_book_screen.dart';
 import 'package:p2pbookshare/services/model/book.dart';
 
@@ -54,7 +54,7 @@ class CategorizedBookList extends StatelessWidget {
                     //This is the maximum height that horizontal listview will have
                     height: 200,
                     child: ListView.builder(
-                      physics: const ClampingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: booksList.length,
                       itemBuilder: (context, index) {
@@ -107,10 +107,9 @@ Widget buildCategoryBooksWidget(
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 10),
-        child: BookImageStack(
-            bookID: bookData['book_id'],
-            bookImgUrl: bookData['book_coverimg_url'],
-            bookTitle: bookData['book_title']),
+        child: BookCard(
+            bookCoverImgurl: bookData['book_coverimg_url'],
+            title: bookData['book_title']),
       ),
     ),
   );

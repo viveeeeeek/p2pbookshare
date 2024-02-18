@@ -13,8 +13,9 @@ class CustomShimmerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
         baseColor:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.3),
-        highlightColor: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2),
+        highlightColor:
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
         child: Container(
           height: height,
           decoration: BoxDecoration(

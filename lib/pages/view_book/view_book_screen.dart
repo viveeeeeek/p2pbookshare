@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:p2pbookshare/global/widgets/cached_image.dart';
-import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'widgets/widgets.dart';
 import 'package:p2pbookshare/services/model/book.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
@@ -17,7 +15,6 @@ class ViewBookScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bookRequestServices = Provider.of<BookRequestService>(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    final locationProvider = Provider.of<LocationService>(context);
     print('✅✅✅✅${bookData.location!.latitude}');
 
     return Scaffold(
@@ -45,29 +42,26 @@ class ViewBookScreen extends StatelessWidget {
                     children: <Widget>[
                       //! Book Cover Img
                       Center(
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: 210,
-                              width: 160,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    offset: const Offset(0, 4),
-                                    blurRadius: 5,
-                                  ),
-                                ],
+                        child: Container(
+                          height: 210,
+                          width: 160,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 4),
+                                blurRadius: 5,
                               ),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedBookCoverImg(
-                                      bookCoverImgUrl:
-                                          bookData.bookCoverImageUrl)),
-                            ),
-                            const Positioned(
-                                top: 0, right: 0, child: FavouriteButton()),
-                          ],
+                            ],
+                          ),
+                          child: Hero(
+                            tag: bookData.bookCoverImageUrl,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedImage(
+                                  bookCoverImgUrl: bookData.bookCoverImageUrl,
+                                )),
+                          ),
                         ),
                       ),
                       const SizedBox(

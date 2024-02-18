@@ -71,17 +71,21 @@ Widget yourBooksListView(
                             ),
                             child: Stack(
                               children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
-                                      ),
-                                      child: CachedBookCoverImg(
-                                          bookCoverImgUrl:
-                                              bookData['book_coverimg_url'])),
+                                SizedBox(
+                                  height: 200, // Adjust the height as needed
+                                  width: 150,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                        ),
+                                        child: CachedImage(
+                                            bookCoverImgUrl:
+                                                bookData['book_coverimg_url'])),
+                                  ),
                                 ),
                                 ClipRRect(
                                   borderRadius: const BorderRadius.all(

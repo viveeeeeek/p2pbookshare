@@ -1,5 +1,6 @@
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
+import 'package:p2pbookshare/services/providers/gemini_service.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:p2pbookshare/services/providers/others/connectivity_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
@@ -37,6 +38,14 @@ final List<ChangeNotifierProvider> appProviders = [
   ChangeNotifierProvider<PermissionService>(
     create: (context) => PermissionService(),
   ),
+  ChangeNotifierProvider<GeminiService>(
+    create: (context) {
+      return GeminiService();
+    },
+  ),
+  // ChangeNotifierProvider<AISummarySharedPrefs>(
+  //   create: (context) => AISummarySharedPrefs(),
+  // ),
   ChangeNotifierProvider<AddbookHandler>(
     create: (context) {
       final fbBookServices =

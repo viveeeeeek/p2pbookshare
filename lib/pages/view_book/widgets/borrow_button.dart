@@ -31,58 +31,57 @@ class BorrowButton extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.data == true) {
-          return const FilledButton(
-            onPressed: null,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.pending,
-                  // color: Theme.of(context).colorScheme.onSecondary,
-                ),
-                SizedBox(width: 8), // Adjust spacing between icon and text
-                Text(
-                  'Borrow request pending',
-                  style: TextStyle(
-                    fontSize: 20,
-                    // color: Theme.of(context).colorScheme.onSecondary,
+          return const SizedBox(
+            height: 60,
+            child: FilledButton(
+              onPressed: null,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.pending,
                   ),
-                ),
-              ],
+                  const SizedBox(
+                      width: 8), // Adjust spacing between icon and text
+                  Text(
+                    'Borrow request pending',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ); // Request already made, hide the button
         } else {
-          return Expanded(
-            child: SizedBox(
-                height: 60,
-                child: FilledButton(
-                  onPressed: () async {
-                    await ViewBookHandler(bookRequestServices)
-                        .handleBorrowRequest(BookRequest(
-                            reqBookID: bookData.bookID!,
-                            reqBookOwnerID: bookData.bookOwner,
-                            requesterID: userDataProvider.userModel!.userUid!));
-                  },
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.shopping_cart_checkout_rounded,
+          return SizedBox(
+              height: 60,
+              child: FilledButton(
+                onPressed: () async {
+                  await ViewBookHandler(bookRequestServices)
+                      .handleBorrowRequest(BookRequest(
+                          reqBookID: bookData.bookID!,
+                          reqBookOwnerID: bookData.bookOwner,
+                          requesterID: userDataProvider.userModel!.userUid!));
+                },
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart_checkout_rounded,
+                      // color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    SizedBox(width: 8), // Adjust spacing between icon and text
+                    Text(
+                      'Borrow',
+                      style: TextStyle(
+                        fontSize: 20,
                         // color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      SizedBox(
-                          width: 8), // Adjust spacing between icon and text
-                      Text(
-                        'Borrow',
-                        style: TextStyle(
-                          fontSize: 20,
-                          // color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-          );
+                    ),
+                  ],
+                ),
+              ));
         }
       },
     );

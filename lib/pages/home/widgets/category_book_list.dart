@@ -89,18 +89,18 @@ Widget buildCategoryBooksWidget(
           MaterialPageRoute(
             builder: (context) => ViewBookScreen(
               bookData: Book(
-                bookTitle: bookData['book_title'],
-                bookAuthor: bookData['book_author'],
-                bookPublication: bookData['book_publication'],
-                bookCondition: bookData['book_condition'],
-                bookCategory: bookData['book_category'],
-                bookAvailability: bookData['book_availability'],
-                bookCoverImageUrl: bookData['book_coverimg_url'],
-                bookOwner: bookData['book_owner'],
-                bookID: bookData['book_id'],
-                location: bookData[
-                    'book_exchange_location'], // Directly access GeoPoint
-              ),
+                  bookTitle: bookData['book_title'],
+                  bookAuthor: bookData['book_author'],
+                  bookPublication: bookData['book_publication'],
+                  bookCondition: bookData['book_condition'],
+                  bookCategory: bookData['book_category'],
+                  bookAvailability: bookData['book_availability'],
+                  bookCoverImageUrl: bookData['book_coverimg_url'],
+                  bookOwner: bookData['book_owner'],
+                  bookID: bookData['book_id'],
+                  location: bookData[
+                      'book_exchange_location'], // Directly access GeoPoint
+                  completeAddress: bookData['book_exchange_address']),
             ),
           ),
         );

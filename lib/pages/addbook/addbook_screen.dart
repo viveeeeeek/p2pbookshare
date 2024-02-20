@@ -1,9 +1,9 @@
 // 297 lines of code before logic/concern seperations
 // 178 lines after seperation
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/global/constants/app_constants.dart';
 import 'package:provider/provider.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
 
@@ -53,12 +53,12 @@ class _AddBookScreenState extends State<AddBookScreen>
                         children: [
                           CustomTextField(
                               controller: titleCtrl,
-                              labelText: 'Title',
+                              labelText: 'Title *',
                               isMultiline: false),
                           const SizedBox(height: 16),
                           CustomTextField(
                             controller: authorCtrl,
-                            labelText: 'Author',
+                            labelText: 'Author *',
                             isMultiline: false,
                           ),
                           const SizedBox(height: 16),
@@ -88,14 +88,14 @@ class _AddBookScreenState extends State<AddBookScreen>
                                             .colorScheme
                                             .secondaryContainer),
                                     child: addbookHandler.completeAddress == ''
-                                        ? const Row(
+                                        ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Icon(Icons.location_on_rounded),
-                                              Column(
+                                              Icon(MdiIcons.mapMarker),
+                                              const Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 mainAxisAlignment:
@@ -192,7 +192,9 @@ class _AddBookScreenState extends State<AddBookScreen>
                                   height: 180,
                                   width: 150,
                                   child: addbookHandler.pickedImage == null
-                                      ? const Icon(Symbols.image_rounded)
+                                      ? Icon(
+                                          MdiIcons.image,
+                                        )
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(15),

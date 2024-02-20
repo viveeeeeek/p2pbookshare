@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extras/handler.user.dart';
 import 'package:p2pbookshare/pages/settings/settings_handler.dart';
 
@@ -63,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Symbols.dark_mode),
+                    leading: Icon(MdiIcons.weatherNight),
                     title: const Text('Dark theme'),
                     subtitle: appThemeProvider.isDarkThemeEnabled
                         ? const Text('On')
@@ -78,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Column(
                     children: [
                       ListTile(
-                        leading: const Icon(Symbols.color_lens_rounded),
+                        leading: Icon(MdiIcons.paletteOutline),
                         title: const Text('Dynamic color'),
                         subtitle: const Text(
                             'Apply colors from wallpapers to the app theme (Android 12+)'),
@@ -128,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: ListTile(
-                      leading: const Icon(Symbols.logout_rounded),
+                      leading: Icon(MdiIcons.logoutVariant),
                       title: Text('Log out ${_userHandler.userEmailAddress}'),
                     ),
                   ),

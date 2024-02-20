@@ -6,7 +6,7 @@ class Book {
   final String bookTitle;
   final String bookAuthor;
   // final String bookDescription;
-  final String bookPublication;
+  final String? bookPublication;
   final String bookCondition;
   final String bookCategory;
   final bool bookAvailability;
@@ -14,39 +14,41 @@ class Book {
   final String bookOwner;
   final String? bookID;
   final GeoPoint? location;
+  final String completeAddress;
 
   Book(
       {required this.bookTitle,
       required this.bookAuthor,
       // required this.bookDescription,
-      required this.bookPublication,
+      this.bookPublication,
       required this.bookCondition,
       required this.bookCategory,
       required this.bookAvailability,
       required this.bookCoverImageUrl,
       required this.bookOwner,
       this.bookID, // Making bookID nullable
-      required this.location});
+      required this.location,
+      required this.completeAddress});
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
-      bookTitle: map['book_title'],
-      bookAuthor: map['book_author'],
-      // bookDescription: map['book_description'],
-      bookPublication: map['book_publication'],
-      bookCondition: map['book_condition'],
-      bookCategory: map['book_category'],
-      bookAvailability: map['book_availability'],
-      bookCoverImageUrl: map['book_coverimg_url'],
-      bookOwner: map['book_owner'],
-      bookID: map['book_id'],
-      location: map['book_exchange_location'] != null
-          ? GeoPoint(
-              map['book_exchange_location'].latitude,
-              map['book_exchange_location'].longitude,
-            )
-          : null,
-    );
+        bookTitle: map['book_title'],
+        bookAuthor: map['book_author'],
+        // bookDescription: map['book_description'],
+        bookPublication: map['book_publication'],
+        bookCondition: map['book_condition'],
+        bookCategory: map['book_category'],
+        bookAvailability: map['book_availability'],
+        bookCoverImageUrl: map['book_coverimg_url'],
+        bookOwner: map['book_owner'],
+        bookID: map['book_id'],
+        location: map['book_exchange_location'] != null
+            ? GeoPoint(
+                map['book_exchange_location'].latitude,
+                map['book_exchange_location'].longitude,
+              )
+            : null,
+        completeAddress: map['book_exchange_address']);
   }
 
   Map<String, dynamic> toMap() {
@@ -62,6 +64,7 @@ class Book {
       'book_owner': bookOwner,
       'book_id': bookID,
       'book_exchange_location': location, // Use GeoPoint directly
+      'book_exchange_address': completeAddress
     };
   }
 }

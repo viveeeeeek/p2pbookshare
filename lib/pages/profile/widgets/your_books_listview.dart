@@ -83,7 +83,7 @@ Widget yourBooksListView(
                                               Radius.circular(15)),
                                         ),
                                         child: CachedImage(
-                                            bookCoverImgUrl:
+                                            imageUrl:
                                                 bookData['book_coverimg_url'])),
                                   ),
                                 ),

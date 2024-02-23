@@ -134,7 +134,7 @@ class AddbookHandler with ChangeNotifier {
       BuildContext context,
       TextEditingController titleCtrl,
       TextEditingController authorCtrl,
-      TextEditingController publicationCtrl,
+      // TextEditingController publicationCtrl,
       // TextEditingController descriptionCtrl,
       String? chosenCondition,
       String? chosenCategory,
@@ -142,7 +142,7 @@ class AddbookHandler with ChangeNotifier {
       String completeAddress) {
     if (titleCtrl.text.isNotEmpty &&
         authorCtrl.text.isNotEmpty &&
-        publicationCtrl.text.isNotEmpty &&
+        // publicationCtrl.text.isNotEmpty &&
         completeAddress != '' &&
         chosenCondition != null &&
         chosenCategory != null &&
@@ -176,7 +176,7 @@ class AddbookHandler with ChangeNotifier {
             context,
             titleCtrl,
             authorCtrl,
-            publicationCtrl,
+            // publicationCtrl,
             // descriptionCtrl,
             chosenCondition,
             chosenCategory,
@@ -211,7 +211,8 @@ class AddbookHandler with ChangeNotifier {
           bookCoverImageUrl: uploadedImgUrl,
           bookOwner: _userDataProvider.userModel!.userUid!,
           location: GeoPoint(
-              selectedAddressLatLng.latitude, selectedAddressLatLng.longitude));
+              selectedAddressLatLng.latitude, selectedAddressLatLng.longitude),
+          completeAddress: _completeAddress);
 
       // Handle add book opeation here
       _fbBookOperations.addNewBookListing(book);

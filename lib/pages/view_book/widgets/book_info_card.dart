@@ -12,9 +12,6 @@ class BookDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: cardWidth,
-      // decoration: BoxDecoration(
-      //     color: Theme.of(context).colorScheme.secondaryContainer,
-      //     borderRadius: const BorderRadius.all(Radius.circular(25))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -32,73 +29,15 @@ class BookDetailsCard extends StatelessWidget {
                 fontSize: 14,
                 color: Theme.of(context).colorScheme.onSecondaryContainer),
           ),
-
-          Text(
-            bookData.bookPublication,
-            style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).colorScheme.onSecondaryContainer),
-          ),
-          // ),
-          const SizedBox(
-            height: 35,
-          ),
-          //! Category
-          Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                child: Icon(
-                  Icons.category_outlined,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Genre',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(bookData.bookCategory)
-                ],
-              ),
-              const Spacer(),
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                child: Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Condition',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(bookData.bookCondition)
-                ],
-              )
-            ],
-          )
+          bookData.bookPublication != null
+              ? Text(
+                  bookData.bookPublication!,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color:
+                          Theme.of(context).colorScheme.onSecondaryContainer),
+                )
+              : const SizedBox()
         ],
       ),
     );

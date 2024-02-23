@@ -13,42 +13,42 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate aspect ratio based on the outer SizedBox dimensions
-
-    return SizedBox(
-      height: 210,
-      width: 150,
-      child: Hero(
-        tag: bookCoverImgurl,
-        child: Card(
-          elevation: 3, // Adjust the elevation as needed
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0),
-                  child: SizedBox(
-                      height: 150,
-                      width: 150,
-                      child: CachedImage(bookCoverImgUrl: bookCoverImgurl)),
-                ),
-                Text(
-                  title,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    // fontSize: 16.0,
+    return Card(
+      elevation: 3, // Adjust the elevation as needed
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: SizedBox(
+        height: 200,
+        width: 150,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Center(
+                // Hero animation with url as unique tag for each book
+                child: Hero(
+                  tag: bookCoverImgurl,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4.0),
+                    child: SizedBox(
+                        height: 150,
+                        width: 130,
+                        child: CachedImage(imageUrl: bookCoverImgurl)),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Text(
+                title,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),

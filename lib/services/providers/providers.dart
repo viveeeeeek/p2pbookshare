@@ -1,15 +1,17 @@
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:p2pbookshare/services/providers/others/connectivity_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_upload_service.dart';
 import 'package:p2pbookshare/services/providers/others/permission_service.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/apptheme_sprefs.provider.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/userdata_sprefs.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,7 @@ import 'package:provider/provider.dart';
 final List<ChangeNotifierProvider> appProviders = [
   ChangeNotifierProvider<AuthorizationService>(
       create: (_) => AuthorizationService()),
-  ChangeNotifierProvider<ThemeSharedPreferences>(
-      create: (_) => ThemeSharedPreferences()),
+  ChangeNotifierProvider<AppThemePrefs>(create: (_) => AppThemePrefs()),
   ChangeNotifierProvider<FirebaseUserService>(
       create: (_) => FirebaseUserService()),
   ChangeNotifierProvider<BookRequestService>(
@@ -26,9 +27,8 @@ final List<ChangeNotifierProvider> appProviders = [
   ChangeNotifierProvider<BookUploadService>(create: (_) => BookUploadService()),
   ChangeNotifierProvider<UserDataProvider>(create: (_) => UserDataProvider()),
   ChangeNotifierProvider<BookFetchService>(create: (_) => BookFetchService()),
-  ChangeNotifierProvider<UserDataSharedPrefsServices>(
-      create: (_) => UserDataSharedPrefsServices()),
-  ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
+  ChangeNotifierProvider<UserDataPrefs>(create: (_) => UserDataPrefs()),
+  ChangeNotifierProvider<AppThemeService>(create: (_) => AppThemeService()),
   ChangeNotifierProvider<ConnectivityProvider>(
       create: (_) => ConnectivityProvider()),
   ChangeNotifierProvider<LocationService>(
@@ -36,6 +36,14 @@ final List<ChangeNotifierProvider> appProviders = [
   ),
   ChangeNotifierProvider<PermissionService>(
     create: (context) => PermissionService(),
+  ),
+  ChangeNotifierProvider<GeminiService>(
+    create: (context) {
+      return GeminiService();
+    },
+  ),
+  ChangeNotifierProvider<AISummaryPrefs>(
+    create: (context) => AISummaryPrefs(),
   ),
   ChangeNotifierProvider<AddbookHandler>(
     create: (context) {
@@ -53,8 +61,9 @@ final List<ChangeNotifierProvider> appProviders = [
       final userDataProvider =
           Provider.of<UserDataProvider>(context, listen: false);
       final appThemeSharedPrefsServices =
-          Provider.of<ThemeSharedPreferences>(context, listen: false);
-      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+          Provider.of<AppThemePrefs>(context, listen: false);
+      final themeProvider =
+          Provider.of<AppThemeService>(context, listen: false);
       return AppInitHandler(authProvider, userDataProvider,
           appThemeSharedPrefsServices, themeProvider);
     },

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/apptheme_sprefs.provider.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
@@ -12,8 +12,8 @@ SimpleLogger logger = SimpleLogger();
 class AppInitHandler with ChangeNotifier {
   late final AuthorizationService _authProvider;
   late final UserDataProvider _userDataProvider;
-  late final ThemeSharedPreferences _appThemeSharedPrefsServices;
-  late final ThemeProvider _themeProvider;
+  late final AppThemePrefs _appThemeSharedPrefsServices;
+  late final AppThemeService _themeProvider;
 
   AppInitHandler(this._authProvider, this._userDataProvider,
       this._appThemeSharedPrefsServices, this._themeProvider);

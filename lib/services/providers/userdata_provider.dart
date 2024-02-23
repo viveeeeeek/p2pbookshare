@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/services/model/user.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/userdata_sprefs.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
 
 class UserDataProvider with ChangeNotifier {
   UserModel? _userModel;
   UserModel? get userModel => _userModel;
 
   Future<void> loadUserDataFromPrefs() async {
-    final sharedPrefsProvider = UserDataSharedPrefsServices();
-    final user = await sharedPrefsProvider.loadUserFromPrefs();
+    final userDataPrefs = UserDataPrefs();
+    final user = await userDataPrefs.loadUserFromPrefs();
 
     if (user != null) {
       _userModel = UserModel(

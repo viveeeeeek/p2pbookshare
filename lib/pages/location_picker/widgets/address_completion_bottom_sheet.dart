@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/pages/addbook/widgets/widgets.dart';
 import 'package:p2pbookshare/pages/location_picker/location_handler.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
@@ -102,8 +103,8 @@ addressCompletionBottomSheet(
                           child: Row(
                             children: [
                               Icon(
-                                Symbols.navigate_next,
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                MdiIcons.arrowRight,
+                                color: context.onPrimary,
                               ),
                               Text(
                                 'Continue',

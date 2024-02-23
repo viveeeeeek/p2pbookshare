@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-class ThemeSharedPreferences with ChangeNotifier {
+class AppThemePrefs with ChangeNotifier {
   final logger = SimpleLogger();
   SharedPreferences? _prefs;
+  //TODO: change to final and create getters
   bool isDynamiThemeEnabled = false;
   bool isThemeToggled = false;
 
@@ -19,7 +20,8 @@ class ThemeSharedPreferences with ChangeNotifier {
       await _prefs!.setBool('isLightThemeToggled', value);
       isThemeToggled = value;
       notifyListeners();
-      logger.info('✅saveIslighte=temeenabl from shared prefs $isThemeToggled');
+      logger.info(
+          'AppThemePrefs (saveIsDarkThemeEnabled): dark theme status saved to shared prefs $isThemeToggled');
     } catch (e) {
       logger.info('Error saving dynamic color: $e');
     }
@@ -29,9 +31,9 @@ class ThemeSharedPreferences with ChangeNotifier {
     try {
       await initSharedPrefs();
       isThemeToggled = _prefs!.getBool('isLightThemeToggled') ?? true;
-      logger.info('✅loadIsLightThemeToggled from shared prefs $isThemeToggled');
-
       notifyListeners();
+      logger.info(
+          'AppThemePrefs (loadIsDarkThemeEnabled): dark theme status fetched from shared prefs $isThemeToggled');
       return isThemeToggled;
     } catch (e) {
       isThemeToggled = true;
@@ -46,6 +48,8 @@ class ThemeSharedPreferences with ChangeNotifier {
       await initSharedPrefs();
       isDynamiThemeEnabled = _prefs!.getBool('isDynamicColorSelected') ?? true;
       notifyListeners();
+      logger.info(
+          'AppThemePrefs (loadIsDynamicColorEnabled): dynamic color status fetched from shared prefs $isThemeToggled');
     } catch (e) {
       logger.info('Error loading dynamic color: $e');
     }
@@ -57,6 +61,8 @@ class ThemeSharedPreferences with ChangeNotifier {
       await _prefs!.setBool('isDynamicColorSelected', value);
       isDynamiThemeEnabled = value;
       notifyListeners();
+      logger.info(
+          'AppThemePrefs (saveIsDynamicColorEnabled): dynamic color status saved in shared prefs $isThemeToggled');
     } catch (e) {
       logger.info('Error saving dynamic color: $e');
     }
@@ -69,6 +75,8 @@ class ThemeSharedPreferences with ChangeNotifier {
       _prefs!.setInt('green', color.green);
       _prefs!.setInt('blue', color.blue);
       _prefs!.setInt('alpha', color.alpha);
+      logger.info(
+          'AppThemePrefs (saveThemeColor): custom theme color saved in shared prefs $isThemeToggled');
     } catch (e) {
       logger.info('Error saving theme color: $e');
     }
@@ -82,6 +90,8 @@ class ThemeSharedPreferences with ChangeNotifier {
       final blue = _prefs!.getInt('blue');
       final alpha = _prefs!.getInt('alpha');
       if (red != null && green != null && blue != null && alpha != null) {
+        logger.info(
+            'AppThemePrefs (loadThemeColor): custom theme color feched from shared prefs $isThemeToggled');
         return Color.fromARGB(alpha, red, green, blue);
       } else {
         return null;

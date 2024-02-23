@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
@@ -42,7 +42,7 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
                       });
                     },
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Symbols.search_rounded),
+                      prefixIcon: Icon(MdiIcons.magnify),
                       suffixIcon:
                           locationService.searchController.text.isNotEmpty
                               ? InkWell(

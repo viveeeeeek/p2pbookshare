@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:material_symbols_icons/symbols.dart';
-
 import 'package:p2pbookshare/pages/addbook/addbook_screen.dart';
 import 'package:p2pbookshare/pages/home/home_screen.dart';
 import 'package:p2pbookshare/pages/profile/profile_screen.dart';
 import 'package:p2pbookshare/pages/search/search_screen.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _LandingPageState extends State<LandingPage> {
   int _selectedScreenIndex = 0;
 
   @override
@@ -72,13 +71,13 @@ class _DashboardState extends State<Dashboard> {
                 selectedIcon: Icon(Icons.home),
                 label: "Home",
               ),
-              const NavigationDestination(
-                icon: Icon(Icons.search),
-                selectedIcon: Icon(Symbols.search),
+              NavigationDestination(
+                icon: Icon(MdiIcons.magnify),
+                selectedIcon: Icon(MdiIcons.magnify),
                 label: "Search",
               ),
-              const NavigationDestination(
-                icon: Icon(Symbols.add),
+              NavigationDestination(
+                icon: Icon(MdiIcons.bookPlus),
                 label: "Add",
               ),
               NavigationDestination(

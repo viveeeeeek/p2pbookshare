@@ -1,6 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
 import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
 import 'package:p2pbookshare/pages/view_book/view_book_screen.dart';
 import 'package:p2pbookshare/services/model/book.dart';
@@ -21,7 +20,11 @@ class CategorizedBookList extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Padding(
+            padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+            child: CustomShimmerContainer(
+                height: 180, width: 400, borderRadius: 15),
+          );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -54,7 +57,7 @@ class CategorizedBookList extends StatelessWidget {
                     //This is the maximum height that horizontal listview will have
                     height: 200,
                     child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
+                      // physics: const,
                       scrollDirection: Axis.horizontal,
                       itemCount: booksList.length,
                       itemBuilder: (context, index) {
@@ -89,24 +92,24 @@ Widget buildCategoryBooksWidget(
           MaterialPageRoute(
             builder: (context) => ViewBookScreen(
               bookData: Book(
-                bookTitle: bookData['book_title'],
-                bookAuthor: bookData['book_author'],
-                bookPublication: bookData['book_publication'],
-                bookCondition: bookData['book_condition'],
-                bookCategory: bookData['book_category'],
-                bookAvailability: bookData['book_availability'],
-                bookCoverImageUrl: bookData['book_coverimg_url'],
-                bookOwner: bookData['book_owner'],
-                bookID: bookData['book_id'],
-                location: bookData[
-                    'book_exchange_location'], // Directly access GeoPoint
-              ),
+                  bookTitle: bookData['book_title'],
+                  bookAuthor: bookData['book_author'],
+                  bookPublication: bookData['book_publication'],
+                  bookCondition: bookData['book_condition'],
+                  bookCategory: bookData['book_category'],
+                  bookAvailability: bookData['book_availability'],
+                  bookCoverImageUrl: bookData['book_coverimg_url'],
+                  bookOwner: bookData['book_owner'],
+                  bookID: bookData['book_id'],
+                  location: bookData[
+                      'book_exchange_location'], // Directly access GeoPoint
+                  completeAddress: bookData['book_exchange_address']),
             ),
           ),
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(right: 0),
         child: BookCard(
             bookCoverImgurl: bookData['book_coverimg_url'],
             title: bookData['book_title']),

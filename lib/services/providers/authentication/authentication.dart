@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/userdata_sprefs.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
@@ -15,8 +15,7 @@ class AuthorizationService with ChangeNotifier {
   User? user;
   final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  final UserDataSharedPrefsServices sharedPrefsProvider =
-      UserDataSharedPrefsServices();
+  final UserDataPrefs sharedPrefsProvider = UserDataPrefs();
   final logger = SimpleLogger();
 
   GoogleSignInAuthentication? googleAuth;

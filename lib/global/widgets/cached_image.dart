@@ -1,25 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CachedImage extends StatelessWidget {
-  final String bookCoverImgUrl;
+  final String imageUrl;
 
   const CachedImage({
     Key? key,
-    required this.bookCoverImgUrl,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: bookCoverImgUrl,
+      imageUrl: imageUrl,
       fit: BoxFit.cover,
       placeholder: (context, url) => Shimmer.fromColors(
-        baseColor:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2),
-        highlightColor:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+        baseColor: context.secondaryContainer.withOpacity(0.2),
+        highlightColor: context.secondaryContainer.withOpacity(0.7),
         child: Material(
           elevation: 4.0,
           shape: RoundedRectangleBorder(

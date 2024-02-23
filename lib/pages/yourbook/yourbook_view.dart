@@ -57,7 +57,7 @@ class YourBookDetailedScreen extends StatelessWidget {
                   ],
                 ),
                 child: CachedImage(
-                  bookCoverImgUrl: bookCoverUrl!,
+                  imageUrl: bookCoverUrl!,
                 ),
               ),
               const Spacer(),

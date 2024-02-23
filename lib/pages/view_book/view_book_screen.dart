@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/widgets/cached_image.dart';
-import 'package:p2pbookshare/pages/view_book/widgets/ai_summary_card.dart';
+import 'package:p2pbookshare/services/model/book_request.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'widgets/widgets.dart';
 import 'package:p2pbookshare/services/model/book.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:provider/provider.dart';
-import '../../services/providers/userdata_provider.dart';
 
 class ViewBookScreen extends StatelessWidget {
   const ViewBookScreen({super.key, required this.bookData});
@@ -18,8 +19,15 @@ class ViewBookScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bookRequestServices = Provider.of<BookRequestService>(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    print('✅✅✅✅${bookData.location!.latitude}');
-    // final screenSize = MediaQuery.of(context).size;
+    isBookRequested() {
+      bookRequestServices.checkIfRequestAlreadyMade(BookRequest(
+        reqBookID: bookData.bookID!,
+        reqBookOwnerID: bookData.bookOwner,
+        requesterID: userDataProvider.userModel!.userUid!,
+      ));
+    }
+
+    isBookRequested();
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +75,7 @@ class ViewBookScreen extends StatelessWidget {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedImage(
-                                  bookCoverImgUrl: bookData.bookCoverImageUrl,
+                                  imageUrl: bookData.bookCoverImageUrl,
                                 )),
                           ),
                         ),
@@ -168,7 +176,11 @@ class ViewBookScreen extends StatelessWidget {
                         height: 25,
                       ),
 
-                      Center(child: AISummarycard(bookdata: bookData)),
+                      Center(
+                        child: AISummarycard(
+                            bookdata: bookData,
+                            aiSummarySPrefs: new AISummaryPrefs()),
+                      ),
                       const SizedBox(
                         height: 15,
                       ),

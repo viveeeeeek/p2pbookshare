@@ -2,7 +2,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/dashboard.dart';
+import 'package:p2pbookshare/landing_page.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
@@ -40,7 +40,7 @@ class SignInhandler {
             context,
             PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const Dashboard()));
+                    const LandingPage()));
       }
     } catch (e) {
       logger.warning("❌Error during sign-in or user creation: $e");

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/app_init_handler.dart';
 
-class ThemeProvider extends ChangeNotifier {
+class AppThemeService extends ChangeNotifier {
   Color _themeColor = Colors.blue;
   // Getter for theme color
   Color get themeColor => _themeColor;

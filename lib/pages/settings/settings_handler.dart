@@ -3,18 +3,18 @@ import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/pages/login/login_screen.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/apptheme_sprefs.provider.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/userdata_sprefs.provider.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 
 class SettingsHandler {
-  ThemeSharedPreferences? _themeSharedPreferences;
-  ThemeProvider? _themeProvider;
+  AppThemePrefs? _themeSharedPreferences;
+  AppThemeService? _themeProvider;
 
   initProviders(BuildContext context) {
     _themeSharedPreferences =
-        Provider.of<ThemeSharedPreferences>(context, listen: false);
-    _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+        Provider.of<AppThemePrefs>(context, listen: false);
+    _themeProvider = Provider.of<AppThemeService>(context, listen: false);
   }
 
   bool get isThemeToggled => _themeSharedPreferences!.isThemeToggled;
@@ -41,7 +41,7 @@ class SettingsHandler {
 
   getIsDynamicColorOn(BuildContext context) async {
     final themeSharedPreferences =
-        Provider.of<ThemeSharedPreferences>(context, listen: false);
+        Provider.of<AppThemePrefs>(context, listen: false);
     return themeSharedPreferences.isDynamiThemeEnabled;
   }
 
@@ -52,7 +52,7 @@ class SettingsHandler {
 //! Main user log-out handling
   Future<void> handleLogOut(BuildContext context) async {
     final userDataSharedPrefsProvider =
-        Provider.of<UserDataSharedPrefsServices>(context, listen: false);
+        Provider.of<UserDataPrefs>(context, listen: false);
     final authProvider =
         Provider.of<AuthorizationService>(context, listen: false);
     await authProvider.gSignOut(context);

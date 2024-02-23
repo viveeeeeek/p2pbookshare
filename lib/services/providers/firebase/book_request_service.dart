@@ -8,6 +8,9 @@ class BookRequestService with ChangeNotifier {
   final user = FirebaseAuth.instance.currentUser;
   final logger = SimpleLogger();
 
+  bool _bookRequestExists = false;
+  bool get bookRequestExists => _bookRequestExists;
+
   Future<bool> checkIfRequestAlreadyMade(BookRequest bookRequest) async {
     try {
       var bookRequestsCollection =
@@ -21,10 +24,13 @@ class BookRequestService with ChangeNotifier {
           .where('req_book_owwner_id', isEqualTo: bookRequest.reqBookOwnerID)
           .where('reqeuster_id', isEqualTo: bookRequest.requesterID)
           .get();
-
+      // _bookRequestExists = true;
+      // notifyListeners();
       return querySnapshot.docs.isNotEmpty; // Return true if request exists
     } catch (e) {
       logger.warning('Error checking existing request: $e');
+      _bookRequestExists = false;
+      notifyListeners();
       return false; // Return false if an error occurs
     }
   }
@@ -35,12 +41,16 @@ class BookRequestService with ChangeNotifier {
 
       if (requestExists) {
         logger.info('❌Request already made'); // Print message if request exists
+        _bookRequestExists = true;
+        notifyListeners();
       } else {
         var bookRequestsCollection =
             FirebaseFirestore.instance.collection('book_requests');
         Map<String, dynamic> bookRequestsData = bookRequest.toMap();
         await bookRequestsCollection.add(bookRequestsData);
         logger.info("✅ Book request created");
+        _bookRequestExists = true;
+        notifyListeners();
       }
     } catch (e) {
       logger.warning('Error creating book request to Firestore: $e');

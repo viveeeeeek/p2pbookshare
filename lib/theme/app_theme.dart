@@ -2,15 +2,14 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/apptheme_sprefs.provider.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
 import 'package:provider/provider.dart';
 
 ColorScheme getLightColorScheme(
     BuildContext context, ColorScheme? lightDynamic) {
-  final themeProvider = Provider.of<ThemeProvider>(context);
-  final appThemeSharedPrefsProvider =
-      Provider.of<ThemeSharedPreferences>(context);
+  final themeProvider = Provider.of<AppThemeService>(context);
+  final appThemeSharedPrefsProvider = Provider.of<AppThemePrefs>(context);
 
   bool isDynamic = appThemeSharedPrefsProvider.isDynamiThemeEnabled;
 
@@ -30,8 +29,8 @@ ColorScheme getLightColorScheme(
 }
 
 ColorScheme getDarkColorScheme(BuildContext context, ColorScheme? darkDynamic) {
-  final themeProvider = Provider.of<ThemeProvider>(context);
-  final themeSharedPreferences = Provider.of<ThemeSharedPreferences>(context);
+  final themeProvider = Provider.of<AppThemeService>(context);
+  final themeSharedPreferences = Provider.of<AppThemePrefs>(context);
   bool isDynamicEnabled = themeSharedPreferences.isDynamiThemeEnabled;
 
   try {

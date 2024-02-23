@@ -7,7 +7,7 @@ import './widgets/widgets.dart';
 import 'package:p2pbookshare/services/model/user.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/providers/theme/app_theme.provider.dart';
+import '../../services/providers/theme/app_theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -17,12 +17,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late UserModel _userHandler;
+  late UserModel _userModel;
+  final UserHandler _userHandler = UserHandler();
   final SettingsHandler _settingsHandler = SettingsHandler();
 
   @override
   void didChangeDependencies() {
-    _userHandler = UserHandler().getUser(context);
+    _userModel = _userHandler.getUser(context);
     super.didChangeDependencies();
   }
 
@@ -35,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      final appThemeProvider = Provider.of<ThemeProvider>(context);
+      final appThemeProvider = Provider.of<AppThemeService>(context);
       return Scaffold(
         appBar: AppBar(
           title: const Text('Settings'),
@@ -119,6 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(
                 height: 30,
               ),
+              //TODO: implement confirmation alerdialog
               InkWell(
                 onTap: () async {
                   await _settingsHandler.handleLogOut(context);
@@ -129,7 +131,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: const EdgeInsets.all(5.0),
                     child: ListTile(
                       leading: Icon(MdiIcons.logoutVariant),
-                      title: Text('Log out ${_userHandler.userEmailAddress}'),
+                      title: Text('Log out ${_userModel.userEmailAddress}'),
                     ),
                   ),
                 ),

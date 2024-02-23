@@ -12,9 +12,6 @@ class BookDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: cardWidth,
-      // decoration: BoxDecoration(
-      //     color: Theme.of(context).colorScheme.secondaryContainer,
-      //     borderRadius: const BorderRadius.all(Radius.circular(25))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

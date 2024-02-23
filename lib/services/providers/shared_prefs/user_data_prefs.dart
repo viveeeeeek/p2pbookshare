@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-class UserDataSharedPrefsServices with ChangeNotifier {
+class UserDataPrefs with ChangeNotifier {
   SharedPreferences? _prefs;
   final logger = SimpleLogger();
 /*

@@ -3,158 +3,193 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
 import 'package:p2pbookshare/services/model/book.dart';
-import 'package:p2pbookshare/services/providers/gemini_service.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
 import 'package:provider/provider.dart';
 
-class AISummarycard extends StatelessWidget {
+class AISummarycard extends StatefulWidget {
   final Book bookdata;
-  const AISummarycard({super.key, required this.bookdata});
+  final AISummaryPrefs aiSummarySPrefs;
+
+  const AISummarycard({
+    super.key,
+    required this.bookdata,
+    required this.aiSummarySPrefs,
+  });
 
   @override
+  State<AISummarycard> createState() => _AISummarycardState();
+}
+
+class _AISummarycardState extends State<AISummarycard>
+    with SingleTickerProviderStateMixin {
+  late final String _bookKey =
+      '${widget.bookdata.bookTitle}-${widget.bookdata.bookAuthor}';
+
+  @override
+  void initState() {
+    super.initState();
+    widget.aiSummarySPrefs.fetchSummary(_bookKey);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  double _calculateSummaryHeight(String summary) {
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: summary,
+        style: TextStyle(
+          fontSize: 16.0, // Adjust the font size as needed
+          color: context.onSecondaryContainer,
+        ),
+      ),
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+
+    // Calculate the height of the text
+    final textHeight = textPainter.size.height;
+    return textHeight;
+  }
+
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final geminiAPIService = Provider.of<GeminiService>(context);
-    final bookKey = '${this.bookdata.bookTitle}-${this.bookdata.bookAuthor}';
 
-    // Check if the summary is available
-    bool isSummaryAvailable = geminiAPIService.getBookSummary(bookKey) != null;
-
-    double textHeight = 0.0;
-
-    if (isSummaryAvailable) {
-      final textPainter = TextPainter(
-        text: TextSpan(
-          text: geminiAPIService.getBookSummary(bookKey)!,
-          style: TextStyle(
-            fontSize: 16.0, // Adjust the font size as needed
-            color: context.onSecondaryContainer,
-          ),
-        ),
-        maxLines: null,
-        textDirection: TextDirection.ltr,
-      );
-
-      textPainter.layout(maxWidth: screenSize.width);
-
-      // Calculate the height of the text
-      textHeight = textPainter.size.height;
-    }
-
-    return Column(
-      children: [
-        // Card title with button to clear generated summary or generate new.
-        if (isSummaryAvailable)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'AI generated summary',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                onPressed: () {
-                  geminiAPIService.clearBookSummary(bookKey);
-                },
-                icon: Icon(
-                  Icons.clear,
-                  color: context.onSecondaryContainer,
-                ),
-              ),
-            ],
-          ),
-        FilledButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: isSummaryAvailable
-                ? context.tertiaryContainer
-                : context.secondaryContainer,
-            padding: EdgeInsets
-                .zero, // Set padding to zero to eliminate default padding
-
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25))),
-          ),
-          onPressed: () {
-            geminiAPIService.generateGeminiText(
-              bookName: this.bookdata.bookTitle,
-              authorName: this.bookdata.bookAuthor,
-            );
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 1000),
-            curve: Curves.easeInOutCirc,
-            height: isSummaryAvailable
-                ? textHeight + 30
-                : 50, // Adjust padding as needed
-            width: isSummaryAvailable ? screenSize.width : 200,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-            ),
-            child: isSummaryAvailable
-                ? AnimatedOpacity(
-                    duration: const Duration(milliseconds: 1000),
-                    opacity: isSummaryAvailable ? 1.0 : 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              geminiAPIService.getBookSummary(bookKey)!,
-                              style: TextStyle(
-                                color: isSummaryAvailable
-                                    ? context.onTertiaryContainer
-                                    : context.onSecondaryContainer,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        geminiAPIService.isGeneratingSummary
-                            ? const CustomProgressIndicator(
-                                height: 34, width: 35)
-                            : Icon(
-                                MdiIcons.autoFix,
-                                color: isSummaryAvailable
-                                    ? context.onTertiaryContainer
-                                    : context.onSecondaryContainer,
-                              ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              geminiAPIService.isGeneratingSummary
-                                  ? 'Generating now'
-                                  : 'AI Book Summary',
-                              style: TextStyle(
-                                color: isSummaryAvailable
-                                    ? context.onTertiaryContainer
-                                    : context.onSecondaryContainer,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+    return Consumer2<GeminiService, AISummaryPrefs>(
+      builder: (context, geminiService, aiSummaryPrefs, child) {
+        return Column(
+          children: [
+            if (aiSummaryPrefs.hasSummary == true)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'AI Generated Summary',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      aiSummaryPrefs.removeSummary(_bookKey);
+                    },
+                    icon: Icon(
+                      Icons.clear,
+                      color: context.onSecondaryContainer,
                     ),
                   ),
-          ),
-        ),
-      ],
+                ],
+              ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              height: aiSummaryPrefs.hasSummary
+                  ? _calculateSummaryHeight(aiSummaryPrefs.geminiResponse) + 30
+                  : 50,
+              width: aiSummaryPrefs.hasSummary ? screenSize.width : 200,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(25)),
+                color: aiSummaryPrefs.hasSummary
+                    ? context.tertiaryContainer
+                    : context.secondaryContainer,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Material(
+                  color: aiSummaryPrefs.hasSummary
+                      ? context.tertiaryContainer
+                      : context.secondaryContainer,
+                  borderRadius: BorderRadius.circular(25),
+                  child: InkWell(
+                    onTap: aiSummaryPrefs.hasSummary
+                        ? null // Disable the tap gesture when summary is available
+                        : () async {
+                            final response =
+                                await geminiService.summarizeBookWithGeminiAI(
+                              bookName: this.widget.bookdata.bookTitle,
+                              authorName: this.widget.bookdata.bookAuthor,
+                              bookKey: _bookKey,
+                            );
+
+                            await aiSummaryPrefs.storeSummary(
+                                _bookKey, response);
+                          },
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          switchInCurve: Curves.easeInOut,
+                          switchOutCurve: Curves.easeInOut,
+                          child: aiSummaryPrefs.hasSummary
+                              ? SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Text(
+                                        aiSummaryPrefs.geminiResponse,
+                                        style: TextStyle(
+                                          color: aiSummaryPrefs.hasSummary
+                                              ? context.onTertiaryContainer
+                                              : context.onSecondaryContainer,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    geminiService.isGeneratingSummary
+                                        ? const CustomProgressIndicator(
+                                            height: 34,
+                                            width: 35,
+                                          )
+                                        : Icon(
+                                            MdiIcons.autoFix,
+                                            color: aiSummaryPrefs.hasSummary
+                                                ? context.onTertiaryContainer
+                                                : context.onSecondaryContainer,
+                                          ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          geminiService.isGeneratingSummary
+                                              ? 'Generating now'
+                                              : 'AI Book Summary',
+                                          style: TextStyle(
+                                            color: aiSummaryPrefs.hasSummary
+                                                ? context.onTertiaryContainer
+                                                : context.onSecondaryContainer,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                        )),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

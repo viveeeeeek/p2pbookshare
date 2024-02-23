@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 
 import 'package:p2pbookshare/app_init_handler.dart';
-import 'package:p2pbookshare/dashboard.dart';
+import 'package:p2pbookshare/landing_page.dart';
 import 'package:p2pbookshare/pages/login/login_screen.dart';
 import 'package:p2pbookshare/pages/splash/splash_view.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme.provider.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/theme/app_theme.dart';
 
 class App extends StatefulWidget {
@@ -39,7 +39,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final appInitHandler = Provider.of<AppInitHandler>(context);
 
-    return Consumer<ThemeProvider>(
+    return Consumer<AppThemeService>(
       builder: (context, themeProvider, child) {
         return DynamicColorBuilder(
           builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
@@ -66,7 +66,7 @@ class _AppState extends State<App> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         return snapshot.data!
-                            ? const Dashboard()
+                            ? const LandingPage()
                             : const LoginScreen();
                       } else {
                         return const SplashScreen();

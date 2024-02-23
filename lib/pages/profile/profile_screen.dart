@@ -18,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //FIXME: instead creating new provider instance in profile screen. pass the instance createdin landingpage only
     final userDataProvider = Provider.of<UserDataProvider>(context);
 
     return Scaffold(
@@ -58,7 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 15,
             ),
             yourBooksListView(
-                context, ProfileHandler().getUserBooksStream(context)),
+                //FIXME do not create new instance.
+                context,
+                ProfileHandler().getUserBooksStream(context)),
           ],
         ));
   }

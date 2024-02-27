@@ -111,6 +111,8 @@ Widget buildCategoryBooksWidget(
       child: Padding(
         padding: const EdgeInsets.only(right: 0),
         child: BookCard(
+            cardHeight: 200,
+            cardWidth: 150,
             bookCoverImgurl: bookData['book_coverimg_url'],
             title: bookData['book_title']),
       ),

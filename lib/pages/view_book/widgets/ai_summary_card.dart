@@ -154,10 +154,12 @@ class _AISummarycardState extends State<AISummarycard>
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     geminiService.isGeneratingSummary
-                                        ? const CustomProgressIndicator(
-                                            height: 34,
-                                            width: 35,
-                                          )
+                                        ? Utils.progressIndicator(
+                                            height: 34, width: 35)
+                                        // const CustomProgressIndicator(
+                                        //     height: 34,
+                                        //     width: 35,
+                                        //   )
                                         : Icon(
                                             MdiIcons.autoFix,
                                             color: aiSummaryPrefs.hasSummary

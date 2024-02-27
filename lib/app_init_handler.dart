@@ -18,7 +18,7 @@ class AppInitHandler with ChangeNotifier {
   AppInitHandler(this._authProvider, this._userDataProvider,
       this._appThemeSharedPrefsServices, this._themeProvider);
   //! Checks if user is signed-in or not
-  Future<bool> isUserLoggedIn() async {
+  Future<bool> checkUserLoggedInStatus() async {
     String? token = await _authProvider.getToken();
     if (token != null) {
       try {
@@ -51,6 +51,7 @@ class AppInitHandler with ChangeNotifier {
   //! Initializes userdata if user is already signed-in
   Future<void> initializeUserData() async {
     await _userDataProvider.loadUserDataFromPrefs();
+    //FIXME no need of making it not null
     _userDataProvider.userModel != null;
   }
 }

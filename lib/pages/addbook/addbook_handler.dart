@@ -149,13 +149,12 @@ class AddbookHandler with ChangeNotifier {
         selectedImage != null) {
       return true;
     } else {
-      showCustomSnackBar(
-        context,
-        'Please fill all the required fields.',
-        'Dismiss',
-        1,
-        () {},
-      );
+      Utils.snackBar(
+          context: context,
+          message: 'Please fill all the required fields.',
+          actionLabel: 'Dismiss',
+          durationInSecond: 1,
+          onPressed: () {});
 
       return false;
     }
@@ -190,13 +189,12 @@ class AddbookHandler with ChangeNotifier {
         notifyListeners();
       });
     } else {
-      showCustomSnackBar(
-        context,
-        'Please fill all the required fields.',
-        'Dismiss',
-        1,
-        () {},
-      );
+      Utils.snackBar(
+          context: context,
+          message: 'Please fill all the required fields.',
+          actionLabel: 'Dismiss',
+          durationInSecond: 2,
+          onPressed: () {});
     }
 
     if (uploadedImgUrl.isNotEmpty) {

@@ -54,3 +54,10 @@ TextTheme buildDarkTextTheme() {
     displayColor: Colors.white, // Set the text color for dark theme
   );
 }
+
+TextTheme buildLightTextTheme() {
+  return GoogleFonts.outfitTextTheme().apply(
+    bodyColor: Colors.black, // Set the text color for dark theme
+    displayColor: Colors.black, // Set the text color for dark theme
+  );
+}

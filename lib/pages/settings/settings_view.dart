@@ -55,6 +55,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
+                'Account',
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                leading: Icon(MdiIcons.mapMarkerOutline),
+                title: const Text('Your addresses'),
+                subtitle: const Text('Edit address for book exchange'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
                 'Appearance',
                 style: TextStyle(fontSize: 15),
               ),
@@ -143,3 +158,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 }
+
+//FIXME: Logging out from app redirects to loginscreen but going back from loginscreen redirects back to the settings screen

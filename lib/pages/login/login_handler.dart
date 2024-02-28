@@ -6,7 +6,6 @@ import 'package:p2pbookshare/landing_page.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/services/model/user.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
@@ -47,17 +46,17 @@ class SignInhandler {
     }
   }
 
-  isSigningIn<bool>(BuildContext context) {
-    final authProvider =
-        Provider.of<AuthorizationService>(context, listen: false);
-    if (authProvider.getIsSigningIn) {
-      logger.info('✅Is signingIn TRUE');
-      return true;
-    } else {
-      logger.info('❌Is signingIn FALSE');
-      return false;
-    }
-  }
+  // isSigningIn<bool>(BuildContext context) {
+  //   final authProvider =
+  //       Provider.of<AuthorizationService>(context, listen: false);
+  //   if (authProvider.getIsSigningIn) {
+  //     logger.info('✅Is signingIn TRUE');
+  //     return true;
+  //   } else {
+  //     logger.info('❌Is signingIn FALSE');
+  //     return false;
+  //   }
+  // }
 }
 
-//TODO: instead of creating new method for cheking is signedin directly check from authentication providers bool value righ into above function
+//TODO: Instead of creating new method for cheking is signedin directly check from authentication providers bool value righ into above function

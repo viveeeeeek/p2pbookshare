@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/global/widgets/cached_image.dart';
 import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
 
 class AllBooksGrid extends StatelessWidget {

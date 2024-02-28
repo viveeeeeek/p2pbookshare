@@ -1,14 +1,14 @@
 // book_model.dart
-//TODO Change book catergoryname to book genre insdie firestore
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Book {
+class BookModel {
   final String bookTitle;
   final String bookAuthor;
   // final String bookDescription;
   final String? bookPublication;
   final String bookCondition;
-  final String bookCategory;
+  final String bookGenre;
   final bool bookAvailability;
   final String bookCoverImageUrl;
   final String bookOwner;
@@ -16,13 +16,13 @@ class Book {
   final GeoPoint? location;
   final String completeAddress;
 
-  Book(
+  BookModel(
       {required this.bookTitle,
       required this.bookAuthor,
       // required this.bookDescription,
       this.bookPublication,
       required this.bookCondition,
-      required this.bookCategory,
+      required this.bookGenre,
       required this.bookAvailability,
       required this.bookCoverImageUrl,
       required this.bookOwner,
@@ -30,14 +30,14 @@ class Book {
       required this.location,
       required this.completeAddress});
 
-  factory Book.fromMap(Map<String, dynamic> map) {
-    return Book(
+  factory BookModel.fromMap(Map<String, dynamic> map) {
+    return BookModel(
         bookTitle: map['book_title'],
         bookAuthor: map['book_author'],
         // bookDescription: map['book_description'],
         bookPublication: map['book_publication'],
         bookCondition: map['book_condition'],
-        bookCategory: map['book_category'],
+        bookGenre: map['book_genre'],
         bookAvailability: map['book_availability'],
         bookCoverImageUrl: map['book_coverimg_url'],
         bookOwner: map['book_owner'],
@@ -58,7 +58,7 @@ class Book {
       // 'book_description': bookDescription,
       'book_publication': bookPublication,
       'book_condition': bookCondition,
-      'book_category': bookCategory,
+      'book_genre': bookGenre,
       'book_availability': bookAvailability,
       'book_coverimg_url': bookCoverImageUrl,
       'book_owner': bookOwner,

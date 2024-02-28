@@ -11,22 +11,24 @@ class BookRequestService with ChangeNotifier {
   bool _bookRequestExists = false;
   bool get bookRequestExists => _bookRequestExists;
 
-  Future<bool> checkIfRequestAlreadyMade(BookRequest bookRequest) async {
+  Future<bool> checkIfRequestAlreadyMade(BookRequestModel bookRequest) async {
     try {
       var bookRequestsCollection =
           FirebaseFirestore.instance.collection('book_requests');
 
       // Query to check if a request exists for the current user and book
-      //TODO  req_book_owner spelling fix in irebase colection
-      //TODO if book req is made check its status and according to te status show borrowbutton or borrowedbookstatus screen
       var querySnapshot = await bookRequestsCollection
           .where('req_book_id', isEqualTo: bookRequest.reqBookID)
-          .where('req_book_owwner_id', isEqualTo: bookRequest.reqBookOwnerID)
+          .where('req_book_owner_id', isEqualTo: bookRequest.reqBookOwnerID)
           .where('reqeuster_id', isEqualTo: bookRequest.requesterID)
           .get();
-      // _bookRequestExists = true;
-      // notifyListeners();
-      return querySnapshot.docs.isNotEmpty; // Return true if request exists
+      if (querySnapshot.docs.isNotEmpty) {
+        _bookRequestExists = true;
+        return true;
+      } else {
+        _bookRequestExists = false;
+        return false;
+      }
     } catch (e) {
       logger.warning('Error checking existing request: $e');
       _bookRequestExists = false;
@@ -35,7 +37,7 @@ class BookRequestService with ChangeNotifier {
     }
   }
 
-  void sendBookBorrowRequest(BookRequest bookRequest) async {
+  sendBookBorrowRequest(BookRequestModel bookRequest) async {
     try {
       bool requestExists = await checkIfRequestAlreadyMade(bookRequest);
 
@@ -54,6 +56,34 @@ class BookRequestService with ChangeNotifier {
       }
     } catch (e) {
       logger.warning('Error creating book request to Firestore: $e');
+    }
+  }
+
+  /// Stream to fetch all the incoming book requests to the user.
+  Stream<List<Map<String, dynamic>>> fetchIncomingBookRequests() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      return Stream.value([]);
+    } else {
+      try {
+        CollectionReference bookRequestCollection =
+            FirebaseFirestore.instance.collection('book_requests');
+
+        Query query = bookRequestCollection.where('req_book_owner_id',
+            isEqualTo: currentUser.uid);
+        return query.snapshots().map((querySnapshot) {
+          if (querySnapshot.docs.isEmpty) {
+            return [];
+          }
+          return querySnapshot.docs
+              .map((document) => document.data() as Map<String, dynamic>)
+              .toList();
+        });
+      } catch (e) {
+        logger.info('Error retrieving book requests from Firestore: $e');
+        return Stream.value([]);
+      }
     }
   }
 }

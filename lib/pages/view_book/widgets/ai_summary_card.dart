@@ -8,7 +8,7 @@ import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
 import 'package:provider/provider.dart';
 
 class AISummarycard extends StatefulWidget {
-  final Book bookdata;
+  final BookModel bookdata;
   final AISummaryPrefs aiSummarySPrefs;
 
   const AISummarycard({

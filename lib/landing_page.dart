@@ -21,7 +21,8 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    final PageController controller = PageController(initialPage: 0);
+    final PageController controller =
+        PageController(initialPage: _selectedScreenIndex);
     void onTap(int index) {
       if (_selectedScreenIndex != index) {
         controller.jumpToPage(index);

@@ -58,7 +58,7 @@ class SettingsHandler {
     await authProvider.gSignOut(context);
     await authProvider.removeTokenAndData();
     await userDataSharedPrefsProvider.clearUserFromPrefs();
-    //HACK this is how you handle build context across synchronous warning
+    //HACK: This is how you handle build context across synchronous warning
     if (!context.mounted) return;
     Navigator.pushReplacement(
         context,

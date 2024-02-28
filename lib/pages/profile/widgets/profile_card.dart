@@ -28,7 +28,6 @@ class UserProfileCard extends StatelessWidget {
                 color: Colors.grey,
               ),
               child: Center(
-                // TODO: change cached network image to custo cached image
                 child: userModel.userPhotoUrl != null
                     ? ClipRRect(
                         borderRadius:

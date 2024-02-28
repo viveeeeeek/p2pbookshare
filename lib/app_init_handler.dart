@@ -51,7 +51,7 @@ class AppInitHandler with ChangeNotifier {
   //! Initializes userdata if user is already signed-in
   Future<void> initializeUserData() async {
     await _userDataProvider.loadUserDataFromPrefs();
-    //FIXME no need of making it not null
-    _userDataProvider.userModel != null;
+    // //FIXME: No need of making it not null
+    // _userDataProvider.userModel != null;
   }
 }

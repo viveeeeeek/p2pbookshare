@@ -44,7 +44,7 @@ class CategorizedBookList extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(25, 0, 0, 4),
                     child: Text(
                         // 'cat',
-                        booksList[1]['book_category'] ?? 'Category',
+                        booksList[1]['book_genre'] ?? 'Category',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -91,12 +91,12 @@ Widget buildCategoryBooksWidget(
           context,
           MaterialPageRoute(
             builder: (context) => ViewBookScreen(
-              bookData: Book(
+              bookData: BookModel(
                   bookTitle: bookData['book_title'],
                   bookAuthor: bookData['book_author'],
                   bookPublication: bookData['book_publication'],
                   bookCondition: bookData['book_condition'],
-                  bookCategory: bookData['book_category'],
+                  bookGenre: bookData['book_genre'],
                   bookAvailability: bookData['book_availability'],
                   bookCoverImageUrl: bookData['book_coverimg_url'],
                   bookOwner: bookData['book_owner'],

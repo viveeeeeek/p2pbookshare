@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
 import 'package:p2pbookshare/pages/address/address_selection_bottom_sheet.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,7 +36,8 @@ class AddbookHandler with ChangeNotifier {
 
   AddbookHandler(this._fbBookOperations, this._userDataProvider);
 
-  /// Promps Address picker bottom sheet
+  /// Promps Address picker bottom sheet\
+  //TODO: Remove the use of showAddressPickerBottomSheet instead use one from apputils
   showAddressPickerBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -48,6 +50,7 @@ class AddbookHandler with ChangeNotifier {
 
   ///  Function to pick an image from the device
   Future<void> handlePickImage(BuildContext context) async {
+    //TODO: Add Simpledialog to app utils
     final source = await showDialog<ImageSource>(
       context: context,
       builder: (BuildContext context) {
@@ -111,8 +114,8 @@ class AddbookHandler with ChangeNotifier {
     selectedAddressLatLng = addressLatLng;
     _completeAddress = address;
     notifyListeners();
-    print(
-        '✅✅✅ address latlng & address retreived $selectedAddressLatLng $completeAddress');
+    logger.info(
+        'Address latlng & address retreived $selectedAddressLatLng $completeAddress');
   }
 
   /// Handles image upload to firebase storage
@@ -136,16 +139,16 @@ class AddbookHandler with ChangeNotifier {
       TextEditingController authorCtrl,
       // TextEditingController publicationCtrl,
       // TextEditingController descriptionCtrl,
-      String? chosenCondition,
-      String? chosenCategory,
+      String? selectedCondition,
+      String? selectedGenre,
       File? selectedImage,
       String completeAddress) {
     if (titleCtrl.text.isNotEmpty &&
         authorCtrl.text.isNotEmpty &&
         // publicationCtrl.text.isNotEmpty &&
         completeAddress != '' &&
-        chosenCondition != null &&
-        chosenCategory != null &&
+        selectedCondition != null &&
+        selectedGenre != null &&
         selectedImage != null) {
       return true;
     } else {
@@ -199,12 +202,12 @@ class AddbookHandler with ChangeNotifier {
 
     if (uploadedImgUrl.isNotEmpty) {
       // Create a Book object with the form data and other information.
-      Book book = Book(
+      BookModel book = BookModel(
           bookTitle: titleCtrl.text,
           bookAuthor: authorCtrl.text,
           bookPublication: publicationCtrl.text,
           bookCondition: chosenCondition!,
-          bookCategory: chosenCategory!,
+          bookGenre: chosenCategory!,
           bookAvailability: true,
           bookCoverImageUrl: uploadedImgUrl,
           bookOwner: _userDataProvider.userModel!.userUid!,
@@ -215,14 +218,14 @@ class AddbookHandler with ChangeNotifier {
       // Handle add book opeation here
       _fbBookOperations.addNewBookListing(book);
 
-      //HACK asyncronous build context
+      //HACK: Asyncronous build context
       if (!context.mounted) return;
       bookAddedBottomSheet(context, uploadedImgUrl);
       // Clear the text controllers and other necessary cleanup
       titleCtrl.clear();
       authorCtrl.clear();
       publicationCtrl.clear();
-//FIXME bookCategory& bookGenres are not resetting
+      //FIXME: Book condition & book genre are not resetting
       chosenCategory = '';
       chosenCondition = '';
       _completeAddress = '';

@@ -8,7 +8,7 @@ class Utils {
       required String actionLabel,
       required int durationInSecond,
       required Function()? onPressed}) {
-    //FIXME For some unkown reason duration is not working so we manually dismiss the snackbar for now
+    //FIXME: For some unkown reason duration is not working so we manually dismiss the snackbar for now
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

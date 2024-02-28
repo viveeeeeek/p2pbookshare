@@ -39,7 +39,7 @@ class SearchResult extends StatelessWidget {
                           ),
                         ),
                         onTap: () async {
-                          //TODO: add to location picker handler
+                          //TODO: Add to location picker handler
                           logger.info('✅searchQuery clicked');
 
                           List<Location> locations = await locationFromAddress(

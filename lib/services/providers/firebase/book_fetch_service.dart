@@ -21,7 +21,7 @@ class BookFetchService with ChangeNotifier {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');
-      Query query = booksCollection.where('book_category', isEqualTo: category);
+      Query query = booksCollection.where('book_genre', isEqualTo: category);
 
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {

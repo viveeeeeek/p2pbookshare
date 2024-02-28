@@ -7,7 +7,7 @@ import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 
-//TODO add title/name to address like home/college/office
+//TODO: Give name to address (home/college/office)
 
 //! Further address completion Botom Sheet
 addressCompletionBottomSheet(

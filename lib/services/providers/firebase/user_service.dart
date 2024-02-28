@@ -46,7 +46,7 @@ class FirebaseUserService with ChangeNotifier {
       // Add a new document with a unique ID
       await userAddressesCollection.add(address);
     } catch (e) {
-      print('Error adding address to user: $e');
+      logger.info('Error adding address to user: $e');
       // Handle the error as needed
     }
   }

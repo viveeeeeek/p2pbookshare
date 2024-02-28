@@ -6,7 +6,7 @@ class BookDetailsCard extends StatelessWidget {
   const BookDetailsCard(
       {super.key, required this.bookData, required this.cardWidth});
 
-  final Book bookData;
+  final BookModel bookData;
 
   @override
   Widget build(BuildContext context) {

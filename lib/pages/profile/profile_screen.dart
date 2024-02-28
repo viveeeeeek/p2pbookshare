@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/pages/profile/views/notifications_tab_view.dart';
-import 'package:p2pbookshare/pages/profile/views/pending_req_tab_view.dart';
-import 'package:p2pbookshare/pages/profile/views/your_books_tab_view.dart';
+import 'package:p2pbookshare/pages/profile/views/notifications_tab_tab.dart';
+import 'package:p2pbookshare/pages/profile/views/incoming_book_req_tab.dart';
+import 'package:p2pbookshare/pages/profile/views/your_books_tab.dart';
 import 'package:p2pbookshare/pages/settings/settings_view.dart';
 import 'package:p2pbookshare/pages/profile/widgets/profile_card.dart';
+// ignore: unused_import
+import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
+    final bookRequestService = Provider.of<BookRequestService>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
@@ -49,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         body: DefaultTabController(
             length: 3,
-            initialIndex: 1,
+            // initialIndex: 1,
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [
@@ -117,10 +121,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,
-                      children: const [
-                        YourBooksTabView(),
-                        PendingReqTabView(),
-                        NotificationsTabView()
+                      children: [
+                        const YourBooksTabView(),
+                        const NotificationsTabView(),
+                        IncomingBookReqView(
+                          incomingBookReqStream:
+                              bookRequestService.fetchIncomingBookRequests(),
+                        ),
                       ],
                     ),
                   ),

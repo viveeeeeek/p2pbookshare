@@ -34,43 +34,13 @@ class _HomeScreenState extends State<HomeScreen>
     super.build(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
 
-    // List bookRatingCount = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-
     return LayoutBuilder(
       builder: (context, constraints) => SafeArea(
         child: Scaffold(
-            // appBar: AppBar(
-            //   title: const Text('p2pbookshare'),
-            // ),
-            // floatingActionButton: FloatingActionButton(
-            //   onPressed: () {
-            //     Navigator.push(context, MaterialPageRoute(builder: ((context) {
-            //       return Screen();
-            //     })));
-            //   },
-            //   child: const Icon(Icons.location_pin),
-            // ),
             body: SafeArea(
           child: SingleChildScrollView(
             child: Stack(
               children: [
-                //TODO  Implement Spotify like spot light like effect for background
-                // Container(
-                //   width: constraints.maxWidth,
-                //   height: constraints.maxHeight,
-                //   decoration: BoxDecoration(
-                //     gradient: LinearGradient(
-                //       colors: [
-                //         Colors.black87.withOpacity(0.7),
-                //         Colors.black87.withOpacity(0.4),
-                //         Colors.transparent,
-                //         Colors.transparent,
-                //       ],
-                //       begin: Alignment.topRight,
-                //       end: Alignment.bottomLeft,
-                //     ),
-                //   ),
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -106,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
                       height: 15,
                     ),
 
-                    //TODO Implement NF-Like-Top-10-Books
+                    //TODO: Implement NF-Like-Top-10-Books
                     // SizedBox(
                     //   height: 200,
                     //   child: ListView(

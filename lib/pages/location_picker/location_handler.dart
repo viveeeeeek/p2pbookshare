@@ -26,7 +26,7 @@ class GetLocationHandler {
 
     if (streetController.text.isEmpty) {
       Navigator.pop(context);
-      //FIXME Snackbar does not work when dismissing the bottomsheet
+      //FIXME: Snackbar does not work when dismissing the bottomsheet
       // showCustomSnackBar(
       //   context,
       //   'Street address is empty',
@@ -64,7 +64,7 @@ class GetLocationHandler {
           },
         );
       } catch (e) {
-        print(e);
+        logger.warning(e);
       }
     }
   }

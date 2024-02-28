@@ -12,7 +12,7 @@ class AppThemeService extends ChangeNotifier {
       notifyListeners();
     }
   }
-  //TODO By default set dynamic theme to off as it will not work on devices below a12
+  //TODO: By default set dynamic theme to off as it will not work on devices below a12
 
   // Default to follow system theme initially
   ThemeMode _themeMode = ThemeMode.system;

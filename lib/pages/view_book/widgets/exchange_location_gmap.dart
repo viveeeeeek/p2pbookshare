@@ -10,7 +10,7 @@ class BookExchangeLocationCard extends StatelessWidget {
     required this.cardWidth,
   });
 
-  final Book bookData;
+  final BookModel bookData;
 
   @override
   Widget build(BuildContext context) {

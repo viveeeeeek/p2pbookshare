@@ -14,7 +14,7 @@ class ViewBookHandler {
   late final BookRequestService _bookRequestServices;
   ViewBookHandler(this._bookRequestServices);
 
-  handleBorrowRequest(BookRequest bookRequestData) {
+  handleBorrowRequest(BookRequestModel bookRequestData) {
     _bookRequestServices.sendBookBorrowRequest(bookRequestData);
   }
 }

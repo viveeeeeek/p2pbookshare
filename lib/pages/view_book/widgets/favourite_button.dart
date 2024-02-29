@@ -8,9 +8,7 @@ class FavouriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print('Favourite button clciked');
-      },
+      onTap: () {},
       child: Container(
           height: 40,
           width: 40,

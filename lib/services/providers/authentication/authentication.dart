@@ -56,8 +56,13 @@ class AuthorizationService with ChangeNotifier {
       _isSigningIn = false; //// No internet - isSigning false
       isInternetAvlbl = false;
       notifyListeners();
-      showCustomSnackBar(
-          context, 'No internet connection available :/', "Ok", 2, () => null);
+
+      Utils.snackBar(
+          context: context,
+          message: 'No internet connection available :/',
+          actionLabel: 'Ok',
+          durationInSecond: 2,
+          onPressed: () => {});
     } else {
       isInternetAvlbl = true;
       notifyListeners();

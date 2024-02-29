@@ -2,12 +2,10 @@
 
 class AppConstants {
   static const List<String> bookGenres = [
-    'Academics',
-    'Fantasy',
-    'Biographies',
+    'Academic',
     'Fiction',
-    'Mystery',
     'Non-Fiction',
+    'Biography',
   ];
   static const List<String> bookConditions = [
     'New',

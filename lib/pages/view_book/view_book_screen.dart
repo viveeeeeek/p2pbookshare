@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/widgets/cached_image.dart';
-import 'package:p2pbookshare/services/model/book_request.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'widgets/widgets.dart';
@@ -10,28 +9,27 @@ import 'package:p2pbookshare/services/model/book.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:provider/provider.dart';
 
-class ViewBookScreen extends StatelessWidget {
+class ViewBookScreen extends StatefulWidget {
   const ViewBookScreen({super.key, required this.bookData});
 
-  final Book bookData;
+  final BookModel bookData;
+
+  @override
+  State<ViewBookScreen> createState() => _ViewBookScreenState();
+}
+
+class _ViewBookScreenState extends State<ViewBookScreen> {
+  String currentUserUid = '';
 
   @override
   Widget build(BuildContext context) {
     final bookRequestServices = Provider.of<BookRequestService>(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    isBookRequested() {
-      bookRequestServices.checkIfRequestAlreadyMade(BookRequest(
-        reqBookID: bookData.bookID!,
-        reqBookOwnerID: bookData.bookOwner,
-        requesterID: userDataProvider.userModel!.userUid!,
-      ));
-    }
 
-    isBookRequested();
-
+    currentUserUid = userDataProvider.userModel!.userUid!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(bookData.bookTitle),
+        title: Text(widget.bookData.bookTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -71,11 +69,11 @@ class ViewBookScreen extends StatelessWidget {
                             ],
                           ),
                           child: Hero(
-                            tag: bookData.bookCoverImageUrl,
+                            tag: widget.bookData.bookCoverImageUrl,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedImage(
-                                  imageUrl: bookData.bookCoverImageUrl,
+                                  imageUrl: widget.bookData.bookCoverImageUrl,
                                 )),
                           ),
                         ),
@@ -85,7 +83,7 @@ class ViewBookScreen extends StatelessWidget {
                       ),
                       //! Book Detail Card
                       BookDetailsCard(
-                        bookData: bookData,
+                        bookData: widget.bookData,
                         cardWidth: constraints.maxWidth,
                       ),
                       const SizedBox(
@@ -99,9 +97,10 @@ class ViewBookScreen extends StatelessWidget {
                           // ),
                           Expanded(
                             child: BorrowButton(
-                                bookRequestServices: bookRequestServices,
-                                bookData: bookData,
-                                userDataProvider: userDataProvider),
+                              bookRequestServices: bookRequestServices,
+                              bookData: widget.bookData,
+                              currentUserUid: currentUserUid,
+                            ),
                           ),
                         ],
                       ),
@@ -136,7 +135,7 @@ class ViewBookScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              Text(bookData.bookCategory)
+                              Text(widget.bookData.bookGenre)
                             ],
                           ),
                           const Spacer(),
@@ -167,7 +166,7 @@ class ViewBookScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              Text(bookData.bookCondition)
+                              Text(widget.bookData.bookCondition)
                             ],
                           )
                         ],
@@ -178,7 +177,7 @@ class ViewBookScreen extends StatelessWidget {
 
                       Center(
                         child: AISummarycard(
-                            bookdata: bookData,
+                            bookdata: widget.bookData,
                             aiSummarySPrefs: new AISummaryPrefs()),
                       ),
                       const SizedBox(
@@ -194,7 +193,8 @@ class ViewBookScreen extends StatelessWidget {
                         height: 5,
                       ),
                       BookExchangeLocationCard(
-                          bookData: bookData, cardWidth: constraints.maxWidth),
+                          bookData: widget.bookData,
+                          cardWidth: constraints.maxWidth),
                       const SizedBox(
                         height: 15,
                       ),

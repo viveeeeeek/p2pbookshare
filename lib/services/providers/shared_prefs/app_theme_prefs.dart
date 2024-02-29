@@ -5,7 +5,7 @@ import 'package:simple_logger/simple_logger.dart';
 class AppThemePrefs with ChangeNotifier {
   final logger = SimpleLogger();
   SharedPreferences? _prefs;
-  //TODO: change to final and create getters
+  //TODO: Change to final and create getters
   bool isDynamiThemeEnabled = false;
   bool isThemeToggled = false;
 
@@ -102,4 +102,4 @@ class AppThemePrefs with ChangeNotifier {
     }
   }
 }
-//TODO: there is repeated initilization of shareprefs instances. minimze it as shown in pooja bhaumik's linkedin learning course Chpter 7 Static initializers
+//TODO: Remove repeated initilization of shareprefs instances. minimze it as shown in pooja bhaumik's linkedin learning course Chpter 7 Static initializers

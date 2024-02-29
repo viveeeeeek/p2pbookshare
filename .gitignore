@@ -48,7 +48,7 @@ app.*.map.json
 
 # firebase related
 /android/app/google-services.json
-/lib/config/ 
+/lib/firebase_options.dart
 
 # reference images for pixel perfect package
 /assets/reference/

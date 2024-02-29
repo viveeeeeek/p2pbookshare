@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/global/widgets/widgets.dart';
 import 'package:p2pbookshare/services/model/user.dart';
@@ -29,7 +28,6 @@ class UserProfileCard extends StatelessWidget {
                 color: Colors.grey,
               ),
               child: Center(
-                // TODO: change cached network image to custo cached image
                 child: userModel.userPhotoUrl != null
                     ? ClipRRect(
                         borderRadius:

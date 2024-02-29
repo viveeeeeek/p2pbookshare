@@ -1,6 +1,5 @@
-/* The UserModel class represents a user with properties such as userUid, userEmail, userName, and
-   userPhotoUrl, and provides methods to convert the object to and from a Map.
-*/
+/// The UserModel class represents a user with properties such as userUid, userEmail, userName, and
+/// userPhotoUrl, and provides methods to convert the object to and from a Map.
 
 class UserModel {
   final String? userUid, userEmailAddress, userName, userPhotoUrl;

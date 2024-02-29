@@ -55,6 +55,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
+                'Account',
+                style: TextStyle(fontSize: 15),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                leading: Icon(MdiIcons.mapMarkerOutline),
+                title: const Text('Your addresses'),
+                subtitle: const Text('Edit address for book exchange'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
                 'Appearance',
                 style: TextStyle(fontSize: 15),
               ),
@@ -64,7 +79,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Column(
                 children: [
                   ListTile(
-                    leading: Icon(MdiIcons.weatherNight),
+                    leading: appThemeProvider.isDarkThemeEnabled
+                        ? Icon(MdiIcons.weatherNight)
+                        : const Icon(Icons.wb_sunny_outlined),
                     title: const Text('Dark theme'),
                     subtitle: appThemeProvider.isDarkThemeEnabled
                         ? const Text('On')
@@ -121,21 +138,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 30,
               ),
               //TODO: implement confirmation alerdialog
-              InkWell(
-                onTap: () async {
-                  await _settingsHandler.handleLogOut(context);
-                },
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                child: SettingsCard(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ListTile(
-                      leading: Icon(MdiIcons.logoutVariant),
-                      title: Text('Log out ${_userModel.userEmailAddress}'),
-                    ),
+
+              SizedBox(
+                width: double.infinity,
+                height: 70,
+                child: FilledButton.tonal(
+                  onPressed: () async {
+                    await _settingsHandler.handleLogOut(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.logout_rounded),
+                      const SizedBox(
+                        width: 25,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Log out',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${_userModel.userEmailAddress}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -143,3 +181,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 }
+
+//FIXME: Logging out from app redirects to loginscreen but going back from loginscreen redirects back to the settings screen

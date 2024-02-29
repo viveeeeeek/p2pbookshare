@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_screen.dart';
 import 'package:p2pbookshare/pages/home/home_screen.dart';
 import 'package:p2pbookshare/pages/profile/profile_screen.dart';
-import 'package:p2pbookshare/pages/search/search_screen.dart';
+import 'package:p2pbookshare/pages/search/search_view.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 
 class LandingPage extends StatefulWidget {
@@ -21,7 +21,8 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    final PageController controller = PageController();
+    final PageController controller =
+        PageController(initialPage: _selectedScreenIndex);
     void onTap(int index) {
       if (_selectedScreenIndex != index) {
         controller.jumpToPage(index);
@@ -77,7 +78,7 @@ class _LandingPageState extends State<LandingPage> {
                 label: "Search",
               ),
               NavigationDestination(
-                icon: Icon(MdiIcons.bookPlus),
+                icon: Icon(MdiIcons.bookOpenPageVariantOutline),
                 label: "Add",
               ),
               NavigationDestination(

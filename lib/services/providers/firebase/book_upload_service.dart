@@ -30,7 +30,7 @@ class BookUploadService with ChangeNotifier {
   3. Add the book details to the 'books' collection and get the document reference
   4. Get the ID of the added document 5. Update the book's document with the 'book_id' field
 */
-  Future<void> addNewBookListing(Book book) async {
+  Future<void> addNewBookListing(BookModel book) async {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');

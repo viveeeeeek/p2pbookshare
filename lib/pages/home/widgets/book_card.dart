@@ -4,11 +4,14 @@ import 'package:p2pbookshare/global/widgets/cached_image.dart';
 class BookCard extends StatelessWidget {
   final String bookCoverImgurl;
   final String title;
+  final double cardHeight, cardWidth;
 
   const BookCard({
     Key? key,
     required this.bookCoverImgurl,
     required this.title,
+    required this.cardHeight,
+    required this.cardWidth,
   }) : super(key: key);
 
   @override
@@ -19,8 +22,8 @@ class BookCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: SizedBox(
-        height: 200,
-        width: 150,
+        height: cardHeight,
+        width: cardWidth,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -34,8 +37,8 @@ class BookCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4.0),
                     child: SizedBox(
-                        height: 150,
-                        width: 130,
+                        height: cardHeight - 50,
+                        width: cardWidth - 20,
                         child: CachedImage(imageUrl: bookCoverImgurl)),
                   ),
                 ),

@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_screen.dart';
 import 'package:p2pbookshare/pages/home/home_screen.dart';
 import 'package:p2pbookshare/pages/profile/profile_screen.dart';
-import 'package:p2pbookshare/pages/search/search_screen.dart';
+import 'package:p2pbookshare/pages/search/search_view.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 
 class LandingPage extends StatefulWidget {

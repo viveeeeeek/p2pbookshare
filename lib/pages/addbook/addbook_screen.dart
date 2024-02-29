@@ -95,22 +95,8 @@ class _AddBookScreenState extends State<AddBookScreen>
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Icon(MdiIcons.mapMarker),
-                                              const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Exchange location',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Text(
-                                                    'Select location for book exchange',
-                                                  ),
-                                                ],
+                                              const Text(
+                                                'Select location for book exchange',
                                               ),
                                             ],
                                           )

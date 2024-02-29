@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/pages/all_books/widgets/all_books_grid.dart';
-import 'package:p2pbookshare/pages/profile/profile_handler.dart';
 
 class YourBooksTabView extends StatelessWidget {
   const YourBooksTabView({super.key});

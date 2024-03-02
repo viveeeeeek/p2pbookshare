@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/pages/profile/views/notifications_tab_tab.dart';
 import 'package:p2pbookshare/pages/profile/views/incoming_book_req_tab.dart';
+import 'package:p2pbookshare/pages/profile/views/notifications_tab_tab.dart';
 import 'package:p2pbookshare/pages/profile/views/your_books_tab.dart';
-import 'package:p2pbookshare/pages/settings/settings_view.dart';
 import 'package:p2pbookshare/pages/profile/widgets/profile_card.dart';
+import 'package:p2pbookshare/pages/settings/settings_view.dart';
 // ignore: unused_import
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
@@ -70,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               },
               body: Column(
                 children: [
+                  // Tabbar
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -118,6 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                   ),
+                  // Tabbar views
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,

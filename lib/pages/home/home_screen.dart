@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/global/constants/app_constants.dart';
-import 'package:provider/provider.dart';
-
 import 'package:p2pbookshare/pages/home/widgets/category_book_list.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -1,11 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-
 import 'package:p2pbookshare/pages/login/login_screen.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
+import 'package:provider/provider.dart';
 
 class SettingsHandler {
   AppThemePrefs? _themeSharedPreferences;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:simple_logger/simple_logger.dart';
 import 'package:p2pbookshare/pages/location_picker/location_handler.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_logger/simple_logger.dart';
 
 import 'widgets/widgets.dart';
 

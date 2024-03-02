@@ -1,32 +1,87 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
+import 'package:p2pbookshare/global/utils/app_utils.dart';
 import 'package:p2pbookshare/global/widgets/cached_image.dart';
+import 'package:p2pbookshare/pages/request_book/request_book_viewmodel.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
+import 'package:p2pbookshare/services/model/book_request.dart';
+import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
-import 'widgets/widgets.dart';
-import 'package:p2pbookshare/services/model/book.dart';
-import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:provider/provider.dart';
 
-class ViewBookScreen extends StatefulWidget {
-  const ViewBookScreen({super.key, required this.bookData});
+import 'widgets/widgets.dart';
+
+class RequestBookView extends StatefulWidget {
+  const RequestBookView(
+      {super.key, required this.bookData, required this.heroKey});
 
   final BookModel bookData;
+  final String heroKey;
 
   @override
-  State<ViewBookScreen> createState() => _ViewBookScreenState();
+  State<RequestBookView> createState() => _RequestBookViewState();
 }
 
-class _ViewBookScreenState extends State<ViewBookScreen> {
-  String currentUserUid = '';
-
+class _RequestBookViewState extends State<RequestBookView> {
   @override
   Widget build(BuildContext context) {
     final bookRequestServices = Provider.of<BookRequestService>(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
+    final requestBookViewModel = Provider.of<RequestBookViewModel>(context);
+    String currentUserUid = userDataProvider.userModel!.userUid!;
 
-    currentUserUid = userDataProvider.userModel!.userUid!;
+    /// Handle date range selection.
+    /// Selects date range and confirms it before sending the actual book borrow request.
+    handleDateRangeSelection(BuildContext context) async {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        return Utils.alertDialog(
+            context: context,
+            title: 'Select Borrow Duration',
+            description:
+                'Please choose the date range for which you wish to borrow the book',
+            actionText: 'Ok',
+            onConfirm: () {
+              Navigator.of(context).pop();
+            });
+      });
+
+      /// awaits for daterange picker and stores the bool inside [isConfirmed]
+      final bool isConfirmed =
+          await requestBookViewModel.pickDateRange(context);
+
+      if (isConfirmed) {
+        // Show confirmation dialog
+        if (context.mounted)
+          Utils.alertDialog(
+            context: context,
+            title: 'Confirmation',
+            description: 'Do you want to proceed with the selected date range?',
+            actionText: 'Proceed',
+            onConfirm: () async {
+              // Send borrow request
+              await bookRequestServices.sendBookBorrowRequest(
+                BookRequestModel(
+                    reqBookID: widget.bookData.bookID!,
+                    reqBookOwnerID: widget.bookData.bookOwner,
+                    requesterID: currentUserUid,
+                    reqStartDate: Timestamp.fromDate(
+                        requestBookViewModel.selectedStartDate!),
+                    reqEndDate: Timestamp.fromDate(
+                        requestBookViewModel.selectedEndDate!)
+                    // reqDurationInDays:
+                    //     requestBookViewModel.selectedDays,
+                    ),
+              );
+              requestBookViewModel.clearSelectedDates();
+              if (mounted) Navigator.of(context).pop();
+            },
+          );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.bookData.bookTitle),
@@ -69,7 +124,7 @@ class _ViewBookScreenState extends State<ViewBookScreen> {
                             ],
                           ),
                           child: Hero(
-                            tag: widget.bookData.bookCoverImageUrl,
+                            tag: widget.heroKey,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedImage(
@@ -85,28 +140,24 @@ class _ViewBookScreenState extends State<ViewBookScreen> {
                       BookDetailsCard(
                         bookData: widget.bookData,
                         cardWidth: constraints.maxWidth,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       //! Borrow button
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          // ),
-                          Expanded(
-                            child: BorrowButton(
-                              bookRequestServices: bookRequestServices,
-                              bookData: widget.bookData,
-                              currentUserUid: currentUserUid,
-                            ),
-                          ),
-                        ],
+                      BorrowButton(
+                        bookRequestServices: bookRequestServices,
+                        bookData: widget.bookData,
+                        currentUserUid: currentUserUid,
+                        height: 60,
+                        width: constraints.maxWidth * 0.9,
+                        onPressed: () => handleDateRangeSelection(context),
                       ),
                       const SizedBox(
                         height: 25,
                       ),
+                      //FIXME: Convert this into reusable widget
                       //! Category & Genre
                       Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,

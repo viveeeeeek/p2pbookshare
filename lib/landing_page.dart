@@ -1,12 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_screen.dart';
 import 'package:p2pbookshare/pages/home/home_screen.dart';
 import 'package:p2pbookshare/pages/profile/profile_screen.dart';
 import 'package:p2pbookshare/pages/search/search_view.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});

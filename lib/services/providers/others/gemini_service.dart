@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:http/http.dart' as http;
 import 'package:simple_logger/simple_logger.dart';
 
 //! Gemini api and shared prefs inside single class not good

@@ -100,4 +100,27 @@ class BookFetchService with ChangeNotifier {
       return Stream.value([]);
     }
   }
+
+  /// Fetch book details by given bookID
+
+  Future<Map<String, dynamic>?> getBookDetailsById(String bookId) async {
+    try {
+      CollectionReference booksCollection =
+          FirebaseFirestore.instance.collection('books');
+      QuerySnapshot querySnapshot =
+          await booksCollection.where('book_id', isEqualTo: bookId).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        return null; // Return null if no matching book is found
+      }
+
+      var document = querySnapshot.docs.first;
+      var bookData = document.data() as Map<String, dynamic>;
+
+      return bookData;
+    } catch (e) {
+      logger.info('Error retrieving book details from Firestore: $e');
+      return null;
+    }
+  }
 }

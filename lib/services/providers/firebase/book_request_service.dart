@@ -11,6 +11,9 @@ class BookRequestService with ChangeNotifier {
   bool _bookRequestExists = false;
   bool get bookRequestExists => _bookRequestExists;
 
+  bool _isRequestsAvailableForBook = false;
+  bool get isRequestsAvailableForBook => _isRequestsAvailableForBook;
+
   Future<bool> checkIfRequestAlreadyMade(BookRequestModel bookRequest) async {
     try {
       var bookRequestsCollection =
@@ -86,4 +89,56 @@ class BookRequestService with ChangeNotifier {
       }
     }
   }
+
+  /// Stream to fetch all the incoming book requests to the user.
+  Stream<List<Map<String, dynamic>>> streamAllRequestsToBook(
+      String bookId) async* {
+    try {
+      CollectionReference bookRequestCollection =
+          FirebaseFirestore.instance.collection('book_requests');
+
+      QuerySnapshot querySnapshot = await bookRequestCollection
+          .where('req_book_id', isEqualTo: bookId)
+          .get();
+
+      bool hasData = querySnapshot.docs.isNotEmpty;
+      logger.info('$hasData');
+      _isRequestsAvailableForBook = true;
+
+      yield querySnapshot.docs
+          .map((document) => document.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      logger.info('Error retrieving book requests from Firestore: $e');
+      _isRequestsAvailableForBook = false;
+      notifyListeners();
+      // Emit an empty list if there's an error
+      yield [];
+    }
+  }
+
+  //! qorking but with future
+  // Future<List<Map<String, dynamic>>> fetchAllRequestsToBook(
+  //     String bookId) async {
+  //   try {
+  //     CollectionReference bookRequestCollection =
+  //         FirebaseFirestore.instance.collection('book_requests');
+
+  //     QuerySnapshot querySnapshot = await bookRequestCollection
+  //         .where('req_book_id', isEqualTo: bookId)
+  //         .get();
+
+  //     bool hasData = querySnapshot.docs.isNotEmpty;
+  //     logger.info('$hasData');
+
+  //     _isRequestsAvailableForBook = hasData;
+  //     return querySnapshot.docs
+  //         .map((document) => document.data() as Map<String, dynamic>)
+  //         .toList();
+  //   } catch (e) {
+  //     logger.info('Error retrieving book requests from Firestore: $e');
+  //     _isRequestsAvailableForBook = false;
+  //     return [];
+  //   }
+  // }
 }

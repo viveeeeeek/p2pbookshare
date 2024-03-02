@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:provider/provider.dart';
-
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
+import 'package:provider/provider.dart';
 
 class LocationSearchBar extends StatefulWidget {
   const LocationSearchBar({super.key});

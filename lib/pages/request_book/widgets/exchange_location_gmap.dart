@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:p2pbookshare/services/model/book.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
 
 class BookExchangeLocationCard extends StatelessWidget {
   final double cardWidth;
@@ -38,7 +38,7 @@ class BookExchangeLocationCard extends StatelessWidget {
                           bookData.location?.latitude ?? 0.0,
                           bookData.location?.longitude ?? 0.0,
                         ),
-                        zoom: 18),
+                        zoom: 16),
                     markers: {
                       Marker(
                         markerId: const MarkerId('book_location'),
@@ -48,7 +48,7 @@ class BookExchangeLocationCard extends StatelessWidget {
                         ),
                       ),
                     },
-                    zoomControlsEnabled: false,
+                    // zoomControlsEnabled: false,
                   ),
                 ),
               ),

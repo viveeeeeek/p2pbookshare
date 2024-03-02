@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extras/handler.user.dart';
 import 'package:p2pbookshare/pages/settings/settings_handler.dart';
-
-import './widgets/widgets.dart';
+import 'package:p2pbookshare/pages/settings/widgets/color_picker.dart';
 import 'package:p2pbookshare/services/model/user.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:provider/provider.dart';
-
-import '../../services/providers/theme/app_theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

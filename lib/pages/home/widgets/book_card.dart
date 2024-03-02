@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:p2pbookshare/global/widgets/cached_image.dart';
 
 class BookCard extends StatelessWidget {
-  final String bookCoverImgurl;
+  final String heroKey, imageUrl;
   final String title;
   final double cardHeight, cardWidth;
 
   const BookCard({
     Key? key,
-    required this.bookCoverImgurl,
+    required this.heroKey,
     required this.title,
     required this.cardHeight,
     required this.cardWidth,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -33,13 +34,13 @@ class BookCard extends StatelessWidget {
               Center(
                 // Hero animation with url as unique tag for each book
                 child: Hero(
-                  tag: bookCoverImgurl,
+                  tag: heroKey,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4.0),
                     child: SizedBox(
                         height: cardHeight - 50,
                         width: cardWidth - 20,
-                        child: CachedImage(imageUrl: bookCoverImgurl)),
+                        child: CachedImage(imageUrl: imageUrl)),
                   ),
                 ),
               ),

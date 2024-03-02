@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/services/model/book.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
 import 'package:provider/provider.dart';
 
 class AISummarycard extends StatefulWidget {
@@ -150,37 +149,33 @@ class _AISummarycardState extends State<AISummarycard>
                                 )
                               : Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     geminiService.isGeneratingSummary
-                                        ? Utils.progressIndicator(
-                                            height: 34, width: 35)
-                                        // const CustomProgressIndicator(
-                                        //     height: 34,
-                                        //     width: 35,
-                                        //   )
+                                        ? SizedBox(
+                                            height: 34,
+                                            width: 34,
+                                            child: CircularProgressIndicator(
+                                              color:
+                                                  context.onSecondaryContainer,
+                                            ),
+                                          )
                                         : Icon(
                                             MdiIcons.autoFix,
                                             color: aiSummaryPrefs.hasSummary
                                                 ? context.onTertiaryContainer
                                                 : context.onSecondaryContainer,
                                           ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          geminiService.isGeneratingSummary
-                                              ? 'Generating now'
-                                              : 'AI Book Summary',
-                                          style: TextStyle(
-                                            color: aiSummaryPrefs.hasSummary
-                                                ? context.onTertiaryContainer
-                                                : context.onSecondaryContainer,
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      geminiService.isGeneratingSummary
+                                          ? 'Generating now'
+                                          : 'AI Book Summary',
+                                      style: TextStyle(
+                                        color: aiSummaryPrefs.hasSummary
+                                            ? context.onTertiaryContainer
+                                            : context.onSecondaryContainer,
+                                      ),
                                     ),
                                   ],
                                 ),

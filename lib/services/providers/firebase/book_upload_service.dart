@@ -1,9 +1,10 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:p2pbookshare/services/model/book.dart';
+import 'package:flutter/material.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 class BookUploadService with ChangeNotifier {

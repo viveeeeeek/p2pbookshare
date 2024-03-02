@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/services/model/address.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
-import 'package:provider/provider.dart';
-
-import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:p2pbookshare/services/providers/others/permission_service.dart';
+import 'package:provider/provider.dart';
 
 import '../address/address_selection_bottom_sheet.dart';
 

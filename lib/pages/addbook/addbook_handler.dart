@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -6,13 +7,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/pages/address/address_selection_bottom_sheet.dart';
-import 'package:path_provider/path_provider.dart';
-
 import 'package:p2pbookshare/pages/addbook/widgets/book_added_bottom_sheet.dart';
-import 'package:p2pbookshare/services/model/book.dart';
+import 'package:p2pbookshare/pages/address/address_selection_bottom_sheet.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_upload_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddbookHandler with ChangeNotifier {
   late final BookUploadService _fbBookOperations;

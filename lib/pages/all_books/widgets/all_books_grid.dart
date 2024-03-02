@@ -46,10 +46,12 @@ class AllBooksGrid extends StatelessWidget {
 
 Widget buildBookWidget(Map<String, dynamic> bookData) {
   return BookCard(
-      cardHeight: 200,
-      cardWidth: 150,
-      bookCoverImgurl: bookData['book_coverimg_url'],
-      title: bookData['book_title']);
+    cardHeight: 200,
+    cardWidth: 150,
+    heroKey: bookData['book_coverimg_url'],
+    title: bookData['book_title'],
+    imageUrl: 'book_coverimg_url',
+  );
   // return Stack(
   //   children: [
   //     ClipRRect(

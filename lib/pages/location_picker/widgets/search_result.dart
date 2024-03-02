@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:provider/provider.dart';
-
-import 'package:p2pbookshare/app_init_handler.dart';
 
 class SearchResult extends StatelessWidget {
   const SearchResult({

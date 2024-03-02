@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
 import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
-import 'package:p2pbookshare/pages/view_book/view_book_screen.dart';
-import 'package:p2pbookshare/services/model/book.dart';
+import 'package:p2pbookshare/pages/request_book/request_book_view.dart';
+import 'package:p2pbookshare/services/model/book_model.dart';
 
 class CategorizedBookList extends StatelessWidget {
   const CategorizedBookList({
@@ -90,7 +90,8 @@ Widget buildCategoryBooksWidget(
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewBookScreen(
+            builder: (context) => RequestBookView(
+              heroKey: '${bookData['book_coverimg_url']}-categorizedbooklist',
               bookData: BookModel(
                   bookTitle: bookData['book_title'],
                   bookAuthor: bookData['book_author'],
@@ -111,10 +112,12 @@ Widget buildCategoryBooksWidget(
       child: Padding(
         padding: const EdgeInsets.only(right: 0),
         child: BookCard(
-            cardHeight: 200,
-            cardWidth: 150,
-            bookCoverImgurl: bookData['book_coverimg_url'],
-            title: bookData['book_title']),
+          cardHeight: 200,
+          cardWidth: 150,
+          heroKey: '${bookData['book_coverimg_url']}-categorizedbooklist',
+          title: bookData['book_title'],
+          imageUrl: bookData['book_coverimg_url'],
+        ),
       ),
     ),
   );

@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rive/rive.dart' as rive;
 
 class Utils {
+  /// Custom snackbar
   static snackBar(
       {required BuildContext context,
       required String message,
       required String actionLabel,
       required int durationInSecond,
       required Function()? onPressed}) {
-    //FIXME: For some unkown reason duration is not working so we manually dismiss the snackbar for now
+    //HACK: For some unkown reason duration is not working so we manually dismiss the snackbar for now
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -26,42 +29,98 @@ class Utils {
     });
   }
 
-  static alertDialog(
-      {required BuildContext context,
-      required String title,
-      required description,
-      required actionButtonText,
-      required void Function()? onTapActionButton}) {
-    return AlertDialog(
-      title: Text(title),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(description),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
-          },
-          child: const Text('CANCEL'),
-        ),
-        TextButton(
-          onPressed: onTapActionButton ?? () {},
-          child: Text(actionButtonText),
-        ),
-      ],
-    );
-  }
-
+  /// Custom rive progress indicator
   static progressIndicator({required double height, required double width}) {
     return SizedBox(
       height: height,
       width: width,
       child: const rive.RiveAnimation.asset(
           'assets/rive_assets/materialyou-sphere.riv'),
+    );
+  }
+
+  /// Fucntion to convert [Timestamp] into proper DateTime format.
+  static String formatDateTime(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    String formattedDateTime =
+        DateFormat('EEEE, MMM d, yyyy - hh:mm a').format(dateTime);
+    return formattedDateTime;
+  }
+
+  /// Custom dialog
+  static showCustomDialog(
+      {required BuildContext context,
+      required String title,
+      required String cancelButtonText,
+      required String confirmButtonText,
+      required VoidCallback onCancel,
+      required VoidCallback onConfirm,
+      required List<Widget> children,
+      required EdgeInsetsGeometry padding}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: IntrinsicHeight(
+            child: Padding(
+              padding: padding,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: children),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: onCancel,
+              child: Text(cancelButtonText),
+            ),
+            FilledButton(
+              onPressed: onConfirm,
+              child: Text(confirmButtonText),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static alertDialog({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required void Function() onConfirm,
+    required String actionText,
+    bool? cancelButton = false,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(description),
+          actions: [
+            cancelButton == true
+                ? TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: const Text('Cancel'),
+                  )
+                : const SizedBox(),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.of(context).pop(); // Close the dialog
+            //   },
+            //   child: const Text("Cancel"),
+            // ),
+            FilledButton(
+              onPressed: onConfirm,
+              child: Text(actionText),
+            ),
+          ],
+        );
+      },
     );
   }
 }

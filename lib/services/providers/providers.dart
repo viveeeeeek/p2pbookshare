@@ -1,19 +1,20 @@
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
+import 'package:p2pbookshare/pages/request_book/request_book_viewmodel.dart';
 import 'package:p2pbookshare/pages/search/search_viewmodel.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
-import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
-import 'package:p2pbookshare/services/providers/others/location_service.dart';
-import 'package:p2pbookshare/services/providers/others/connectivity_service.dart';
+import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_upload_service.dart';
-import 'package:p2pbookshare/services/providers/others/permission_service.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
-import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
-import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
+import 'package:p2pbookshare/services/providers/others/connectivity_service.dart';
+import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
+import 'package:p2pbookshare/services/providers/others/location_service.dart';
+import 'package:p2pbookshare/services/providers/others/permission_service.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -87,6 +88,12 @@ final List<ChangeNotifierProvider> appProviders = [
           Provider.of<AppThemeService>(context, listen: false);
       return AppInitHandler(authProvider, userDataProvider,
           appThemeSharedPrefsServices, themeProvider);
+    },
+  ),
+  // RequestBook ViewMdoel
+  ChangeNotifierProvider<RequestBookViewModel>(
+    create: (context) {
+      return RequestBookViewModel();
     },
   ),
 ];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:provider/provider.dart';
 
 Widget colorPicker(BuildContext context, Color containerColor) {

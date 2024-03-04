@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:p2pbookshare/global/widgets/widgets.dart';
 import 'package:p2pbookshare/services/model/user.dart';
 
-class UserProfileCard extends StatelessWidget {
-  const UserProfileCard({
+class ProfileHeader extends StatelessWidget {
+  const ProfileHeader({
     Key? key,
     required this.userModel,
   }) : super(key: key);

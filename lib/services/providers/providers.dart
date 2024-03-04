@@ -1,11 +1,11 @@
 import 'package:p2pbookshare/app_init_handler.dart';
-import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
 import 'package:p2pbookshare/pages/request_book/request_book_viewmodel.dart';
 import 'package:p2pbookshare/pages/search/search_viewmodel.dart';
+import 'package:p2pbookshare/pages/upload_book/upload_book_viewmodel.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/providers/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
-import 'package:p2pbookshare/services/providers/firebase/book_upload_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
 import 'package:p2pbookshare/services/providers/others/connectivity_service.dart';
 import 'package:p2pbookshare/services/providers/others/gemini_service.dart';
@@ -31,7 +31,8 @@ final List<ChangeNotifierProvider> appProviders = [
   ChangeNotifierProvider<BookRequestService>(
       create: (_) => BookRequestService()),
   // Firebase Book Upload Services Provider
-  ChangeNotifierProvider<BookUploadService>(create: (_) => BookUploadService()),
+  ChangeNotifierProvider<BookListingService>(
+      create: (_) => BookListingService()),
   // User Data Provider Provider
   ChangeNotifierProvider<UserDataProvider>(create: (_) => UserDataProvider()),
   // Book Fetch Services Provider
@@ -66,13 +67,13 @@ final List<ChangeNotifierProvider> appProviders = [
     create: (context) => SearchViewModel(),
   ),
   // Add Book Handler Provider
-  ChangeNotifierProvider<AddbookHandler>(
+  ChangeNotifierProvider<UploadBookViewModel>(
     create: (context) {
       final fbBookServices =
-          Provider.of<BookUploadService>(context, listen: false);
+          Provider.of<BookListingService>(context, listen: false);
       final userDataProvider =
           Provider.of<UserDataProvider>(context, listen: false);
-      return AddbookHandler(fbBookServices, userDataProvider);
+      return UploadBookViewModel(fbBookServices, userDataProvider);
     },
   ),
   // App Initialization Handler Provider

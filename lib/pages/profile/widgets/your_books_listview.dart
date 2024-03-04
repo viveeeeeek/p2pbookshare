@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
-import 'package:p2pbookshare/pages/user_book/user_book_view.dart';
+import 'package:p2pbookshare/pages/user_book/user_book_details_view.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
 
 class UserBooksGridView extends StatelessWidget {
@@ -22,7 +22,9 @@ class UserBooksGridView extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data == null) {
+        } else if (!snapshot.hasData ||
+            snapshot.data == null ||
+            snapshot.data!.isEmpty) {
           return const Center(child: Text('No books found.'));
         } else {
           List<Map<String, dynamic>> booksList = snapshot.data!;
@@ -30,9 +32,9 @@ class UserBooksGridView extends StatelessWidget {
             shrinkWrap: false,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Change to 3 for three items per row
-              crossAxisSpacing: 10, // Adjust spacing as needed
+              crossAxisSpacing: 15, // Adjust spacing as needed
               mainAxisSpacing: 10, // Adjust spacing as needed
-              childAspectRatio: 0.88, // Maintain 1:1 aspect ratio
+              childAspectRatio: 0.83, // Maintain 1:1 aspect ratio
             ),
             physics: const ClampingScrollPhysics(),
             itemCount: booksList.length,
@@ -55,7 +57,7 @@ Widget buildCategoryBooksWidget(
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UserBookView(
+            builder: (context) => UserBookDetailsView(
               bookData: BookModel(
                   bookTitle: bookData['book_title'],
                   bookAuthor: bookData['book_author'],

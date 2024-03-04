@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:p2pbookshare/services/model/book_request.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';

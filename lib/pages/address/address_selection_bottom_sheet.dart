@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
-import 'package:p2pbookshare/pages/location_picker/get_location_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/providers/firebase/user_service.dart';
+import 'package:p2pbookshare/pages/location_picker/location_picker_view.dart';
+import 'package:p2pbookshare/pages/upload_book/upload_book_viewmodel.dart';
+import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
+
 import 'widgets/address_card.dart';
 
 class AddressPickerBottomSheet extends StatelessWidget {
@@ -12,7 +14,7 @@ class AddressPickerBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final addbookHandler = Provider.of<AddbookHandler>(context);
+    final addbookHandler = Provider.of<UploadBookViewModel>(context);
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -97,7 +99,7 @@ class AddressPickerBottomSheet extends StatelessWidget {
                   onPressed: () async {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return const GetLocationScreen();
+                      return const LocationPickerView();
                     }));
                   },
                   child: const Row(

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-class BookUploadService with ChangeNotifier {
+class BookListingService with ChangeNotifier {
   final user = FirebaseAuth.instance.currentUser;
   final logger = SimpleLogger();
 
@@ -42,6 +42,18 @@ class BookUploadService with ChangeNotifier {
       logger.info("✅✅Book added");
     } catch (e) {
       logger.info('Error adding book details to Firestore: $e');
+    }
+  }
+
+  //Method to delete the book document from the Firestore and respective book cover image from the Firebase Storage
+  Future<void> deleteBookListing(
+      String bookId, String bookCoverImageUrl) async {
+    try {
+      await FirebaseFirestore.instance.collection('books').doc(bookId).delete();
+      await FirebaseStorage.instance.refFromURL(bookCoverImageUrl).delete();
+      logger.info("✅✅Book deleted");
+    } catch (e) {
+      logger.info('Error deleting book details from Firestore: $e');
     }
   }
 }

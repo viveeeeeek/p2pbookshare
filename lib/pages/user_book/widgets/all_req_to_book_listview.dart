@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/global/widgets/choices_chips.dart';
-import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_choices_chips.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart';
 
 //FIXME: Add refreshindicator to fetchnew data.
+
 class AllReqToBooksListview extends StatelessWidget {
   const AllReqToBooksListview({
     super.key,

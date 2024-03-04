@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
 
-import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/pages/location_picker/widgets/address_completion_bottom_sheet.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
 import 'package:provider/provider.dart';

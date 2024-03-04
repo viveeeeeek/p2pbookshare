@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +92,15 @@ class BookRequestService with ChangeNotifier {
     }
   }
 
+  Stream<bool> hasBookRequests(String collectionPath) {
+    final collectionRef =
+        FirebaseFirestore.instance.collection('book_requests');
+
+    return collectionRef
+        .snapshots()
+        .map((snapshot) => snapshot.docs.isNotEmpty);
+  }
+
   /// Stream to fetch all the incoming book requests to the user.
   Stream<List<Map<String, dynamic>>> streamAllRequestsToBook(
       String bookId) async* {
@@ -117,28 +128,46 @@ class BookRequestService with ChangeNotifier {
     }
   }
 
-  //! qorking but with future
-  // Future<List<Map<String, dynamic>>> fetchAllRequestsToBook(
-  //     String bookId) async {
-  //   try {
-  //     CollectionReference bookRequestCollection =
-  //         FirebaseFirestore.instance.collection('book_requests');
+  Future<bool> requestExists(String bookID) async {
+    try {
+      var bookRequestsCollection =
+          FirebaseFirestore.instance.collection('book_requests');
 
-  //     QuerySnapshot querySnapshot = await bookRequestCollection
-  //         .where('req_book_id', isEqualTo: bookId)
-  //         .get();
+      // Query to check if a request exists for the current user and book
+      var querySnapshot = await bookRequestsCollection
+          .where('req_book_id', isEqualTo: bookID)
+          .get();
 
-  //     bool hasData = querySnapshot.docs.isNotEmpty;
-  //     logger.info('$hasData');
+      if (querySnapshot.docs.isNotEmpty) {
+        return true; // Book request exists
+      } else {
+        return false; // Book request does not exist
+      }
+    } catch (e) {
+      logger.warning('Error checking existing request: $e');
+      return false; // Return false if an error occurs
+    }
+  }
 
-  //     _isRequestsAvailableForBook = hasData;
-  //     return querySnapshot.docs
-  //         .map((document) => document.data() as Map<String, dynamic>)
-  //         .toList();
-  //   } catch (e) {
-  //     logger.info('Error retrieving book requests from Firestore: $e');
-  //     _isRequestsAvailableForBook = false;
-  //     return [];
-  //   }
-  // }
+  late StreamSubscription<bool> _subscription;
+  bool _hasDocuments = false;
+  bool get hasDocuments => _hasDocuments;
+
+  subscribeBookRequests() {
+    final bookRequestsCollection =
+        FirebaseFirestore.instance.collection('book_requests');
+
+    _subscription = bookRequestsCollection
+        .snapshots()
+        .map((snapshot) => snapshot.docs.isNotEmpty)
+        .listen((hasDocuments) {
+      _hasDocuments = hasDocuments;
+      notifyListeners();
+    });
+  }
+
+  cancelSubscription() {
+    _subscription.cancel();
+    notifyListeners();
+  }
 }

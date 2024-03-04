@@ -15,7 +15,7 @@ class GSignInButton extends StatelessWidget {
   final double height, width;
   @override
   Widget build(BuildContext context) {
-    final _signInHandler = SignInhandler();
+    final _signInHandler = LoginHandler();
     return Consumer<AuthorizationService>(builder: (context, authProvider, _) {
       return SizedBox(
         height: height,

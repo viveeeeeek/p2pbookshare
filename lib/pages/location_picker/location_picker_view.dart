@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/pages/location_picker/location_handler.dart';
-import 'package:p2pbookshare/services/providers/others/location_service.dart';
+
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
+import 'package:p2pbookshare/pages/location_picker/location_picker_handler.dart';
+import 'package:p2pbookshare/services/providers/others/location_service.dart';
+
 import 'widgets/widgets.dart';
 
-class GetLocationScreen extends StatefulWidget {
-  const GetLocationScreen({super.key});
+class LocationPickerView extends StatefulWidget {
+  const LocationPickerView({super.key});
 
   @override
-  State<GetLocationScreen> createState() => _GetLocationScreenState();
+  State<LocationPickerView> createState() => _LocationPickerViewState();
 }
 
-class _GetLocationScreenState extends State<GetLocationScreen> {
+class _LocationPickerViewState extends State<LocationPickerView> {
   final logger = SimpleLogger();
   GetLocationHandler locationHandler = GetLocationHandler();
 

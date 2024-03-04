@@ -5,17 +5,20 @@ class SubmitButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    required this.height,
+    required this.width,
   });
 
   final VoidCallback
       onPressed; // Use VoidCallback for functions with no arguments and no return value
   final Widget child;
+  final double height, width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
-      width: MediaQuery.of(context).size.width,
+      height: height,
+      width: width,
       child: FilledButton(
         onPressed: onPressed,
         child: Center(child: child),

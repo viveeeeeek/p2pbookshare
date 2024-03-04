@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/extras/handler.user.dart';
 import 'package:p2pbookshare/pages/settings/settings_handler.dart';
 import 'package:p2pbookshare/pages/settings/widgets/color_picker.dart';
 import 'package:p2pbookshare/services/model/user.dart';
 import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
-import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+class SettingsView extends StatefulWidget {
+  const SettingsView({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<SettingsView> createState() => _SettingsViewState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsViewState extends State<SettingsView> {
   late UserModel _userModel;
   final UserHandler _userHandler = UserHandler();
   final SettingsHandler _settingsHandler = SettingsHandler();

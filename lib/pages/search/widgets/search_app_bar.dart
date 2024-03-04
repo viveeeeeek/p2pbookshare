@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/pages/search/search_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key});

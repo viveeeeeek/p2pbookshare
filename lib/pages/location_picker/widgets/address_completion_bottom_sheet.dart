@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/pages/addbook/widgets/widgets.dart';
-import 'package:p2pbookshare/pages/location_picker/location_handler.dart';
+import 'package:p2pbookshare/pages/location_picker/location_picker_handler.dart';
+import 'package:p2pbookshare/pages/upload_book/widgets/widgets.dart';
 import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
 import 'package:p2pbookshare/services/providers/others/location_service.dart';
-import 'package:provider/provider.dart';
 
 //TODO: Give name to address (home/college/office)
 

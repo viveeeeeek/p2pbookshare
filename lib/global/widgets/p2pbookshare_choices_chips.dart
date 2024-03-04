@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/extensions/color_extension.dart';
 
 class BookReqChoiceChips extends StatelessWidget {
   const BookReqChoiceChips(

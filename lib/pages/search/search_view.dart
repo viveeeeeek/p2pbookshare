@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/constants/app_constants.dart';
-import 'package:p2pbookshare/global/widgets/cached_image.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/pages/request_book/request_book_view.dart';
 import 'package:p2pbookshare/pages/search/search_viewmodel.dart';
 import 'package:p2pbookshare/pages/search/widgets/search_app_bar.dart';
@@ -30,11 +31,20 @@ class SearchViewState extends State<SearchView> {
       body: Consumer2<BookFetchService, SearchViewModel>(
         builder: (context, bookFetchServices, searchViewModel, child) {
           // Build ChoiceChip on list of available genre
+          //FIXME: Remove this outside body and make it a separate widget
           Widget buildChoiceChip(String genre) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: ChoiceChip(
-                label: Text(genre),
+                label: Text(
+                  genre,
+                  style: TextStyle(
+                    color: searchViewModel.selectedGenreFilter == genre
+                        ? context.onPrimaryContainer // Color when selected
+                        : null, // Default color
+                  ),
+                ),
+                // selectedColor: context.primaryContainer,
                 onSelected: (selected) {
                   if (selected) {
                     searchViewModel.setSelectedGenre(genre);
@@ -70,6 +80,7 @@ class SearchViewState extends State<SearchView> {
                     const SizedBox(width: 15),
                     ChoiceChip(
                       label: const Text('All'),
+                      // selectedColor: context.primaryContainer,
                       onSelected: (selected) {
                         if (selected) {
                           searchViewModel.setSelectedGenre('All');
@@ -200,6 +211,7 @@ class BookTile extends StatelessWidget {
                   bookCoverImageUrl: bookData['book_coverimg_url'],
                   bookOwner: bookData['book_owner'],
                   bookID: bookData['book_id'],
+                  bookRating: bookData['book_rating'],
                   location: bookData[
                       'book_exchange_location'], // Directly access GeoPoint
                   completeAddress: bookData['book_exchange_address']),

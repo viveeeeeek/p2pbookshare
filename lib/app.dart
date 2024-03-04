@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/landing_page.dart';
-import 'package:p2pbookshare/pages/login/login_screen.dart';
+import 'package:p2pbookshare/pages/login/login_view.dart';
 import 'package:p2pbookshare/pages/splash_screen.dart';
 import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/theme/app_theme.dart';
@@ -67,7 +67,7 @@ class _AppState extends State<App> {
                     if (snapshot.hasData) {
                       return snapshot.data!
                           ? const LandingPage()
-                          : const LoginScreen();
+                          : const LoginView();
                     } else {
                       return const SplashScreen();
                     }

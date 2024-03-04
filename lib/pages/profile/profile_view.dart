@@ -1,58 +1,78 @@
 // Thanks to Paisa on github.
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
-import 'package:p2pbookshare/pages/profile/views/incoming_book_req_tab.dart';
-import 'package:p2pbookshare/pages/profile/views/notifications_tab_tab.dart';
-import 'package:p2pbookshare/pages/profile/views/your_books_tab.dart';
-import 'package:p2pbookshare/pages/profile/widgets/profile_card.dart';
+import 'package:p2pbookshare/pages/notifications/notif_list_view.dart';
+import 'package:p2pbookshare/pages/profile/views/outgoing_book_request/outgoing_book_request_tab.dart';
+import 'package:p2pbookshare/pages/profile/views/user_books/user_books_tab.dart';
+import 'package:p2pbookshare/pages/profile/widgets/profile_header.dart';
 import 'package:p2pbookshare/pages/settings/settings_view.dart';
-// ignore: unused_import
-import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_request_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
+import 'widgets/widgets.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+//FIXME: Remove notification tab from tabbar and create seperate screen for it. show notification icon in appbar
+
+class ProfileView extends StatefulWidget {
+  const ProfileView({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
+class _ProfileViewState extends State<ProfileView>
     with TickerProviderStateMixin {
-  late TabController _tabController = TabController(
-      length: 3, vsync: this, initialIndex: 0); // Initialize the TabController
+  // late TabController _tabController = TabController(
+  //     length: 2, vsync: this, initialIndex: 0); // Initialize the TabController
+
+  BookRequestService _bookRequestService = BookRequestService();
+  @override
+  void initState() {
+    super.initState();
+    _bookRequestService.subscribeBookRequests();
+  }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    _bookRequestService.cancelSubscription(); // Cleanup the stream subscription
   }
 
   @override
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
     final bookRequestService = Provider.of<BookRequestService>(context);
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
           actions: [
             IconButton(
-              icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotifListView()),
+                  );
+                },
+                icon: bookRequestService.hasDocuments
+                    ? Icon(MdiIcons.bellAlert)
+                    : Icon(MdiIcons.bellOutline)),
+            IconButton(
+              icon: Icon(MdiIcons.cogOutline),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsScreen()),
+                  MaterialPageRoute(builder: (context) => const SettingsView()),
                 );
               },
             ),
           ],
         ),
         body: DefaultTabController(
-            length: 3,
+            length: 2,
             // initialIndex: 1,
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
@@ -61,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       delegate: SliverChildListDelegate([
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                      child: UserProfileCard(
+                      child: ProfileHeader(
                         userModel: userDataProvider.userModel!,
                       ),
                     ),
@@ -86,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         borderRadius: BorderRadius.circular(32),
                         color: context.surfaceVariant,
                         child: TabBar(
-                          controller: _tabController,
+                          // controller: _tabController,
                           dividerColor: Colors.transparent,
                           splashBorderRadius: BorderRadius.circular(32),
                           indicator: BoxDecoration(
@@ -104,32 +124,32 @@ class _ProfileScreenState extends State<ProfileScreen>
                               .textTheme
                               .titleSmall
                               ?.copyWith(fontWeight: FontWeight.bold),
-                          tabs: const [
+                          tabs: [
                             Tab(
-                              child: Text('Your Books'),
+                              child: Icon(MdiIcons.grid),
                             ),
                             Tab(
-                              child: Icon(Icons.pending_actions_rounded),
+                              child: Icon(MdiIcons.arrowTopRightBoldOutline),
                             ),
-                            Tab(
-                              child: Icon(Icons.notifications_active_outlined),
-                            ),
+                            // Tab(
+                            //   child: Icon(MdiIcons.bellOutline),
+                            // ),
                           ],
                         ),
                       ),
                     ),
                   ),
                   // Tabbar views
-                  Expanded(
+                  const Expanded(
                     child: TabBarView(
-                      controller: _tabController,
+                      // controller: _tabController,
                       children: [
-                        const YourBooksTabView(),
-                        const NotificationsTabView(),
-                        IncomingBookReqView(
-                          incomingBookReqStream:
-                              bookRequestService.fetchIncomingBookRequests(),
-                        ),
+                        UserBooksTab(),
+                        OutgoingNotificationTab(),
+                        // RequestsNotificationTab(
+                        //   incomingBookReqStream:
+                        //       bookRequestService.fetchIncomingBookRequests(),
+                        // ),
                       ],
                     ),
                   ),

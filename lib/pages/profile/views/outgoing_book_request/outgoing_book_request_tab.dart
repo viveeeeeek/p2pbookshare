@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NotificationsTabView extends StatelessWidget {
-  const NotificationsTabView({super.key});
+class OutgoingNotificationTab extends StatelessWidget {
+  const OutgoingNotificationTab({super.key});
 
   @override
   Widget build(BuildContext context) {

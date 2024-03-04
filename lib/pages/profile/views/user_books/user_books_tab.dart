@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:p2pbookshare/pages/profile/widgets/your_books_listview.dart';
 import 'package:p2pbookshare/services/providers/firebase/book_fetch_service.dart';
 
-class YourBooksTabView extends StatelessWidget {
-  const YourBooksTabView({super.key});
+class UserBooksTab extends StatelessWidget {
+  const UserBooksTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class YourBooksTabView extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 35),
                 child: UserBooksGridView(
                     context: context,
                     stream: BookFetchService().getUserListedBooks())

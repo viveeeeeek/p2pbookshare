@@ -7,20 +7,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/pages/addbook/widgets/book_added_bottom_sheet.dart';
 import 'package:p2pbookshare/pages/address/address_selection_bottom_sheet.dart';
+import 'package:p2pbookshare/pages/upload_book/widgets/book_added_bottom_sheet.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
-import 'package:p2pbookshare/services/providers/firebase/book_upload_service.dart';
+import 'package:p2pbookshare/services/providers/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:path_provider/path_provider.dart';
 
-class AddbookHandler with ChangeNotifier {
-  late final BookUploadService _fbBookOperations;
+class UploadBookViewModel with ChangeNotifier {
+  late final BookListingService _fbBookOperations;
   late final UserDataProvider _userDataProvider;
 
   final imagePicker = ImagePicker();
   var imagePath = '';
-  var fileName = '';
   File? _pickedImage;
   File? get pickedImage => _pickedImage;
   void setPickedImage(File? newImage) {
@@ -34,7 +33,7 @@ class AddbookHandler with ChangeNotifier {
 
   late LatLng selectedAddressLatLng;
 
-  AddbookHandler(this._fbBookOperations, this._userDataProvider);
+  UploadBookViewModel(this._fbBookOperations, this._userDataProvider);
 
   /// Promps Address picker bottom sheet\
   //TODO: Remove the use of showAddressPickerBottomSheet instead use one from apputils
@@ -94,9 +93,8 @@ class AddbookHandler with ChangeNotifier {
         if (compressedFile != null) {
           setPickedImage(File(compressedFile.path));
           imagePath = compressedFile.path;
-          final formattedDate =
-              '${dateTimeNow.year}${dateTimeNow.month}${dateTimeNow.day}${dateTimeNow.hour}${dateTimeNow.minute}${dateTimeNow.second}';
-          fileName = '${formattedDate}_${pickedImgFile.name}';
+          // final formattedDate = '${dateTimeNow.year}-${dateTimeNow.month}';
+          // fileName = '${formattedDate}_${pickedImgFile.name}';
           notifyListeners();
         }
       }
@@ -119,10 +117,10 @@ class AddbookHandler with ChangeNotifier {
   }
 
   /// Handles image upload to firebase storage
-  handleUploadImage() async {
+  handleUploadImage(bookName) async {
     if (pickedImage != null) {
-      final imgUrl =
-          await _fbBookOperations.uploadCoverImage(pickedImage!, fileName);
+      final imgUrl = await _fbBookOperations.uploadCoverImage(
+          pickedImage!, '$bookName-${DateTime.now()}');
 
       uploadedImgUrl = imgUrl!;
       notifyListeners();
@@ -187,7 +185,7 @@ class AddbookHandler with ChangeNotifier {
         true) {
       isUploading = true;
       notifyListeners();
-      await handleUploadImage().whenComplete(() {
+      await handleUploadImage(titleCtrl.text).whenComplete(() {
         isUploading = false;
         notifyListeners();
       });
@@ -211,6 +209,7 @@ class AddbookHandler with ChangeNotifier {
           bookAvailability: true,
           bookCoverImageUrl: uploadedImgUrl,
           bookOwner: _userDataProvider.userModel!.userUid!,
+          bookRating: 0,
           location: GeoPoint(
               selectedAddressLatLng.latitude, selectedAddressLatLng.longitude),
           completeAddress: _completeAddress);

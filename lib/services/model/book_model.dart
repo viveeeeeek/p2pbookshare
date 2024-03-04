@@ -13,6 +13,7 @@ class BookModel {
   final String bookCoverImageUrl;
   final String bookOwner;
   final String? bookID;
+  final int? bookRating;
   final GeoPoint? location;
   final String completeAddress;
 
@@ -27,6 +28,7 @@ class BookModel {
       required this.bookCoverImageUrl,
       required this.bookOwner,
       this.bookID, // Making bookID nullable
+      this.bookRating,
       required this.location,
       required this.completeAddress});
 
@@ -42,6 +44,7 @@ class BookModel {
         bookCoverImageUrl: map['book_coverimg_url'],
         bookOwner: map['book_owner'],
         bookID: map['book_id'],
+        bookRating: map['book_rating'] ?? 0,
         location: map['book_exchange_location'] != null
             ? GeoPoint(
                 map['book_exchange_location'].latitude,
@@ -63,6 +66,7 @@ class BookModel {
       'book_coverimg_url': bookCoverImageUrl,
       'book_owner': bookOwner,
       'book_id': bookID,
+      'book_rating': bookRating,
       'book_exchange_location': location, // Use GeoPoint directly
       'book_exchange_address': completeAddress
     };

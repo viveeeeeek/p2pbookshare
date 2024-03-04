@@ -21,7 +21,7 @@ class SearchViewModel with ChangeNotifier {
 
   /// Getter & setter for [selectedGenreFilter]
   /// Setting initial search filter to 'All'
-  String _selectedGenreFilter = 'All';
+  String _selectedGenreFilter = '';
   String get selectedGenreFilter => _selectedGenreFilter;
   void setSelectedGenre(String genre) {
     _selectedGenreFilter = genre;

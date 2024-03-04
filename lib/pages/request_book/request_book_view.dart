@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/extensions/color_extension.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
-import 'package:p2pbookshare/global/widgets/cached_image.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/pages/request_book/request_book_viewmodel.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
 import 'package:p2pbookshare/services/model/book_request.dart';
@@ -13,6 +13,16 @@ import 'package:p2pbookshare/services/providers/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/widgets.dart';
+
+//FIXME: On confirmation of borrow duration, the dialog should be dismissed and the user should be navigated to the previous screen
+
+// Suggest better name for this screen
+
+/// This screen is used to display the details of a book and to request the book from the owner.
+///
+/// The screen is displayed when the user taps on a book from the [HomeView] or [SearchView].
+///
+/// The screen displays the book details and a button to request the book from the owner.
 
 class RequestBookView extends StatefulWidget {
   const RequestBookView(
@@ -157,75 +167,78 @@ class _RequestBookViewState extends State<RequestBookView> {
                       const SizedBox(
                         height: 25,
                       ),
-                      //FIXME: Convert this into reusable widget
+
                       //! Category & Genre
-                      Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: context.secondaryContainer,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            child: Icon(
-                              Icons.category_outlined,
-                              color: context.onSecondaryContainer,
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.category_outlined,
+                                  color: context.onSecondaryContainer,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(widget.bookData.bookGenre)
+                              ],
                             ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Genre',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                            //
+                            SizedBox(
+                              height: 25,
+                              child: VerticalDivider(
+                                color: context
+                                    .surfaceVariant, // Adjust color as needed
+                                thickness: 1.3, // Adjust thickness as needed
                               ),
-                              Text(widget.bookData.bookGenre)
-                            ],
-                          ),
-                          const Spacer(),
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            child: Icon(
-                              Icons.check_circle_outline_rounded,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
                             ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Condition',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                            Column(
+                              children: [
+                                Icon(
+                                  MdiIcons.starOutline,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(widget.bookData.bookRating.toString())
+                              ],
+                            ),
+                            SizedBox(
+                              height: 25,
+                              child: VerticalDivider(
+                                color: context
+                                    .surfaceVariant, // Adjust color as needed
+                                thickness: 1.3, // Adjust thickness as needed
                               ),
-                              Text(widget.bookData.bookCondition)
-                            ],
-                          )
-                        ],
+                            ),
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.check_outlined,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(widget.bookData.bookCondition)
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 25,
                       ),
-
                       Center(
                         child: AISummarycard(
                             bookdata: widget.bookData,
@@ -240,6 +253,7 @@ class _RequestBookViewState extends State<RequestBookView> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
+
                       const SizedBox(
                         height: 5,
                       ),

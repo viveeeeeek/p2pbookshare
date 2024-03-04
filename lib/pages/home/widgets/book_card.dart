@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/global/widgets/cached_image.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_cached_image.dart';
 
 class BookCard extends StatelessWidget {
   final String heroKey, imageUrl;

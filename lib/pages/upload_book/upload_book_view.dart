@@ -3,19 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/global/constants/app_constants.dart';
-import 'package:p2pbookshare/pages/addbook/addbook_handler.dart';
+import 'package:p2pbookshare/pages/upload_book/upload_book_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/widgets.dart';
 
-class AddBookScreen extends StatefulWidget {
-  const AddBookScreen({super.key});
+class BookUploadView extends StatefulWidget {
+  const BookUploadView({super.key});
 
   @override
-  State<AddBookScreen> createState() => _AddBookScreenState();
+  State<BookUploadView> createState() => _BookUploadViewState();
 }
 
-class _AddBookScreenState extends State<AddBookScreen>
+/// AddBookScreen is the screen where user can add a book to the database
+/// It uses the AddbookHandler to handle the logic and state of the screen
+/// It uses the CustomTextField, CustomDropDownCard and SubmitButton widgets
+/// to display the UI
+class _BookUploadViewState extends State<BookUploadView>
     with AutomaticKeepAliveClientMixin {
   TextEditingController titleCtrl = TextEditingController();
   TextEditingController authorCtrl = TextEditingController();
@@ -29,7 +33,7 @@ class _AddBookScreenState extends State<AddBookScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final addbookHandler = Provider.of<AddbookHandler>(context);
+    final addbookHandler = Provider.of<UploadBookViewModel>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -203,6 +207,8 @@ class _AddBookScreenState extends State<AddBookScreen>
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: SubmitButton(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
                   onPressed: () async {
                     addbookHandler.handleUploadBook(
                         context: context,

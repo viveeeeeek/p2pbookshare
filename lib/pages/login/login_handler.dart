@@ -9,7 +9,7 @@ import 'package:p2pbookshare/services/providers/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-class SignInhandler {
+class LoginHandler {
   Future<void> handleSignIn(BuildContext context) async {
     final authProvider =
         Provider.of<AuthorizationService>(context, listen: false);

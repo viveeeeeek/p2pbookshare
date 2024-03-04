@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/global/widgets/shimmer_container.dart';
+import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/pages/home/widgets/book_card.dart';
 import 'package:p2pbookshare/pages/request_book/request_book_view.dart';
 import 'package:p2pbookshare/services/model/book_model.dart';
@@ -104,6 +104,7 @@ Widget buildCategoryBooksWidget(
                   bookID: bookData['book_id'],
                   location: bookData[
                       'book_exchange_location'], // Directly access GeoPoint
+                  bookRating: bookData['book_rating'],
                   completeAddress: bookData['book_exchange_address']),
             ),
           ),

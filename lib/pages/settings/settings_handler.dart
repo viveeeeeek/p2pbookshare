@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:p2pbookshare/pages/login/login_screen.dart';
+import 'package:p2pbookshare/pages/login/login_view.dart';
 import 'package:p2pbookshare/services/providers/authentication/authentication.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/services/providers/shared_prefs/user_data_prefs.dart';
@@ -63,6 +63,6 @@ class SettingsHandler {
         context,
         PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const LoginScreen()));
+                const LoginView()));
   }
 }

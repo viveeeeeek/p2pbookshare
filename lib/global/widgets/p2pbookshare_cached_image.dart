@@ -1,7 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/extensions/color_extension.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'package:p2pbookshare/global/utils/extensions/color_extension.dart';
 
 class CachedImage extends StatelessWidget {
   final String imageUrl;

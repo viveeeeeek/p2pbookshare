@@ -1,12 +1,14 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/app_init_handler.dart';
 import 'package:p2pbookshare/landing_page.dart';
-import 'package:p2pbookshare/pages/login/login_view.dart';
-import 'package:p2pbookshare/pages/splash_screen.dart';
-import 'package:p2pbookshare/services/providers/theme/app_theme_service.dart';
+import 'package:p2pbookshare/views/login/login_view.dart';
+import 'package:p2pbookshare/views/splash_screen.dart';
+import 'package:p2pbookshare/providers/theme/app_theme_service.dart';
 import 'package:p2pbookshare/theme/app_theme.dart';
-import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -17,21 +19,19 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late AppInitHandler _appInitHandler;
+  // late Future _initFuture;
 
   _initializeApp() async {
     // Initialize AppInitializer
     _appInitHandler = Provider.of<AppInitHandler>(context, listen: false);
-    await _appInitHandler.setAppThemeMode();
-    // Initialize the app: set theme color
-    await _appInitHandler.setThemeColor();
-    // Check logged-in status after initializing the app
-    await _appInitHandler.checkUserLoggedInStatus();
+    await _appInitHandler.setTheme();
+    bool isLoggedIn = await _appInitHandler.checkUserLoggedInStatus();
+    return isLoggedIn; // return the result
   }
 
   @override
   void initState() {
     super.initState();
-    // Initialize the app with a delayz
     _initializeApp();
   }
 

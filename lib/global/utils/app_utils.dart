@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:rive/rive.dart' as rive;
 
@@ -10,7 +11,7 @@ class Utils {
       required String message,
       required String actionLabel,
       required int durationInSecond,
-      required Function()? onPressed}) {
+      Function()? onPressed}) {
     //HACK: For some unkown reason duration is not working so we manually dismiss the snackbar for now
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(

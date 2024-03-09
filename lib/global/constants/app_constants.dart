@@ -6,6 +6,7 @@ class AppConstants {
     'Fiction',
     'Non-Fiction',
     'Biography',
+    'Fantasy'
   ];
   static const List<String> bookConditions = [
     'New',

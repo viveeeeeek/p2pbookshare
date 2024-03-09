@@ -80,7 +80,7 @@ class _ProfileViewState extends State<ProfileView>
         ),
         body: DefaultTabController(
             length: 2,
-            // initialIndex: 1,
+            initialIndex: 0,
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [

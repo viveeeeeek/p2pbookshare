@@ -87,8 +87,20 @@ For  "${bookName}"  by $authorName: If you don t have enough information, say  S
 
     // Parse the API response.
     var responseBody = jsonDecode(response.body);
-    _geminiResponse =
-        responseBody['candidates'][0]['content']['parts'][0]['text'];
+
+    if (responseBody.containsKey('candidates') &&
+        responseBody['candidates'].isNotEmpty &&
+        responseBody['candidates'][0].containsKey('content') &&
+        responseBody['candidates'][0]['content'].containsKey('parts') &&
+        responseBody['candidates'][0]['content']['parts'].isNotEmpty &&
+        responseBody['candidates'][0]['content']['parts'][0]
+            .containsKey('text')) {
+      _geminiResponse =
+          responseBody['candidates'][0]['content']['parts'][0]['text'];
+    } else {
+      _geminiResponse = '';
+      logger.warning('Unexpected response body: $responseBody');
+    }
     _isGeneratingSummary = false;
     notifyListeners();
     logger.info(

@@ -238,4 +238,32 @@ class BookRequestHandlingService with ChangeNotifier {
         fieldName: 'book_owner',
         fieldValue: user!.uid);
   }
+
+  /// Method to get the books requested by current user
+  /// This method is used to get the books requested by the current user
+  /// Returns a stream of list of maps
+  Stream<List<Map<String, dynamic>>> getBooksRequestedByCurrentUser() async* {
+    try {
+      CollectionReference bookRequestCollection =
+          FirebaseFirestore.instance.collection('book_requests');
+
+      QuerySnapshot querySnapshot = await bookRequestCollection
+          .where('reqeuster_id', isEqualTo: user!.uid)
+          .get();
+
+      bool hasData = querySnapshot.docs.isNotEmpty;
+      logger.info('$hasData');
+      // _isRequestsAvailableForBook = true;
+
+      yield querySnapshot.docs
+          .map((document) => document.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      logger.info('Error retrieving book requests from Firestore: $e');
+      // _isRequestsAvailableForBook = false;
+      // notifyListeners();
+      // Emit an empty list if there's an error
+      yield [];
+    }
+  }
 }

@@ -17,11 +17,7 @@ class UserBooksTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: UserBooksGridView(
                     context: context,
-                    stream: BookFetchService().getUserListedBooks())
-                // AllBooksGrid(
-                //     context: context,
-                //     stream: ProfileHandler().getUserBooksStream(context)),
-                ),
+                    stream: BookFetchService().getUserListedBooks())),
           )
         ],
       ),

@@ -117,7 +117,9 @@ class AuthorizationService with ChangeNotifier {
         googleAuth = await googleUser?.authentication;
 
         // Validate domain organization
-        await validateDomainForSignIn(context);
+        _isDomainValid = await validateDomainForSignIn(context);
+        notifyListeners();
+        logger.info('Domain validation: $_isDomainValid');
 
         // // If the user's email contains the allowed domain, proceed with sign-in
         if (_isDomainValid) {

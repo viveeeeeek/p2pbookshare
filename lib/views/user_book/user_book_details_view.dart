@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/global/utils/extensions/color_extension.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/global/utils/app_utils.dart';
 import 'package:p2pbookshare/global/widgets/p2pbookshare_cached_image.dart';
-import 'package:p2pbookshare/global/widgets/p2pbookshare_choices_chips.dart';
 import 'package:p2pbookshare/global/widgets/p2pbookshare_listview.dart';
 import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/providers/firebase/user_service.dart';
@@ -195,6 +194,10 @@ class _UserBookDetailsViewState extends State<UserBookDetailsView> {
   }
 }
 
+//TODO: Show warning dialog before accepting the book request.
+/// All other requests would be rejected
+/// The user would be notified about the rejection
+/// Set the availibility of the book to false
 Widget buildBookRequestWidget(
     BuildContext context, Map<String, dynamic> bookRequestData) {
   return FutureBuilder(
@@ -207,27 +210,64 @@ Widget buildBookRequestWidget(
           return Text("Error: ${snapshot.error}");
         } else {
           final userData = snapshot.data;
-          return Container(
-            decoration: BoxDecoration(
-                color: context.tertiaryContainer,
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
-            child: ListTile(
-              title: Text(
-                userData!['username'],
-                style: TextStyle(color: context.onTertiaryContainer),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    Utils.formatDateTime(
-                      bookRequestData['req_timestamp'],
+          return ListTile(
+            contentPadding:
+                const EdgeInsets.all(10), // Add padding for better spacing
+            // tileColor: context
+            //     .surfaceVariant, // Set a background color for better visibility
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10), // Add rounded corners
+            ),
+            title: Text(
+              userData!['username'],
+              // style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 5), // Add spacing
+                Row(
+                  children: [
+                    Icon(MdiIcons.calendarRangeOutline, size: 16),
+                    const SizedBox(width: 5),
+                    Text(
+                      Utils.formatDateTime(bookRequestData['req_timestamp']),
                     ),
-                    style: TextStyle(color: context.onTertiaryContainer),
-                  ),
-                  BookReqChoiceChips(onTapAccept: () {}, onTapDecline: () {})
-                ],
-              ),
+                  ],
+                ),
+                const SizedBox(height: 10), // Add spacing
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.end, // Adjust button alignment
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(
+                        MdiIcons.close,
+                      ),
+                      label: const Text(
+                        'Reject',
+                      ),
+                      // style: ButtonStyle(
+                      //   backgroundColor:
+                      //       MaterialStateProperty.all(context.surface),
+                      // ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    FilledButton.icon(
+                      onPressed: () {},
+                      icon: Icon(MdiIcons.check),
+                      label: const Text('Accept'),
+                      // style: ButtonStyle(
+                      //   backgroundColor:
+                      //       MaterialStateProperty.all(context.primaryContainer),
+                      // ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           );
         }

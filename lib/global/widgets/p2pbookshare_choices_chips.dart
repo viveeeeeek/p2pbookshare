@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BookReqChoiceChips extends StatelessWidget {
-  const BookReqChoiceChips(
+class P2pbookshareChoiceChips extends StatelessWidget {
+  const P2pbookshareChoiceChips(
       {super.key, required this.onTapAccept, required this.onTapDecline});
 
   final void Function()? onTapAccept, onTapDecline;

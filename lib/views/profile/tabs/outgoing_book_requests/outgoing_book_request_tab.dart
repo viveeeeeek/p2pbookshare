@@ -6,7 +6,6 @@ import 'package:p2pbookshare/global/widgets/p2pbookshare_shimmer_container.dart'
 import 'package:p2pbookshare/model/book_model.dart';
 import 'package:p2pbookshare/providers/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/providers/firebase/book_request_service.dart';
-import 'package:p2pbookshare/views/profile/widgets/user_books_grid_view.dart';
 import 'package:p2pbookshare/views/request_book/request_book_view.dart';
 import 'package:provider/provider.dart';
 

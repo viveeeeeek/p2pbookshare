@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/app.dart';
 import 'package:p2pbookshare/firebase_options.dart';
-import 'package:p2pbookshare/providers/providers.dart';
+import 'package:p2pbookshare/provider/provider_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,5 +21,5 @@ void main() async {
   );
 
   await FlutterConfig.loadEnvVariables();
-  runApp(MultiProvider(providers: appProviders, child: const App()));
+  runApp(MultiProvider(providers: appProviderList, child: const App()));
 }

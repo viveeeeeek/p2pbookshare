@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:provider/provider.dart';
 
-import 'package:p2pbookshare/app_init_handler.dart';
-import 'package:p2pbookshare/landing_page.dart';
-import 'package:p2pbookshare/views/login/login_view.dart';
-import 'package:p2pbookshare/views/splash_screen.dart';
-import 'package:p2pbookshare/providers/theme/app_theme_service.dart';
-import 'package:p2pbookshare/theme/app_theme.dart';
+import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/view/landing_view.dart';
+import 'package:p2pbookshare/view/login/login_view.dart';
+import 'package:p2pbookshare/view/splash_view.dart';
+import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/core/theme/app_theme.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -25,7 +25,7 @@ class _AppState extends State<App> {
     // Initialize AppInitializer
     _appInitHandler = Provider.of<AppInitHandler>(context, listen: false);
     await _appInitHandler.setTheme();
-    bool isLoggedIn = await _appInitHandler.checkUserLoggedInStatus();
+    bool isLoggedIn = await _appInitHandler.checkUserLogInStatus();
     return isLoggedIn; // return the result
   }
 
@@ -43,7 +43,6 @@ class _AppState extends State<App> {
           builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
             final lightColorScheme = getLightColorScheme(context, lightDynamic);
             final darkColorScheme = getDarkColorScheme(context, darkDynamic);
-
             return MaterialApp(
               title: 'p2pbookshare',
               debugShowCheckedModeBanner: true,
@@ -61,18 +60,18 @@ class _AppState extends State<App> {
                   ? ThemeMode.dark
                   : ThemeMode.light,
               home: FutureBuilder(
-                future: _appInitHandler.checkUserLoggedInStatus(),
+                future: _appInitHandler.checkUserLogInStatus(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
                       return snapshot.data!
-                          ? const LandingPage()
+                          ? const LandingView()
                           : const LoginView();
                     } else {
-                      return const SplashScreen();
+                      return const SplashView();
                     }
                   } else {
-                    return const SplashScreen();
+                    return const SplashView();
                   }
                 },
               ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 
 class OutgoingReqDetailsCard extends StatelessWidget {
   const OutgoingReqDetailsCard({super.key, required this.bookRequestModel});
 
-  final BookBorrowRequest bookRequestModel;
+  final BorrowRequest bookRequestModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class OutgoingReqDetailsCard extends StatelessWidget {
                   Text(
                     '${bookRequestModel.reqBookStatus}',
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                    ),
                   ),
                 ],
               ),
@@ -44,7 +45,9 @@ class OutgoingReqDetailsCard extends StatelessWidget {
                   ),
                   const Text(
                     'Exchange duration',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
                 ],
               ),

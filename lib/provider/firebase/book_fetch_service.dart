@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 /// A service class for fetching books from Firestore.
@@ -21,7 +22,8 @@ class BookFetchService with ChangeNotifier {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');
-      Query query = booksCollection.where('book_genre', isEqualTo: category);
+      Query query =
+          booksCollection.where(BookConfig.bookGenre, isEqualTo: category);
 
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
@@ -68,7 +70,7 @@ class BookFetchService with ChangeNotifier {
   /// Gets books listed by the current user.
   ///
   /// - Reference to the 'books' collection
-  /// - Query documents based on the 'book_owner' field (current user)
+  /// - Query documents based on the BookConfig.bookOwnerID field (current user)
   /// - Listen for real-time updates using snapshots()
   /// - Convert documents to a list of maps
   /// - Check if there are any documents in the collection
@@ -84,8 +86,8 @@ class BookFetchService with ChangeNotifier {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');
-      Query query =
-          booksCollection.where('book_owner', isEqualTo: currentUser.uid);
+      Query query = booksCollection.where(BookConfig.bookOwnerID,
+          isEqualTo: currentUser.uid);
 
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
@@ -107,8 +109,9 @@ class BookFetchService with ChangeNotifier {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');
-      QuerySnapshot querySnapshot =
-          await booksCollection.where('book_id', isEqualTo: bookId).get();
+      QuerySnapshot querySnapshot = await booksCollection
+          .where(BookConfig.bookID, isEqualTo: bookId)
+          .get();
 
       if (querySnapshot.docs.isEmpty) {
         return null; // Return null if no matching book is found

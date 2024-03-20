@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 class BookListingService with ChangeNotifier {
@@ -31,14 +32,14 @@ class BookListingService with ChangeNotifier {
   3. Add the book details to the 'books' collection and get the document reference
   4. Get the ID of the added document 5. Update the book's document with the 'book_id' field
 */
-  Future<void> addNewBookListing(BookModel book) async {
+  Future<void> addNewBookListing(Book book) async {
     try {
       CollectionReference booksCollection =
           FirebaseFirestore.instance.collection('books');
       Map<String, dynamic> bookData = book.toMap();
       DocumentReference docRef = await booksCollection.add(bookData);
       String bookId = docRef.id;
-      await docRef.update({'book_id': bookId});
+      await docRef.update({BookConfig.bookID: bookId});
       logger.info("✅✅Book added");
     } catch (e) {
       logger.info('Error adding book details to Firestore: $e');

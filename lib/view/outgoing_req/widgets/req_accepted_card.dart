@@ -3,7 +3,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 
 class ReqAcceptedCard extends StatelessWidget {
-  const ReqAcceptedCard({super.key});
+  const ReqAcceptedCard({super.key, required this.onPressed});
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,7 @@ class ReqAcceptedCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FilledButton(
-                  // Navigate to chat screen
-                  onPressed: () {},
+                  onPressed: onPressed,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

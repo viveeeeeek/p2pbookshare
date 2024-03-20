@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/others/gemini_service.dart';
 import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
 import 'package:provider/provider.dart';
 
 class AISummarycard extends StatefulWidget {
-  final BookModel bookdata;
+  final Book bookdata;
   final AISummaryPrefs aiSummarySPrefs;
 
   const AISummarycard({

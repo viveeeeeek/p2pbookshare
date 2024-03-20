@@ -2,7 +2,7 @@
 // import 'package:p2pbookshare/services/model/book.dart';
 
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 
 class BookDetailsCard extends StatelessWidget {
   final double cardWidth;
@@ -13,7 +13,7 @@ class BookDetailsCard extends StatelessWidget {
       required this.crossAxisAlignment,
       this.mainAxisAlignment});
 
-  final BookModel bookData;
+  final Book bookData;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment? mainAxisAlignment;
 

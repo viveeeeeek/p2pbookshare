@@ -1,5 +1,6 @@
 // book_model.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 //TODO: Add all the required fields for book borrow request document
 //FIXME: create a app constants and put all the field names there and use it from there so that we cdan easily change it later if needed
 /// This model will be used for storing the request for borrowing the book
@@ -18,13 +19,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// 11. req_status_message: The message of the status of the book request
 /// 12. req_status_updated_by: The ID of the user who updated the status of the book request
 
-class BookBorrowRequest {
+class BorrowRequest {
   final String reqBookID, reqBookOwnerID, requesterID;
   String? reqBookStatus, reqID, reqStatus;
   Timestamp? timestamp;
   Timestamp? reqStartDate, reqEndDate;
 
-  BookBorrowRequest(
+  BorrowRequest(
       {required this.reqBookID,
       required this.reqBookOwnerID,
       this.reqBookStatus,
@@ -35,31 +36,31 @@ class BookBorrowRequest {
       this.reqStartDate,
       this.reqEndDate});
 
-  factory BookBorrowRequest.fromMap(Map<String, dynamic> map) {
-    return BookBorrowRequest(
-        reqBookID: map['req_book_id'],
-        reqBookOwnerID: map['req_book_owner_id'],
+  factory BorrowRequest.fromMap(Map<String, dynamic> map) {
+    return BorrowRequest(
+        reqBookID: map[BorrowRequestConfig.reqBookID],
+        reqBookOwnerID: map[BorrowRequestConfig.reqBookOwnerID],
         reqBookStatus: 'available',
-        requesterID: map['requester_id'],
+        requesterID: map[BorrowRequestConfig.requesterID],
         timestamp: Timestamp.now(),
         // reqDurationInDays: map['req_duration_in_days'],
-        reqStartDate: map['req_start_date'],
-        reqEndDate: map['req_end_date'],
-        reqStatus: map['req_status'] ?? 'pending',
-        reqID: map['req_id']);
+        reqStartDate: map[BorrowRequestConfig.reqStartDate],
+        reqEndDate: map[BorrowRequestConfig.reqEndDate],
+        reqStatus: map[BorrowRequestConfig.reqStatus] ?? 'pending',
+        reqID: map[BorrowRequestConfig.reqID]);
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'req_book_id': reqBookID,
-      'req_book_owner_id': reqBookOwnerID,
-      'req_book_status': reqBookStatus ?? 'available',
-      'requester_id': requesterID,
-      'req_timestamp': Timestamp.now(),
-      'req_start_date': reqStartDate,
-      'req_end_date': reqEndDate,
-      'req_id': reqID,
-      'req_status': reqStatus ?? 'pending',
+      BorrowRequestConfig.reqBookID: reqBookID,
+      BorrowRequestConfig.reqBookOwnerID: reqBookOwnerID,
+      BorrowRequestConfig.reqBookStatus: reqBookStatus ?? 'available',
+      BorrowRequestConfig.requesterID: requesterID,
+      BorrowRequestConfig.timestamp: Timestamp.now(),
+      BorrowRequestConfig.reqStartDate: reqStartDate,
+      BorrowRequestConfig.reqEndDate: reqEndDate,
+      BorrowRequestConfig.reqID: reqID,
+      BorrowRequestConfig.reqStatus: reqStatus ?? 'pending',
     };
   }
 }

@@ -16,7 +16,7 @@ class NewBookRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BookBorrowRequestService>(
+    return Consumer<BookRequestService>(
       builder: (context, bookRequestService, child) {
         return P2pbookshareStreamBuilder(
             dataStream: bookRequestService
@@ -78,8 +78,8 @@ class NewBookRequestCard extends StatelessWidget {
                 );
               } else {
                 return const SizedBox(
-                  height: 30,
-                );
+                    // height: 30,
+                    );
               }
             },
             waitingBuilder: () {

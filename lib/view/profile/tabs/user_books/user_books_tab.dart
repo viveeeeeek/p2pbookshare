@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
@@ -65,20 +66,21 @@ Widget buildCategoryBooksWidget(
         context,
         MaterialPageRoute(
           builder: (context) => UserBookDetailsView(
-            bookData: BookModel(
-                bookTitle: bookData['book_title'],
-                bookAuthor: bookData['book_author'],
-                bookPublication: bookData['book_publication'],
-                bookCondition: bookData['book_condition'],
-                bookGenre: bookData['book_genre'],
-                bookAvailability: bookData['book_availability'],
-                bookCoverImageUrl: bookData['book_coverimg_url'],
-                bookOwnerID: bookData['book_owner'],
-                bookID: bookData['book_id'],
-                location: bookData[
-                    'book_exchange_location'], // Directly access GeoPoint
-                completeAddress: bookData['book_exchange_address']),
-            heroKey: '${bookData['book_coverimg_url']}-userbookview',
+            bookData: Book(
+                bookTitle: bookData[BookConfig.bookTitle],
+                bookAuthor: bookData[BookConfig.bookAuthor],
+                bookPublication: bookData[BookConfig.bookPublication],
+                bookCondition: bookData[BookConfig.bookCondition],
+                bookGenre: bookData[BookConfig.bookGenre],
+                bookAvailability: bookData[BookConfig.bookAvailability],
+                bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
+                bookOwnerID: bookData[BookConfig.bookOwnerID],
+                bookID: bookData[BookConfig.bookID],
+                location:
+                    bookData[BookConfig.location], // Directly access GeoPoint
+                bookRating: bookData[BookConfig.bookRating],
+                completeAddress: bookData[BookConfig.completeAddress]),
+            heroKey: '${bookData[BookConfig.bookCoverImageUrl]}-userbookview',
           ),
         ),
       );
@@ -91,7 +93,7 @@ Widget buildCategoryBooksWidget(
             height: 180,
             width: 130,
             child: CachedImage(
-              imageUrl: bookData['book_coverimg_url'],
+              imageUrl: bookData[BookConfig.bookCoverImageUrl],
               // borderRadius: const BorderRadius.all(Radius.circular(5)
               // ),
             ),

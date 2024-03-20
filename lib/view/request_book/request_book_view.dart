@@ -5,8 +5,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/core/utils/app_utils.dart';
-import 'package:p2pbookshare/model/book_model.dart';
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/book.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
@@ -22,7 +22,7 @@ class RequestBookView extends StatefulWidget {
   const RequestBookView(
       {super.key, required this.bookData, required this.heroKey});
 
-  final BookModel bookData;
+  final Book bookData;
   final String heroKey;
 
   @override
@@ -32,7 +32,7 @@ class RequestBookView extends StatefulWidget {
 class _RequestBookViewState extends State<RequestBookView> {
   @override
   Widget build(BuildContext context) {
-    final bookRequestServices = Provider.of<BookBorrowRequestService>(context);
+    final bookRequestServices = Provider.of<BookRequestService>(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
     final requestBookViewModel = Provider.of<RequestBookViewModel>(context);
     String currentUserUid = userDataProvider.userModel!.userUid!;
@@ -56,7 +56,7 @@ class _RequestBookViewState extends State<RequestBookView> {
           await requestBookViewModel.pickDateRange(context);
       if (_isDateRangeSelected) {
         await bookRequestServices.sendBookBorrowRequest(
-          BookBorrowRequest(
+          BorrowRequest(
               reqBookID: widget.bookData.bookID!,
               reqBookOwnerID: widget.bookData.bookOwnerID,
               requesterID: currentUserUid,
@@ -195,92 +195,3 @@ class _RequestBookViewState extends State<RequestBookView> {
     );
   }
 }
-
-// Widget buildRequestStatusButton(
-//     {required BookModel bookData,
-//     required String currentUserUid,
-//     required BookRequestHandlingService bookRequestServices}) {
-//   return Center(
-//     child: StreamBuilder(
-//         stream: bookRequestServices.getBookRequestStatus(BookRequestModel(
-//             reqBookID: bookData.bookID!,
-//             reqBookOwnerID: bookData.bookOwnerID,
-//             requesterID: currentUserUid)),
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return const P2PBookShareShimmerContainer(
-//                 height: 30, width: 100, borderRadius: 12);
-//           } else if (snapshot.hasData && snapshot.data != null) {
-//             final bookRequestData = snapshot.data!;
-//             logger.info('⚓⚓BookRequestData: $bookRequestData');
-//             final _reqStatus =
-//                 // ignore: unnecessary_null_comparison
-//                 bookRequestData != null ? bookRequestData['req_status'] : null;
-//             final _buttonText = _reqStatus == 'pending'
-//                 ? 'Request pending...'
-//                 : _reqStatus == 'accepted'
-//                     ? 'Request accepted'
-//                     : 'Borrow';
-//             if (_reqStatus == 'pending' || _reqStatus == 'accepted') {
-//               return FilledButton(
-//                   onPressed: () {
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                         builder: (context) => OutgoingReqDetailsView(
-//                           bookrequestModel: BookRequestModel(
-//                             reqBookID: bookRequestData['req_book_id'],
-//                             reqBookOwnerID:
-//                                 bookRequestData['req_book_owner_id'],
-//                             requesterID: bookRequestData['requester_id'],
-//                             reqBookStatus: bookRequestData['req_book_status'],
-//                             reqEndDate: bookRequestData['req_end_date'],
-//                             reqStartDate: bookRequestData['req_start_date'],
-//                             reqID: bookRequestData['req_id'],
-//                             reqStatus: bookRequestData['req_status'],
-//                             timestamp: bookRequestData['req_timestamp'],
-//                           ),
-//                         ),
-//                       ),
-//                     );
-//                   },
-//                   child: Text(_buttonText));
-//             } else {
-//               return const SizedBox();
-//             }
-//           } else {
-//             return const Text('Something went wrong');
-//           }
-//         }),
-//   );
-// }
-
-// Widget buildRequestStatusCard(
-//     {required BookModel bookData,
-//     required String currentUserUid,
-//     required BookRequestHandlingService bookRequestServices}) {
-//   return StreamBuilder(
-//       stream: bookRequestServices.getBookRequestStatus(BookRequestModel(
-//           reqBookID: bookData.bookID!,
-//           reqBookOwnerID: bookData.bookOwnerID,
-//           requesterID: currentUserUid)),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const P2PBookShareShimmerContainer(
-//               height: 125, width: double.infinity, borderRadius: 12);
-//         } else if (snapshot.hasData && snapshot.data != null) {
-//           final _reqDetails = snapshot.data;
-//           final _reqStatus =
-//               _reqDetails != null ? _reqDetails['req_status'] : null;
-//           if (_reqStatus == 'pending') {
-//             return const ReqPendingcard();
-//           } else if (_reqStatus == 'accepted') {
-//             return const ReqAcceptedCard();
-//           } else {
-//             return const SizedBox();
-//           }
-//         } else {
-//           return const Text('Something went wrong');
-//         }
-//       });
-// }

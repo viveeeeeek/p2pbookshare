@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 
 final _navigateToUserBookDetailsView =
-    ({required BuildContext context, required BookModel bookData}) {
+    ({required BuildContext context, required Book bookData}) {
   Navigator.push(context, MaterialPageRoute(builder: (context) {
     return UserBookDetailsView(
       bookData: bookData,
@@ -26,7 +27,7 @@ Widget NotificationCard(
     BuildContext context, Map<String, dynamic> bookRequestDocument) {
   return FutureBuilder<Map<String, dynamic>?>(
     future: BookFetchService()
-        .getBookDetailsById(bookRequestDocument['req_book_id']),
+        .getBookDetailsById(bookRequestDocument[BorrowRequestConfig.reqBookID]),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         // Return a loading indicator if data is still being fetched
@@ -46,29 +47,29 @@ Widget NotificationCard(
         Map<String, dynamic> bookData = snapshot.data!;
 
         return FutureBuilder(
-            future: FirebaseUserService()
-                .getUserDetailsById(bookRequestDocument['requester_id']),
+            future: FirebaseUserService().getUserDetailsById(
+                bookRequestDocument[BorrowRequestConfig.requesterID]),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData && snapshot.data != null) {
                   Map<String, dynamic> userData = snapshot.data!;
                   logger.info('User data: $userData');
-                  final BookModel _bookData = BookModel(
-                      bookTitle: bookData['book_title'],
-                      bookAuthor: bookData['book_author'],
-                      bookPublication: bookData['book_publication'],
-                      bookCondition: bookData['book_condition'],
-                      bookGenre: bookData['book_genre'],
-                      bookAvailability: bookData['book_availability'],
-                      bookCoverImageUrl: bookData['book_coverimg_url'],
-                      bookOwnerID: bookData['book_owner'],
-                      bookID: bookData['book_id'],
+                  final Book _bookData = Book(
+                      bookTitle: bookData[BookConfig.bookTitle],
+                      bookAuthor: bookData[BookConfig.bookAuthor],
+                      bookPublication: bookData[BookConfig.bookPublication],
+                      bookCondition: bookData[BookConfig.bookCondition],
+                      bookGenre: bookData[BookConfig.bookGenre],
+                      bookAvailability: bookData[BookConfig.bookAvailability],
+                      bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
+                      bookOwnerID: bookData[BookConfig.bookOwnerID],
+                      bookID: bookData[BookConfig.bookID],
                       location: bookData[
-                          'book_exchange_location'], // Directly access GeoPoint
-                      bookRating: bookData['book_rating'],
-                      completeAddress: bookData['book_exchange_address']);
+                          BookConfig.location], // Directly access GeoPoint
+                      bookRating: bookData[BookConfig.bookRating],
+                      completeAddress: bookData[BookConfig.completeAddress]);
                   final Timestamp _reqTimeStamp =
-                      bookRequestDocument['req_timestamp'];
+                      bookRequestDocument[BorrowRequestConfig.timestamp];
                   return GestureDetector(
                     onTap: () => _navigateToUserBookDetailsView(
                         context: context, bookData: _bookData),
@@ -76,7 +77,7 @@ Widget NotificationCard(
                       contentPadding: const EdgeInsets.all(0),
                       leading: Hero(
                         tag:
-                            '${bookData['book_coverimg_url']}-request_notification_card',
+                            '${bookData[BookConfig.bookCoverImageUrl]}-request_notification_card',
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(4)),
@@ -84,13 +85,14 @@ Widget NotificationCard(
                               height: 60,
                               width: 40,
                               child: CachedImage(
-                                imageUrl: bookData['book_coverimg_url'],
+                                imageUrl:
+                                    bookData[BookConfig.bookCoverImageUrl],
                               )),
                         ),
                       ),
-                      title: Text(bookData['book_title']),
+                      title: Text(bookData[BookConfig.bookTitle]),
                       // subtitle: Text(
-                      //   '${Utils.formatDateTime(bookRequestDocument['req_timestamp'])}',
+                      //   '${Utils.formatDateTime(bookRequestDocument[BookRequestConfig.timestamp])}',
                       // style: const TextStyle(fontSize: 12),
                       // ),
                       subtitle: Column(
@@ -102,7 +104,7 @@ Widget NotificationCard(
                               Icon(MdiIcons.accountOutline, size: 16),
                               const SizedBox(width: 5),
                               Text(
-                                userData['username'].toLowerCase(),
+                                userData[UserConstants.userName].toLowerCase(),
                               ),
                             ],
                           ),

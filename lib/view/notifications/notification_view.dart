@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/widgets/no_requests_widget.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 
 import 'package:provider/provider.dart';
 
@@ -32,7 +31,7 @@ class NotificationViewState extends State<NotificationView> {
         body: SafeArea(
           child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Consumer2<BookFetchService, BookBorrowRequestService>(
+              child: Consumer2<BookFetchService, BookRequestService>(
                 builder:
                     (context, bookFetchServices, bookRequestService, child) {
                   return Column(

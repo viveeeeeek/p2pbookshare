@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
@@ -23,7 +24,6 @@ Widget incomingRequestCard(
           //FIXME: Handle the uncaught exceptions like if the data is not available or is null.
           /// Remove actual implementation of widget from else block to else if  snapshot.has data || snapshot.data != null
           final userData = snapshot.data!;
-          final Timestamp _reqTimestamp = bookRequestData['req_timestamp'];
           final Timestamp _reqStartDate = bookRequestData['req_start_date'];
           final Timestamp _reqEndDate = bookRequestData['req_end_date'];
           return Padding(
@@ -38,17 +38,14 @@ Widget incomingRequestCard(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14), // Add rounded corners
               ),
-              // title: Text(
-              //   userData['username'],
-              //   // style: const TextStyle(fontWeight: FontWeight.bold),
-              // ),
+
               title: Row(
                 children: [
                   Icon(MdiIcons.accountOutline,
                       color: context.onPrimaryContainer),
                   const SizedBox(width: 5),
                   Text(
-                    userData['username'],
+                    userData[UserConstants.userName],
                     style: TextStyle(color: context.onPrimaryContainer),
                   ),
                 ],
@@ -75,11 +72,10 @@ Widget incomingRequestCard(
                       const SizedBox(width: 10),
                     ],
                   ),
-
                   Container(
                     height: 20,
                     width: 1,
-                    color: Colors.grey,
+                    color: context.onPrimaryContainer,
                   ),
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,16 +95,13 @@ Widget incomingRequestCard(
                       const SizedBox(width: 10),
                     ],
                   ),
-                  // const SizedBox(height: 10), // Add spacing
 
                   Row(
                     mainAxisAlignment:
                         MainAxisAlignment.end, // Adjust button alignment
                     children: [
+                      // Decline button to reject the request
                       OutlinedButton.icon(
-                        // Decline button to reject the request
-                        // Deleted the book request from the (book_request) collection
-
                         onPressed: onDecline,
                         icon: Icon(
                           MdiIcons.close,
@@ -120,6 +113,7 @@ Widget incomingRequestCard(
                       const SizedBox(
                         width: 8,
                       ),
+                      // Accept button to accept the request and start the exchange
                       FilledButton.icon(
                         onPressed: onAccept,
                         icon: Icon(MdiIcons.check),

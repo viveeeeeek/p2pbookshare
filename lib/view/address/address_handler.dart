@@ -32,7 +32,7 @@ class AddressHandler {
         durationInSecond: 2,
       );
     } else {
-      AddressModel addressDetails = AddressModel(
+      Address addressDetails = Address(
         street: streetController.text,
         city: cityController.text,
         state: stateController.text,

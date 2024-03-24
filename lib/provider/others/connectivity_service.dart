@@ -11,13 +11,14 @@ class ConnectivityService extends ChangeNotifier {
     _isConnected = false; // Default status is disconnected
 
     _connectivity = Connectivity();
-    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus as void
+        Function(List<ConnectivityResult> event)?);
     _checkConnection(); // Check initial connection status
   }
 
   Future<void> _checkConnection() async {
     var connectivityResult = await _connectivity.checkConnectivity();
-    _updateConnectionStatus(connectivityResult);
+    _updateConnectionStatus(connectivityResult as ConnectivityResult);
   }
 
   void _updateConnectionStatus(ConnectivityResult connectivityResult) {

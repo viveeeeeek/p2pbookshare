@@ -34,16 +34,32 @@ class _LandingViewState extends State<LandingView> {
       }
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
         if (_selectedScreenIndex != 0) {
           setState(() {
             _selectedScreenIndex = 0;
+            didPop = false;
           });
           controller.jumpToPage(_selectedScreenIndex);
-          return false;
+        } else {
+          // if already on home screen
+          if (!didPop) {
+            didPop = true;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Press back again to exit"),
+                duration: Duration(seconds: 2),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              didPop = false;
+            });
+          } else {
+            Navigator.of(context).pop(didPop);
+          }
         }
-        return true;
       },
       child: Scaffold(
         body: PageView(

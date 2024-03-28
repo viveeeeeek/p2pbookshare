@@ -8,6 +8,7 @@ import 'package:p2pbookshare/view/notifications/widgets/notification_card.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 //TODO: Add sort by date
+//FIXME: There are multiple heroes that share the same tag within a subtree. use onwer name inside key
 
 class NotificationView extends StatefulWidget {
   const NotificationView({

@@ -12,13 +12,13 @@ import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/view/chat/border_radius.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView(
-      {Key? key,
-      required this.receiverId,
-      required this.receiverName,
-      required this.chatRoomId,
-      required this.receiverimgUrl})
-      : super(key: key);
+  const ChatView({
+    Key? key,
+    required this.receiverId,
+    required this.receiverName,
+    required this.chatRoomId,
+    required this.receiverimgUrl,
+  }) : super(key: key);
   final String receiverId;
   final String chatRoomId;
   final String receiverName;
@@ -81,6 +81,7 @@ class _ChatViewState extends State<ChatView> {
             Expanded(
               child: Text(
                 widget.receiverName,
+                style: TextStyle(color: context.onSurface),
               ),
             ),
           ],
@@ -230,30 +231,6 @@ class _ChatViewState extends State<ChatView> {
                     'Start chatting now...',
                     style: TextStyle(fontSize: 24),
                   ),
-
-                  /// transparent container with circular border of red colour
-                  /// to show the user that the chat is empty
-                  /// and to give a visual cue to the user
-                  // Container(
-                  //   height: 100,
-                  //   width: 275,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.transparent,
-                  //     borderRadius: BorderRadius.circular(20.0),
-                  //     border: Border.all(
-                  //       color: context.secondary.withOpacity(0.5),
-                  //       width: 2,
-                  //     ),
-                  //   ),
-                  //   child: const Center(
-                  //     child: Expanded(
-                  //       child: Text(
-                  //         'You can chat with the user now and discuss about the book exchange.',
-                  //         textAlign: TextAlign.center,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               );
             }

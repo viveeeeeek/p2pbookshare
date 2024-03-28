@@ -10,6 +10,13 @@ class UserConstants {
   static const String userPhotoUrl = 'userphotourl';
 }
 
+class MessageConfig {
+  static const String senderId = 'sender_id';
+  static const String receiverId = 'receiver_id';
+  static const String message = 'message';
+  static const String timestamp = 'timestamp';
+}
+
 /// This class contains all the constants used in the Chatroom model.
 class ChatroomConfig {
   // static const String id = 'id';
@@ -26,6 +33,13 @@ class ChatroomConfig {
   static const String bookId = 'book_id';
   static const String bookBorrowRequestId = 'borrow_request_id';
   static const String chatRoomId = 'chat_room_id';
+}
+
+class ChatRoomConfig {
+  static const String chatRoomId = 'chat_room_id';
+  static const String bookId = 'book_id';
+  static const String borrowRequestId = 'borrow_request_id';
+  static const String userIds = 'user_ids';
 }
 
 /// This class contains all the constants used in the BorrowRequest model.

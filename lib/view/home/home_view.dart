@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
+import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/view/chat/chats_list_view.dart';
 import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 import 'package:provider/provider.dart';
@@ -42,6 +45,8 @@ class _HomeViewState extends State<HomeView>
     super.build(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
     final bookRequestService = Provider.of<BookRequestService>(context);
+    final chatService = Provider.of<ChatService>(context);
+    final logger = Logger();
     return LayoutBuilder(builder: (context, constraints) {
       return NestedScrollView(
           floatHeaderSlivers: true,
@@ -80,10 +85,42 @@ class _HomeViewState extends State<HomeView>
                       errorBuilder: (error) {
                         return Text('$error');
                       }),
-                  IconButton(
-                    icon: Icon(MdiIcons.messageBadgeOutline),
-                    onPressed: () {},
-                  ),
+                  P2pbookshareStreamBuilder(
+                      dataStream: chatService.hasChatroomForUser(
+                          '/chatrooms', userDataProvider.userModel!.userUid!),
+                      successBuilder: (sucess) {
+                        final _hasChatroomAvailable = sucess as bool;
+                        logger.i(
+                            'has chatroom available: $_hasChatroomAvailable');
+                        return IconButton(
+                          icon: _hasChatroomAvailable
+                              ? Icon(MdiIcons.messageBadgeOutline)
+                              : Icon(MdiIcons.messageOutline),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ChatsListView()),
+                            );
+                          },
+                        );
+                      },
+                      waitingBuilder: () {
+                        return const SizedBox();
+                      },
+                      errorBuilder: (error) {
+                        return Text('$error');
+                      })
+                  // IconButton(
+                  //   icon: Icon(MdiIcons.messageBadgeOutline),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => const ChatsListView()),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ];

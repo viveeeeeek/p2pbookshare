@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/chat_room.dart';
 import 'package:p2pbookshare/model/message.dart';
 
@@ -51,7 +52,7 @@ class ChatService extends ChangeNotifier {
         .collection('chatrooms')
         .doc(chatRoomId)
         .collection('messages')
-        .orderBy('timestamp', descending: true)
+        .orderBy(MessageConfig.timestamp, descending: true)
         .snapshots();
   }
 
@@ -69,24 +70,36 @@ class ChatService extends ChangeNotifier {
       throw e;
     }
   }
+
+  /// get all chatrooms of current user from firestore
+  /// returns a stream of QuerySnapshot
+  /// QuerySnapshot contains a list of chatrooms
+  /// each chatroom contains a list of messages
+  Stream<QuerySnapshot> getChatRooms() {
+    final _currentUserId = _firebaseAuth.currentUser!.uid;
+    return _firestore
+        .collection('chatrooms')
+        .where(ChatRoomConfig.userIds, arrayContains: _currentUserId)
+        .snapshots();
+  }
+
+  /// This method is used in the home view to display the book requests notification card
+  Stream<bool> hasChatroomForUser(String collectionPath, String userId) {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionPath);
+    return collectionRef
+        .where(ChatRoomConfig.userIds, arrayContains: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.isNotEmpty);
+  }
+
+  /// Function to get the stream of messages for a chatroom
+  Stream<List<Map<String, dynamic>>> getMessagesStream(DocumentSnapshot doc) {
+    final messagesCollection = doc.reference.collection('messages');
+    return messagesCollection
+        .orderBy(MessageConfig.timestamp, descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    });
+  }
 }
-
-// get all messages from chatroom
-
-// get all chatrooms of current user
-
-// get all messages from chatroom
-
-/// get all chatrooms of current user from firestore
-/// returns a stream of QuerySnapshot
-/// QuerySnapshot contains a list of chatrooms
-/// each chatroom contains a list of messages
-// Stream<QuerySnapshot> getChatRooms() {
-//   final _currentUserId = _firebaseAuth.currentUser!.uid;
-//   return _firestore
-//       .collection('chatrooms')
-//       .where('userIds', arrayContains: _currentUserId)
-//       .snapshots();
-// }
-
-// get all messages from chatroom

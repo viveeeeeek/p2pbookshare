@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/outgoing_req/outgoing_req_details_view.dart';
@@ -18,7 +19,7 @@ class OutgoingNotificationTab extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: Consumer<BookBorrowRequestService>(
+            child: Consumer<BookRequestService>(
               builder: (context, bookRequestHandlingService, child) {
                 return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -57,8 +58,8 @@ class OutgoingNotificationTab extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return FutureBuilder(
                                     future: BookFetchService()
-                                        .getBookDetailsById(
-                                            booksList[index]['req_book_id']),
+                                        .getBookDetailsById(booksList[index]
+                                            [BorrowRequestConfig.reqBookID]),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -72,9 +73,11 @@ class OutgoingNotificationTab extends StatelessWidget {
                                             snapshot.data!;
                                         logger.info('BookData: $bookData');
                                         return FutureBuilder(
-                                            future: BookBorrowRequestService()
+                                            future: BookRequestService()
                                                 .getRequestDetailsByID(
-                                                    booksList[index]['req_id']),
+                                                    booksList[index][
+                                                        BorrowRequestConfig
+                                                            .reqID]),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
@@ -96,34 +99,38 @@ class OutgoingNotificationTab extends StatelessWidget {
                                                         builder: (context) =>
                                                             OutgoingReqDetailsView(
                                                           bookrequestModel:
-                                                              BookBorrowRequest(
-                                                            reqBookID:
-                                                                bookRequestData[
-                                                                    'req_book_id'],
+                                                              BorrowRequest(
+                                                            reqBookID: bookRequestData[
+                                                                BorrowRequestConfig
+                                                                    .reqBookID],
                                                             reqBookOwnerID:
                                                                 bookRequestData[
-                                                                    'req_book_owner_id'],
+                                                                    BorrowRequestConfig
+                                                                        .reqBookOwnerID],
                                                             requesterID:
                                                                 bookRequestData[
-                                                                    'requester_id'],
+                                                                    BorrowRequestConfig
+                                                                        .requesterID],
                                                             reqBookStatus:
                                                                 bookRequestData[
-                                                                    'req_book_status'],
-                                                            reqEndDate:
-                                                                bookRequestData[
-                                                                    'req_end_date'],
+                                                                    BorrowRequestConfig
+                                                                        .reqBookStatus],
+                                                            reqEndDate: bookRequestData[
+                                                                BorrowRequestConfig
+                                                                    .reqEndDate],
                                                             reqStartDate:
                                                                 bookRequestData[
-                                                                    'req_start_date'],
-                                                            reqID:
-                                                                bookRequestData[
-                                                                    'req_id'],
-                                                            reqStatus:
-                                                                bookRequestData[
-                                                                    'req_status'],
-                                                            timestamp:
-                                                                bookRequestData[
-                                                                    'req_timestamp'],
+                                                                    BorrowRequestConfig
+                                                                        .reqStartDate],
+                                                            reqID: bookRequestData[
+                                                                BorrowRequestConfig
+                                                                    .reqID],
+                                                            reqStatus: bookRequestData[
+                                                                BorrowRequestConfig
+                                                                    .reqStatus],
+                                                            timestamp: bookRequestData[
+                                                                BorrowRequestConfig
+                                                                    .timestamp],
                                                           ),
                                                         ),
                                                       ),
@@ -135,7 +142,8 @@ class OutgoingNotificationTab extends StatelessWidget {
                                                             Radius.circular(6)),
                                                     child: CachedImage(
                                                       imageUrl: bookData[
-                                                          'book_coverimg_url'],
+                                                          BookConfig
+                                                              .bookCoverImageUrl],
                                                     ),
                                                   ),
                                                 );

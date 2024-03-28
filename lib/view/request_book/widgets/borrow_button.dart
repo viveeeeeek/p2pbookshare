@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/book_model.dart';
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/book.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/outgoing_req/outgoing_req_details_view.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +17,13 @@ class BorrowButton extends StatelessWidget {
       required this.onPressed,
       required this.bookRequestServices});
   final Function() onPressed;
-  final BookModel bookData;
+  final Book bookData;
   final String currentUserUid;
-  final BookBorrowRequestService bookRequestServices;
+  final BookRequestService bookRequestServices;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BookBorrowRequestService>(
+    return Consumer<BookRequestService>(
       builder: (context, bookBorrowRequestService, child) {
         return Center(
           child: StreamBuilder<Tuple2<bool, Map<String, dynamic>>>(
@@ -37,7 +37,7 @@ class BorrowButton extends StatelessWidget {
                 Tuple2<bool, Map<String, dynamic>>>(
               bookBorrowRequestService.checkBookAvailability(bookData.bookID!),
               bookBorrowRequestService.getBookRequestStatus(
-                  BookBorrowRequest(
+                  BorrowRequest(
                       reqBookID: bookData.bookID!,
                       reqBookOwnerID: bookData.bookOwnerID,
                       requesterID: currentUserUid),
@@ -129,14 +129,14 @@ Widget buildBorrowButton(
 
 navigateToOutgoingReqDetailsView(
     {required BuildContext context,
-    required BookModel? bookData,
+    required Book? bookData,
     required String? currentUserUid,
     required Map<String, dynamic> bookRequestData}) {
   Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => OutgoingReqDetailsView(
-        bookrequestModel: BookBorrowRequest(
+        bookrequestModel: BorrowRequest(
           reqBookID: bookRequestData['req_book_id'],
           reqBookOwnerID: bookRequestData['req_book_owner_id'],
           requesterID: bookRequestData['requester_id'],

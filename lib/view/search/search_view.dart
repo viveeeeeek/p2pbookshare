@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/constants/app_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/view/request_book/request_book_view.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:provider/provider.dart';
 
@@ -129,12 +130,12 @@ class SearchViewState extends State<SearchView> {
                       // If search query is not empty, filter booksList based on the query
                       List<Map<String, dynamic>> matchingBooks = booksList
                           .where((book) =>
-                              book['book_title']
+                              book[BookConfig.bookTitle]
                                   .toString()
                                   .toLowerCase()
                                   .contains(searchViewModel.searchQuery
                                       .toLowerCase()) ||
-                              book['book_author']
+                              book[BookConfig.bookAuthor]
                                   .toString()
                                   .toLowerCase()
                                   .contains(searchViewModel.searchQuery
@@ -193,36 +194,37 @@ class BookTile extends StatelessWidget {
       leading: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         child: Hero(
-          tag: '${bookData['book_coverimg_url']}-searchscreen',
+          tag: '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
           child: SizedBox(
             width: 40,
             height: 60,
-            child: CachedImage(imageUrl: bookData['book_coverimg_url']),
+            child:
+                CachedImage(imageUrl: bookData[BookConfig.bookCoverImageUrl]),
           ),
         ),
       ),
-      title: Text(bookData['book_title']),
-      subtitle: Text(bookData['book_author']),
+      title: Text(bookData[BookConfig.bookTitle]),
+      subtitle: Text(bookData[BookConfig.bookAuthor]),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => RequestBookView(
-              heroKey: '${bookData['book_coverimg_url']}-searchscreen',
-              bookData: BookModel(
-                  bookTitle: bookData['book_title'],
-                  bookAuthor: bookData['book_author'],
-                  bookPublication: bookData['book_publication'],
-                  bookCondition: bookData['book_condition'],
-                  bookGenre: bookData['book_genre'],
-                  bookAvailability: bookData['book_availability'],
-                  bookCoverImageUrl: bookData['book_coverimg_url'],
-                  bookOwnerID: bookData['book_owner'],
-                  bookID: bookData['book_id'],
-                  bookRating: bookData['book_rating'],
-                  location: bookData[
-                      'book_exchange_location'], // Directly access GeoPoint
-                  completeAddress: bookData['book_exchange_address']),
+              heroKey: '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
+              bookData: Book(
+                  bookTitle: bookData[BookConfig.bookTitle],
+                  bookAuthor: bookData[BookConfig.bookAuthor],
+                  bookPublication: bookData[BookConfig.bookPublication],
+                  bookCondition: bookData[BookConfig.bookCondition],
+                  bookGenre: bookData[BookConfig.bookGenre],
+                  bookAvailability: bookData[BookConfig.bookAvailability],
+                  bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
+                  bookOwnerID: bookData[BookConfig.bookOwnerID],
+                  bookID: bookData[BookConfig.bookID],
+                  bookRating: bookData[BookConfig.bookRating],
+                  location:
+                      bookData[BookConfig.location], // Directly access GeoPoint
+                  completeAddress: bookData[BookConfig.completeAddress]),
             ),
           ),
         );

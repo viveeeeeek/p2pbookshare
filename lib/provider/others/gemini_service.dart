@@ -46,7 +46,7 @@ class GeminiService with ChangeNotifier {
           "parts": [
             {
               "text": '''
-For  "${bookName}"  by $authorName: If you don t have enough information, say  Sorry, I m not familiar with this book.  Otherwise, create a concise and captivating 1-paragraph description in clear English. Summarize the plot, highlight key characters and their motivations, specify genre and tone, and mention unique elements. Use newline characters (\n) for clarity. Focus on factual information and avoid speculation.'''
+For  "${bookName}"  by $authorName: Create a concise and captivating 1-paragraph description in clear English. Summarize the plot, highlight key characters and their motivations, specify genre and tone, and mention unique elements. Use newline characters (\n) for clarity. Focus on factual information and avoid speculation.'''
             }
           ]
         }

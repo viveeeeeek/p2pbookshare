@@ -1,18 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/book_model.dart';
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
+import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/view/chat/chat_view.dart';
 import 'package:p2pbookshare/view/outgoing_req/widgets/outgoing_req_details_card.dart';
 import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/outgoing_req/widgets/req_accepted_card.dart';
 import 'package:p2pbookshare/view/outgoing_req/widgets/req_pending_card.dart';
-import 'package:p2pbookshare/view/request_book/widgets/book_info_card.dart';
 import 'package:provider/provider.dart';
 
 class OutgoingReqDetailsView extends StatefulWidget {
@@ -22,7 +24,8 @@ class OutgoingReqDetailsView extends StatefulWidget {
     // required this.heroKey,
   });
 
-  final BookBorrowRequest? bookrequestModel;
+  final BorrowRequest? bookrequestModel;
+
   // final String heroKey;
 
   @override
@@ -38,8 +41,37 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
         .getUserDetailsById(widget.bookrequestModel!.reqBookOwnerID);
 
     setState(() {
-      bookOwnerName = userData!['username'];
+      bookOwnerName = userData![UserConstants.userName];
     });
+  }
+
+  String _receiverId = '';
+  String _chatRoomId = '';
+  String _receiverName = '';
+  String _receiverImageUrl = '';
+  FirebaseUserService _firebaseUserService = FirebaseUserService();
+  Future<void> setReceiverDetails(String receiverId) async {
+    _receiverId = receiverId;
+    _receiverName = await _firebaseUserService
+        .getUserDetailsById(_receiverId)
+        .then((value) => value![UserConstants.userName]);
+    _receiverImageUrl = await _firebaseUserService
+        .getUserDetailsById(_receiverId)
+        .then((value) => value![UserConstants.userPhotoUrl]);
+  }
+
+  _getReceiverIdAndChatRoomId() async {
+    final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+    String bookId = widget.bookrequestModel!.reqBookID;
+
+    if (currentUserUid == widget.bookrequestModel!.reqBookOwnerID) {
+      await setReceiverDetails(widget.bookrequestModel!.requesterID);
+    } else {
+      await setReceiverDetails(widget.bookrequestModel!.reqBookOwnerID);
+    }
+
+    _chatRoomId =
+        ChatService.createChatRoomId(bookId, currentUserUid, _receiverId);
   }
 
   @override
@@ -47,6 +79,7 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
     // TODO: implement initState
     super.initState();
     getBookOwnerName();
+    _getReceiverIdAndChatRoomId();
   }
 
   @override
@@ -65,7 +98,7 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
       body: SafeArea(
           child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
-              child: Consumer2<BookBorrowRequestService, BookListingService>(
+              child: Consumer2<BookRequestService, BookListingService>(
                 builder:
                     (context, bookRequestService, bookListingService, child) {
                   return NestedScrollView(
@@ -81,13 +114,6 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
                               child: buildBookDetailsCard(
                                   context, widget.bookrequestModel!.reqBookID),
                             ),
-
-                            /// Book Detail Card
-
-                            // const SizedBox(
-                            //   height: 14,
-                            // ),
-                            // Center(child: Text(bookOwnerName)),
                           ]))
                         ];
                       },
@@ -101,10 +127,6 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
                             const SizedBox(
                               height: 25,
                             ),
-
-                            // widget.bookrequestModel!.reqStatus == 'pending'
-                            //     ? const ReqPendingcard()
-                            //     : const SizedBox(),
                             StreamBuilder(
                                 stream: bookRequestService.getRequestStatusbyID(
                                     widget.bookrequestModel!.reqID!),
@@ -122,10 +144,25 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
                                     return const SizedBox();
                                   } else if (snapshot.hasData &&
                                       snapshot.data != null) {
-                                    final reqStatus =
-                                        snapshot.data!['req_status'];
+                                    final reqStatus = snapshot
+                                        .data![BorrowRequestConfig.reqStatus];
                                     if (reqStatus == 'accepted') {
-                                      return const ReqAcceptedCard();
+                                      return ReqAcceptedCard(
+                                        onPressed: () {
+                                          logger.info(
+                                              'Current chat id is $_chatRoomId');
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return ChatView(
+                                              receiverId: _receiverId,
+                                              receiverName: _receiverName,
+                                              receiverimgUrl: _receiverImageUrl,
+                                              chatRoomId: _chatRoomId,
+                                            );
+                                          }));
+                                        },
+                                      );
                                     } else {
                                       return const ReqPendingcard();
                                     }

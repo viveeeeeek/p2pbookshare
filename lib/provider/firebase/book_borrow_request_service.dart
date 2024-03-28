@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-import 'package:p2pbookshare/model/book_request_model.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 
-class BookBorrowRequestService with ChangeNotifier {
+class BookRequestService with ChangeNotifier {
   /// Instance of the current [User]
   final user = FirebaseAuth.instance.currentUser;
 
@@ -39,16 +40,18 @@ class BookBorrowRequestService with ChangeNotifier {
   }
 
   // Helper method to build the query for the book request
-  Query buildBookRequestQuery(BookBorrowRequest bookRequest) {
+  Query buildBookRequestQuery(BorrowRequest bookRequest) {
     return bookRequestsCollection
-        .where('req_book_id', isEqualTo: bookRequest.reqBookID)
-        .where('req_book_owner_id', isEqualTo: bookRequest.reqBookOwnerID)
-        .where('requester_id', isEqualTo: bookRequest.requesterID);
+        .where(BorrowRequestConfig.reqBookID, isEqualTo: bookRequest.reqBookID)
+        .where(BorrowRequestConfig.reqBookOwnerID,
+            isEqualTo: bookRequest.reqBookOwnerID)
+        .where(BorrowRequestConfig.requesterID,
+            isEqualTo: bookRequest.requesterID);
   }
 
-  /// Method to check if a [BookBorrowRequest] already exists for the current user and book
+  /// Method to check if a [BorrowRequest] already exists for the current user and book
   /// This method is used to prevent duplicate requests / multiple requests for the same book
-  Future<bool> checkIfRequestAlreadyMade(BookBorrowRequest bookRequest) async {
+  Future<bool> checkIfRequestAlreadyMade(BorrowRequest bookRequest) async {
     try {
       /// Check if the book status is available for borrow
       /// If the book is not available, return false
@@ -70,7 +73,7 @@ class BookBorrowRequestService with ChangeNotifier {
   }
 
   Stream<Map<String, dynamic>> getBookRequestStatus(
-      BookBorrowRequest bookRequest, String currentUserId) {
+      BorrowRequest bookRequest, String currentUserId) {
     try {
       var query = buildBookRequestQuery(bookRequest).snapshots();
 
@@ -78,7 +81,7 @@ class BookBorrowRequestService with ChangeNotifier {
         if (querySnapshot.docs.isNotEmpty) {
           var snapshot = querySnapshot.docs.first;
           var data = snapshot.data() as Map<String, dynamic>;
-          if (data['requester_id'] == currentUserId) {
+          if (data[BorrowRequestConfig.requesterID] == currentUserId) {
             return data;
           }
         }
@@ -97,14 +100,14 @@ class BookBorrowRequestService with ChangeNotifier {
 
     // Query to check if the book is available for borrow
     return booksCollection
-        .where('book_id', isEqualTo: bookID)
+        .where(BookConfig.bookID, isEqualTo: bookID)
         .snapshots()
         .map((snapshot) {
       if (snapshot.docs.isEmpty) {
         return false;
       }
       var doc = snapshot.docs.first;
-      var bookAvailability = doc['book_availability'];
+      var bookAvailability = doc[BookConfig.bookAvailability];
       logger.info('Book availability: $bookAvailability');
       return bookAvailability;
     });
@@ -119,8 +122,9 @@ class BookBorrowRequestService with ChangeNotifier {
     } else {
       try {
         Query query = bookRequestsCollection
-            .where('req_book_owner_id', isEqualTo: currentUser.uid)
-            .where('req_status', isEqualTo: 'pending');
+            .where(BorrowRequestConfig.reqBookOwnerID,
+                isEqualTo: currentUser.uid)
+            .where(BorrowRequestConfig.reqStatus, isEqualTo: 'pending');
         return query.snapshots().map((querySnapshot) {
           if (querySnapshot.docs.isEmpty) {
             return [];
@@ -141,8 +145,8 @@ class BookBorrowRequestService with ChangeNotifier {
   Stream<List<Map<String, dynamic>>> fetchRequestsForBook(String bookId) {
     try {
       Query query = bookRequestsCollection
-          .where('req_book_id', isEqualTo: bookId)
-          .where('req_status', isEqualTo: 'pending');
+          .where(BorrowRequestConfig.reqBookID, isEqualTo: bookId)
+          .where(BorrowRequestConfig.reqStatus, isEqualTo: 'pending');
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
           return [];
@@ -166,7 +170,7 @@ class BookBorrowRequestService with ChangeNotifier {
 
       // Query to check if a request exists for the current user and book
       var querySnapshot = await bookRequestsCollection
-          .where('req_book_id', isEqualTo: bookID)
+          .where(BorrowRequestConfig.reqBookID, isEqualTo: bookID)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -185,8 +189,8 @@ class BookBorrowRequestService with ChangeNotifier {
       String collectionPath, String userId) {
     final collectionRef = FirebaseFirestore.instance.collection(collectionPath);
     return collectionRef
-        .where('req_book_owner_id', isEqualTo: userId)
-        .where('req_status', isEqualTo: 'pending')
+        .where(BorrowRequestConfig.reqBookOwnerID, isEqualTo: userId)
+        .where(BorrowRequestConfig.reqStatus, isEqualTo: 'pending')
         .snapshots()
         .map((snapshot) => snapshot.docs.isNotEmpty);
   }
@@ -210,8 +214,8 @@ class BookBorrowRequestService with ChangeNotifier {
   Stream<int> countNoOfBookRequestsReceivedAsStream(String userUid) async* {
     final collectionRef = FirebaseFirestore.instance
         .collection('book_requests')
-        .where('req_book_owner_id', isEqualTo: userUid)
-        .where('req_status', isEqualTo: 'pending');
+        .where(BorrowRequestConfig.reqBookOwnerID, isEqualTo: userUid)
+        .where(BorrowRequestConfig.reqStatus, isEqualTo: 'pending');
     await for (var snapshot in collectionRef.snapshots()) {
       yield snapshot.docs.length;
     }
@@ -231,8 +235,8 @@ class BookBorrowRequestService with ChangeNotifier {
   Stream<List<Map<String, dynamic>>> getBooksRequestedByCurrentUser(
       String userUid) {
     try {
-      Query query =
-          bookRequestsCollection.where('requester_id', isEqualTo: userUid);
+      Query query = bookRequestsCollection
+          .where(BorrowRequestConfig.requesterID, isEqualTo: userUid);
 
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
@@ -248,7 +252,7 @@ class BookBorrowRequestService with ChangeNotifier {
     }
   }
 
-  /// Method to get the [BookBorrowRequest] details by [req_id]
+  /// Method to get the [BorrowRequest] details by [req_id]
   /// This method is used to get the book request details, Returns a map of book request details
   /// Used in the outgoing book request details view, to display the book request details
   Future<Map<String, dynamic>> getRequestDetailsByID(String requestID) async {
@@ -283,8 +287,8 @@ class BookBorrowRequestService with ChangeNotifier {
   Stream<Map<String, dynamic>> checkBookRequestAccepted(String bookID) {
     try {
       return bookRequestsCollection
-          .where('req_book_id', isEqualTo: bookID)
-          .where('req_status', isEqualTo: 'accepted')
+          .where(BorrowRequestConfig.reqBookID, isEqualTo: bookID)
+          .where(BorrowRequestConfig.reqStatus, isEqualTo: 'accepted')
           .snapshots()
           .map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
@@ -299,17 +303,17 @@ class BookBorrowRequestService with ChangeNotifier {
   }
 
   //! Book Request CRUD Operations
-  /// This method is used in [BookRequestView] to send a [BookBorrowRequest] to the owner of the book
+  /// This method is used in [BookRequestView] to send a [BorrowRequest] to the owner of the book
   /// It checks if the book is available for borrow and if the request already exists
   /// If the book is available and the request does not exist, it creates a new request
-  sendBookBorrowRequest(BookBorrowRequest bookRequestModel) async {
+  sendBookBorrowRequest(BorrowRequest bookRequestModel) async {
     try {
       Map<String, dynamic> bookRequestsData = bookRequestModel.toMap();
       // Add document id as a field in the document [book_id]
       DocumentReference documentReference =
           await bookRequestsCollection.add(bookRequestsData);
       String documentId = documentReference.id;
-      await documentReference.update({'req_id': documentId});
+      await documentReference.update({BorrowRequestConfig.reqID: documentId});
       logger.info("✅ Book request created");
       _bookRequestExists = true;
       notifyListeners();
@@ -338,11 +342,13 @@ class BookBorrowRequestService with ChangeNotifier {
       // Update the request status to accepted
       await bookRequestsCollection
           .doc(requestID)
-          .update({'req_status': 'accepted'});
-      await booksCollection.doc(bookID).update({'book_availability': false});
+          .update({BorrowRequestConfig.reqStatus: 'accepted'});
+      await booksCollection
+          .doc(bookID)
+          .update({BookConfig.bookAvailability: false});
       // Delete all other requests for the same book
       await bookRequestsCollection
-          .where('req_book_id', isEqualTo: bookID)
+          .where(BorrowRequestConfig.reqBookID, isEqualTo: bookID)
           .get()
           .then((value) {
         value.docs.forEach((element) {
@@ -353,8 +359,6 @@ class BookBorrowRequestService with ChangeNotifier {
           }
         });
       });
-
-      logger.info('✅ Book request accepted');
     } catch (e) {
       logFirestoreError('accepting', e);
     }

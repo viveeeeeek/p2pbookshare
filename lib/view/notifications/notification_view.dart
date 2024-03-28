@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/widgets/no_requests_widget.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,7 @@ import 'package:p2pbookshare/view/notifications/widgets/notification_card.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 //TODO: Add sort by date
+//FIXME: There are multiple heroes that share the same tag within a subtree. use onwer name inside key
 
 class NotificationView extends StatefulWidget {
   const NotificationView({
@@ -32,7 +32,7 @@ class NotificationViewState extends State<NotificationView> {
         body: SafeArea(
           child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Consumer2<BookFetchService, BookBorrowRequestService>(
+              child: Consumer2<BookFetchService, BookRequestService>(
                 builder:
                     (context, bookFetchServices, bookRequestService, child) {
                   return Column(

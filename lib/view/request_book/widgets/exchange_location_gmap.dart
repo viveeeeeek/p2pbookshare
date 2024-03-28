@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 
 class BookExchangeLocationCard extends StatelessWidget {
   final double cardWidth;
@@ -10,7 +10,7 @@ class BookExchangeLocationCard extends StatelessWidget {
     required this.cardWidth,
   });
 
-  final BookModel bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {

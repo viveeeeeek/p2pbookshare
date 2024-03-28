@@ -1,6 +1,8 @@
 // Create a function to handle sign-in and user creation
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/view/landing_view.dart';
 import 'package:p2pbookshare/model/user_model.dart';
@@ -17,10 +19,34 @@ class LoginViewModel {
         Provider.of<FirebaseUserService>(context, listen: false);
     final logger = SimpleLogger();
 
+    /// method to generate random 6-7 letter meaningful word from given string
+    /// and use it as a username
+    String generateUserName(String email) {
+      String username = email.split('@')[0];
+      String randomString = '';
+      for (int i = 0; i < 8; i++) {
+        randomString += username[i];
+      }
+
+      // Generate a random string
+      const _randomChars =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      const _randStringLength = 5; // number of characters to generate
+      Random _rnd = Random();
+
+      for (int i = 0; i < _randStringLength; i++) {
+        randomString += _randomChars[_rnd.nextInt(_randomChars.length)];
+      }
+
+      return randomString;
+    }
+
     try {
       await authProvider.gSignIn(context);
       final user = authProvider.user;
       if (user != null) {
+        final _username = await generateUserName(user.email!);
+        logger.info('newly generated username is $_username');
         UserModel userModel = UserModel(
           userUid: user.uid,
           userEmailAddress: user.email,

@@ -1,4 +1,5 @@
 import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view_model/request_book_viewmodel.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
@@ -28,8 +29,8 @@ final List<ChangeNotifierProvider> appProviderList = [
   ChangeNotifierProvider<FirebaseUserService>(
       create: (_) => FirebaseUserService()),
   // Firebase Book Request Services Provider
-  ChangeNotifierProvider<BookBorrowRequestService>(
-      create: (_) => BookBorrowRequestService()),
+  ChangeNotifierProvider<BookRequestService>(
+      create: (_) => BookRequestService()),
   // Firebase Book Upload Services Provider
   ChangeNotifierProvider<BookListingService>(
       create: (_) => BookListingService()),
@@ -95,6 +96,12 @@ final List<ChangeNotifierProvider> appProviderList = [
   ChangeNotifierProvider<RequestBookViewModel>(
     create: (context) {
       return RequestBookViewModel();
+    },
+  ),
+  // Gemini Service Provider
+  ChangeNotifierProvider<ChatService>(
+    create: (context) {
+      return ChatService();
     },
   ),
 ];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/core/user_handler.dart';
@@ -35,21 +36,48 @@ class _SettingViewState extends State<SettingView> {
 
   @override
   Widget build(BuildContext context) {
+    // appBar: AppBar(
+    //   title: const Text('Settings'),
+    //   leading: IconButton(
+    //     icon: const Icon(Icons.arrow_back),
+    //     onPressed: () {
+    //       Navigator.of(context).pop();
+    //     },
+    //   ),
+    //   elevation: 0,
+    // ),
     return LayoutBuilder(builder: (context, constraints) {
       final appThemeProvider = Provider.of<AppThemeService>(context);
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Settings'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          elevation: 0,
-        ),
+          body: NestedScrollView(
+        headerSliverBuilder: (context, _) {
+          return [
+            SliverAppBar(
+              expandedHeight: 200,
+              floating: false,
+              pinned: true,
+              flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                double top = constraints.biggest.height;
+                return FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.only(
+                      left: top ==
+                              MediaQuery.of(context).padding.top +
+                                  kToolbarHeight
+                          ? 60
+                          : 20,
+                      bottom: 15),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(fontSize: 22, color: context.onBackground),
+                  ),
+                );
+              }),
+            ),
+          ];
+        },
         body: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +175,6 @@ class _SettingViewState extends State<SettingView> {
                   'Log out',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 subtitle: Text(
@@ -199,7 +226,7 @@ class _SettingViewState extends State<SettingView> {
             ],
           ),
         ),
-      );
+      ));
     });
   }
 }

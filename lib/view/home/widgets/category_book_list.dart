@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/view/home/widgets/book_card.dart';
 import 'package:p2pbookshare/view/request_book/request_book_view.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 
 class CategorizedBookList extends StatelessWidget {
   const CategorizedBookList({
@@ -47,7 +48,7 @@ class CategorizedBookList extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(25, 0, 0, 4),
                     child: Text(
                         // 'cat',
-                        booksList[1]['book_genre'] ?? 'Category',
+                        booksList[1][BookConfig.bookGenre] ?? 'Category',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -91,28 +92,29 @@ Widget buildCategoryBooksWidget(
     borderRadius: BorderRadius.circular(15.0),
     child: GestureDetector(
       onTap: () {
-        if (currentUserID == bookData['book_owner']) {
+        if (currentUserID == bookData[BookConfig.bookOwnerID]) {
           logger.info('User is the owner of the book');
         } else {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => RequestBookView(
-                heroKey: '${bookData['book_coverimg_url']}-categorizedbooklist',
-                bookData: BookModel(
-                    bookTitle: bookData['book_title'],
-                    bookAuthor: bookData['book_author'],
-                    bookPublication: bookData['book_publication'],
-                    bookCondition: bookData['book_condition'],
-                    bookGenre: bookData['book_genre'],
-                    bookAvailability: bookData['book_availability'],
-                    bookCoverImageUrl: bookData['book_coverimg_url'],
-                    bookOwnerID: bookData['book_owner'],
-                    bookID: bookData['book_id'],
+                heroKey:
+                    '${bookData[BookConfig.bookCoverImageUrl]}-categorizedbooklist',
+                bookData: Book(
+                    bookTitle: bookData[BookConfig.bookTitle],
+                    bookAuthor: bookData[BookConfig.bookAuthor],
+                    bookPublication: bookData[BookConfig.bookPublication],
+                    bookCondition: bookData[BookConfig.bookCondition],
+                    bookGenre: bookData[BookConfig.bookGenre],
+                    bookAvailability: bookData[BookConfig.bookAvailability],
+                    bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
+                    bookOwnerID: bookData[BookConfig.bookOwnerID],
+                    bookID: bookData[BookConfig.bookID],
                     location: bookData[
-                        'book_exchange_location'], // Directly access GeoPoint
-                    bookRating: bookData['book_rating'],
-                    completeAddress: bookData['book_exchange_address']),
+                        BookConfig.location], // Directly access GeoPoint
+                    bookRating: bookData[BookConfig.bookRating],
+                    completeAddress: bookData[BookConfig.completeAddress]),
               ),
             ),
           );
@@ -123,9 +125,10 @@ Widget buildCategoryBooksWidget(
         child: BookCard(
           cardHeight: 200,
           cardWidth: 150,
-          heroKey: '${bookData['book_coverimg_url']}-categorizedbooklist',
-          title: bookData['book_title'],
-          imageUrl: bookData['book_coverimg_url'],
+          heroKey:
+              '${bookData[BookConfig.bookCoverImageUrl]}-categorizedbooklist',
+          title: bookData[BookConfig.bookTitle],
+          imageUrl: bookData[BookConfig.bookCoverImageUrl],
         ),
       ),
     ),

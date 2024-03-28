@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 class FirebaseUserService with ChangeNotifier {
   final logger = SimpleLogger();
 
-// Get the current user's UID
+  /// Get the current user's UID
   String? getCurrentUserUid() {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -41,7 +42,6 @@ class FirebaseUserService with ChangeNotifier {
   Future<void> addAddressToUser(
       String userId, Map<String, dynamic> address) async {
     try {
-      // Reference to the user's addresses collection
       CollectionReference userAddressesCollection =
           FirebaseFirestore.instance.collection('users/$userId/addresses');
       // Add a new document with a unique ID
@@ -52,7 +52,7 @@ class FirebaseUserService with ChangeNotifier {
     }
   }
 
-//! Method to check users collection exists or not
+  /// Method to check users collection exists or not
   Future<bool> userCollectionExists(String userUid) async {
     try {
       final userCollection = await FirebaseFirestore.instance
@@ -66,18 +66,7 @@ class FirebaseUserService with ChangeNotifier {
     }
   }
 
-//! Method to create user collection
-  // Future<void> createUserCollection(String userUid, dynamic data) async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(userUid)
-  //         .set(data);
-  //   } catch (e) {
-  //     logger.info('Error creating user collection: $e');
-  //   }
-  // }
-  //! Method to create user collection
+  /// Method to create user collection
   Future<void> createUserCollection(String userUid, UserModel userModel) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(userUid).set(
@@ -87,12 +76,14 @@ class FirebaseUserService with ChangeNotifier {
     }
   }
 
+  /// Method to get user details by user ID
   Future<Map<String, dynamic>?> getUserDetailsById(String userId) async {
     try {
       CollectionReference usersCollection =
           FirebaseFirestore.instance.collection('users');
-      QuerySnapshot querySnapshot =
-          await usersCollection.where('useruid', isEqualTo: userId).get();
+      QuerySnapshot querySnapshot = await usersCollection
+          .where(UserConstants.userUid, isEqualTo: userId)
+          .get();
 
       if (querySnapshot.docs.isEmpty) {
         return null; // Return null if no matching user is found

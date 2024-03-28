@@ -9,7 +9,7 @@ import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/view/address/address_list_view.dart';
 import 'package:p2pbookshare/view/upload_book/widgets/book_added_bottom_sheet.dart';
-import 'package:p2pbookshare/model/book_model.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -200,7 +200,7 @@ class UploadBookViewModel with ChangeNotifier {
 
     if (uploadedImgUrl.isNotEmpty) {
       // Create a Book object with the form data and other information.
-      BookModel book = BookModel(
+      Book book = Book(
           bookTitle: titleCtrl.text,
           bookAuthor: authorCtrl.text,
           bookPublication: publicationCtrl.text,

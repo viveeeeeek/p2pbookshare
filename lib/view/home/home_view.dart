@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
+import 'package:p2pbookshare/provider/chat/chat_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/view/chat/chats_list_view.dart';
+import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 import 'package:provider/provider.dart';
 
@@ -37,58 +44,121 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     super.build(context);
     final userDataProvider = Provider.of<UserDataProvider>(context);
-    // const double toolbarHeight = kToolbarHeight + 8;
+    final bookRequestService = Provider.of<BookRequestService>(context);
+    final chatService = Provider.of<ChatService>(context);
+    final logger = Logger();
     return LayoutBuilder(builder: (context, constraints) {
-      return SafeArea(
-        child: Scaffold(
-
-            /// SearchAppBar navigates to searchview
-            // appBar: const PreferredSize(
-            //   preferredSize: Size.fromHeight(toolbarHeight),
-            //   child: SearchAppBar(
-            //     isExpanded: false,
-            //   ),
-            // ),
-            body: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
-                    child: Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          const TextSpan(
-                            text: 'Welcome,\n',
-                            style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text:
-                                userDataProvider.userModel!.userName ?? 'User',
-                            style: const TextStyle(
-                              fontSize: 26,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  NewBookRequestCard(
-                    userUid: userDataProvider.userModel!.userUid!,
-                  ),
-                  for (String genre in AppConstants.bookGenres)
-                    buildCategorizedBookList(context, genre),
+      return NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, isInnerBoxScrolled) {
+            return [
+              SliverAppBar(
+                floating: true,
+                snap: true,
+                // pinned: true,
+                title: const Text('P2P Book Share'),
+                forceElevated: isInnerBoxScrolled,
+                actions: [
+                  P2pbookshareStreamBuilder(
+                      dataStream:
+                          bookRequestService.hasBookRequestsForCurrentUser(
+                              'book_requests',
+                              userDataProvider.userModel!.userUid!),
+                      successBuilder: (data) {
+                        final bool hasBookRequests = data as bool;
+                        return IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NotificationView()),
+                              );
+                            },
+                            icon: hasBookRequests
+                                ? Icon(MdiIcons.bellBadgeOutline)
+                                : Icon(MdiIcons.bellOutline));
+                      },
+                      waitingBuilder: () {
+                        return const SizedBox();
+                      },
+                      errorBuilder: (error) {
+                        return Text('$error');
+                      }),
+                  P2pbookshareStreamBuilder(
+                      dataStream: chatService.hasChatroomForUser(
+                          '/chatrooms', userDataProvider.userModel!.userUid!),
+                      successBuilder: (sucess) {
+                        final _hasChatroomAvailable = sucess as bool;
+                        logger.i(
+                            'has chatroom available: $_hasChatroomAvailable');
+                        return IconButton(
+                          icon: _hasChatroomAvailable
+                              ? Icon(MdiIcons.messageBadgeOutline)
+                              : Icon(MdiIcons.messageOutline),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ChatsListView()),
+                            );
+                          },
+                        );
+                      },
+                      waitingBuilder: () {
+                        return const SizedBox();
+                      },
+                      errorBuilder: (error) {
+                        return Text('$error');
+                      })
+                  // IconButton(
+                  //   icon: Icon(MdiIcons.messageBadgeOutline),
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => const ChatsListView()),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 25, 25),
+                  child: Text.rich(
+                    TextSpan(
+                      children: <InlineSpan>[
+                        const TextSpan(
+                          text: 'Welcome,\n',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: userDataProvider.userModel!.userName ?? 'User',
+                          style: const TextStyle(
+                            fontSize: 26,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // NewBookRequestCard(
+                //   userUid: userDataProvider.userModel!.userUid!,
+                // ),
+                for (String genre in AppConstants.bookGenres)
+                  buildCategorizedBookList(context, genre),
+              ],
             ),
-          ],
-        )),
-      );
+          ));
     });
   }
 }

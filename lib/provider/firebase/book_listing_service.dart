@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
+import 'package:simple_logger/simple_logger.dart';
+
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 class BookListingService with ChangeNotifier {
   final user = FirebaseAuth.instance.currentUser;
@@ -57,4 +59,18 @@ class BookListingService with ChangeNotifier {
       logger.info('Error deleting book details from Firestore: $e');
     }
   }
+
+  // /// Method to update the book details in the Firestore
+  // /// update book availability status
+  // Future<void> updateBookAvailabilityStatus(
+  //     String bookId, bool isAvailable) async {
+  //   try {
+  //     await FirebaseFirestore.instance.collection('books').doc(bookId).update({
+  //       BookConfig.bookAvailability: isAvailable,
+  //     });
+  //     logger.info("✅✅Book availability status updated");
+  //   } catch (e) {
+  //     logger.info('Error updating book availability status in Firestore: $e');
+  //   }
+  // }
 }

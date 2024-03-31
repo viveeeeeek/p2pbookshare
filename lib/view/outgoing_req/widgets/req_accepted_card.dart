@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 
 class ReqAcceptedCard extends StatelessWidget {
@@ -30,7 +32,7 @@ class ReqAcceptedCard extends StatelessWidget {
             height: 5,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FilledButton(
                   onPressed: onPressed,
@@ -40,9 +42,9 @@ class ReqAcceptedCard extends StatelessWidget {
                         Icon(MdiIcons.messageOutline),
                         const SizedBox(width: 8),
                         const Text('Chat now')
-                      ]))
+                      ])),
             ],
-          )
+          ),
         ],
       ),
     );

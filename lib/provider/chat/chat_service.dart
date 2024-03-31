@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/chat_room.dart';
@@ -57,16 +59,16 @@ class ChatService extends ChangeNotifier {
   }
 
   Future<void> initializeChatRoom({required ChatRoom newChatRoom}) async {
-    logger.info('${newChatRoom.toMap().toString()}');
+    logger.i('${newChatRoom.toMap().toString()}');
     try {
       await _firestore.collection('chatrooms').doc(newChatRoom.chatRoomId).set(
             newChatRoom.toMap(),
             SetOptions(merge: true),
           );
-      logger.info(
+      logger.i(
           '✅ Chatroom initialized & document updated with bookid, borrowreqid, userLists fields');
     } catch (e) {
-      logger.warning('❌ Error initializing chatroom: $e');
+      logger.e('❌ Error initializing chatroom: $e');
       throw e;
     }
   }
@@ -101,5 +103,27 @@ class ChatService extends ChangeNotifier {
         .map((snapshot) {
       return snapshot.docs.map((doc) => doc.data()).toList();
     });
+  }
+
+  /// delete chatroom based on chatroom id
+  Future<void> deleteChatRoom(String chatRoomId) async {
+    try {
+      // Delete subcollections inside chatroom document
+      final messagesCollection = _firestore
+          .collection('chatrooms')
+          .doc(chatRoomId)
+          .collection('messages');
+      final messagesQuery = await messagesCollection.get();
+      for (var doc in messagesQuery.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete chatroom document
+      await _firestore.collection('chatrooms').doc(chatRoomId).delete();
+      logger.i("✅✅Chatroom deleted");
+    } catch (e) {
+      logger.e('❌ Error deleting chatroom: $e');
+      throw e;
+    }
   }
 }

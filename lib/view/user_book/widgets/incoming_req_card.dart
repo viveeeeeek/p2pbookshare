@@ -10,7 +10,7 @@ import 'package:p2pbookshare/provider/firebase/user_service.dart';
 /// All other requests would be rejected
 /// The user would be notified about the rejection
 /// Set the availibility of the book to false
-//TODO: add exchange duration to the book request
+//TODO: Add exchange duration to the book request
 Widget incomingRequestCard(
     {required BuildContext context,
     required Map<String, dynamic> bookRequestData,
@@ -45,7 +45,7 @@ Widget incomingRequestCard(
                       color: context.onPrimaryContainer),
                   const SizedBox(width: 5),
                   Text(
-                    userData[UserConstants.userName],
+                    userData[UserConstants.displayName],
                     style: TextStyle(color: context.onPrimaryContainer),
                   ),
                 ],
@@ -55,47 +55,35 @@ Widget incomingRequestCard(
                 children: [
                   const SizedBox(height: 5), // Add spacing
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Icon(MdiIcons.calendarRangeOutline,
-                      //     size: 16, color: context.onPrimaryContainer),
-                      // const SizedBox(width: 5),
-                      Text(
-                        'from: ',
-                        style: TextStyle(color: context.onPrimaryContainer),
-                      ),
-                      // const Expanded(child: SizedBox()),
-                      Text(
-                        '${_reqStartDate.toDayAndDate()}',
-                        style: TextStyle(color: context.onPrimaryContainer),
+                      Container(
+                        height: 50,
+                        width: 1,
+                        color: context.onPrimaryContainer.withOpacity(0.5),
                       ),
                       const SizedBox(width: 10),
+                      Column(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${_reqStartDate.toDayAndDate()}',
+                            style: TextStyle(color: context.onPrimaryContainer),
+                          ),
+                          const Text(
+                            "To",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            '${_reqEndDate.toDayAndDate()}',
+                            style: TextStyle(color: context.onPrimaryContainer),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                  Container(
-                    height: 20,
-                    width: 1,
-                    color: context.onPrimaryContainer,
-                  ),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Icon(MdiIcons.calendarRangeOutline,
-                      //     size: 16, color: context.onPrimaryContainer),
-                      // const SizedBox(width: 5),
-                      Text(
-                        'To: ',
-                        style: TextStyle(color: context.onPrimaryContainer),
-                      ),
-                      // const Expanded(child: SizedBox()),
-                      Text(
-                        '${_reqEndDate.toDayAndDate()}',
-                        style: TextStyle(color: context.onPrimaryContainer),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-
+                  const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment:
                         MainAxisAlignment.end, // Adjust button alignment

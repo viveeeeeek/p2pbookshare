@@ -1,6 +1,8 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/user_model.dart';
@@ -22,41 +24,53 @@ class ProfileHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          userModel.profilePictureUrl != null
+              ? ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                  child: SizedBox(
+                      height: 75,
+                      width: 75,
+
+                      /// Custom cached image widget
+                      child:
+                          CachedImage(imageUrl: userModel.profilePictureUrl!)),
+                )
+              : CircularProgressIndicator(
+                  color: Theme.of(context).indicatorColor,
+                ),
+          const SizedBox(width: 25),
+          const SizedBox(height: 12),
+          // Username
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 75,
-                height: 75,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey,
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: context.surfaceVariant.withOpacity(0.5),
                 ),
-                child: Center(
-                  child: userModel.userPhotoUrl != null
-                      ? ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(25)),
-                          child: SizedBox(
-                              height: 120,
-                              width: 120,
-
-                              /// Custom cached image widget
-                              child: CachedImage(
-                                  imageUrl: userModel.userPhotoUrl!)),
-                        )
-                      : CircularProgressIndicator(
-                          color: Theme.of(context).indicatorColor,
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      MdiIcons.at,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      userModel.username!,
+                      style: const TextStyle(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 25),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 6),
+          // User display name
           Text(
-            userModel.userName!,
+            userModel.displayName!,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -65,16 +79,13 @@ class ProfileHeader extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 2, // Limiting to 2 lines to prevent excessive expansion
           ),
+
           Text(
-            userModel.userEmailAddress!,
-            // style: const TextStyle(
-            //   fontSize: 16,
-            //   color: Colors.grey,
-            // ),
+            userModel.emailAddress!,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
-            ),
+            ), // User email address
           ),
         ],
       ),
@@ -82,9 +93,8 @@ class ProfileHeader extends StatelessWidget {
   }
 }
 
-
-              /// Show count of numbers of books listed by user
-              /**
+/// Show count of numbers of books listed by user
+/**
                 StreamBuilder(
                   stream: BookRequestHandlingService()
                       .countNoOfBooksUploadedAsStream(),

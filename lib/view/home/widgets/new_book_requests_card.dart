@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/core/app_init_handler.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
+import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
+import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 class NewBookRequestCard extends StatelessWidget {
   const NewBookRequestCard({super.key, required this.userUid});
@@ -23,7 +23,7 @@ class NewBookRequestCard extends StatelessWidget {
                 .countNoOfBookRequestsReceivedAsStream(userUid),
             successBuilder: (data) {
               final _count = data;
-              logger.info('No of requests: ${data}');
+              logger.i('No of requests: ${data}');
               if (_count > 0) {
                 return Padding(
                   padding:

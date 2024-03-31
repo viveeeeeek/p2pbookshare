@@ -16,6 +16,7 @@ class UserDataPrefs with ChangeNotifier {
 
   //! SAVE USER TO SHARED-PREFERENCES
   Future<void> saveUserToPrefs(User? user) async {
+    //FIXME: username is not saved in shared-preferences
     await initPrefs();
     _prefs!.setString('user_id', user?.uid ?? '');
     _prefs!.setString('user_name', user?.displayName ?? '');

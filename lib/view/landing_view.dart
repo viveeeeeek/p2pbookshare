@@ -104,9 +104,10 @@ class _LandingViewState extends State<LandingView> {
                 icon: CircleAvatar(
                     radius: 15,
                     backgroundImage: userDataProvider.userModel != null &&
-                            userDataProvider.userModel!.userPhotoUrl != null
+                            userDataProvider.userModel!.profilePictureUrl !=
+                                null
                         ? CachedNetworkImageProvider(
-                            userDataProvider.userModel!.userPhotoUrl!)
+                            userDataProvider.userModel!.profilePictureUrl!)
                         : null),
                 label: "Profile",
               ),

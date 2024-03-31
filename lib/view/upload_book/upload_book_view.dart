@@ -57,12 +57,12 @@ class _BookUploadViewState extends State<BookUploadView>
                         children: [
                           CustomTextField(
                               controller: titleCtrl,
-                              labelText: 'Title *',
+                              labelText: 'Title*',
                               isMultiline: false),
                           const SizedBox(height: 16),
                           CustomTextField(
                             controller: authorCtrl,
-                            labelText: 'Author *',
+                            labelText: 'Author*',
                             isMultiline: false,
                           ),
                           const SizedBox(height: 16),

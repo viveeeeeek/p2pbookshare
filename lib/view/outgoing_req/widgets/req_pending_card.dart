@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 
 class ReqPendingcard extends StatelessWidget {
-  const ReqPendingcard({super.key});
+  const ReqPendingcard({super.key, required this.onReqCancel});
+
+  final void Function() onReqCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,26 @@ class ReqPendingcard extends StatelessWidget {
           Text(
               'The owner has not yet accepted or rejected your request. Please wait for the owner to respond. You will be able to chat with the owner once the request is accepted.',
               style: TextStyle(color: context.onTertiaryContainer)),
+          const SizedBox(
+            height: 3,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FilledButton(
+                  onPressed: onReqCancel,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.onTertiaryContainer,
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(MdiIcons.close),
+                        const SizedBox(width: 8),
+                        const Text('Cancel request')
+                      ]))
+            ],
+          ),
         ],
       ),
     );

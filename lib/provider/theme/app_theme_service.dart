@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 
 class AppThemeService extends ChangeNotifier {
@@ -29,11 +30,11 @@ class AppThemeService extends ChangeNotifier {
     if (isDarkThemeEnabled == true) {
       _isDarkThemeEnabled = true;
       _themeMode = ThemeMode.dark;
-      logger.info('✅✅Temeprovidr; theme toggled $currentThemeMode');
+      logger.i('✅✅Temeprovidr; theme toggled $currentThemeMode');
     } else {
       _isDarkThemeEnabled = false;
       _themeMode = ThemeMode.light;
-      logger.info('✅✅Temeprovider; theme toggled $currentThemeMode');
+      logger.i('✅✅Temeprovider; theme toggled $currentThemeMode');
     }
     notifyListeners();
   }

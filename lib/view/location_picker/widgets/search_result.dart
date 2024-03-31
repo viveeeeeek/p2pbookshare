@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class SearchResult extends StatelessWidget {
   const SearchResult({
@@ -39,19 +41,19 @@ class SearchResult extends StatelessWidget {
                         ),
                         onTap: () async {
                           //TODO: Add to location picker handler
-                          logger.info('✅searchQuery clicked');
+                          logger.i('✅searchQuery clicked');
 
                           List<Location> locations = await locationFromAddress(
                             '${placemark.name ?? ''}, ${placemark.locality ?? ''}, ${placemark.street ?? ''}, ${placemark.postalCode ?? ''}, ${placemark.country ?? ''}',
                           );
-                          logger.info(
+                          logger.i(
                               "✅💥 searchResult location clicked $placemark");
                           if (locations.isNotEmpty) {
                             Location location = locations.first;
                             LatLng destination =
                                 LatLng(location.latitude, location.longitude);
                             await locationHandler.setDestination(destination);
-                            logger.info('💥💥destintion $destination');
+                            logger.i('💥💥destintion $destination');
                             resultAddress =
                                 '${placemark.name}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}';
                             locationHandler.setAddress(resultAddress);

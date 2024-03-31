@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/constants/app_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/view/request_book/request_book_view.dart';
+import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
 import 'package:p2pbookshare/model/book.dart';
@@ -182,8 +184,9 @@ class SearchViewState extends State<SearchView> {
 
 class BookTile extends StatelessWidget {
   final Map<String, dynamic> bookData;
+  final _currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
-  const BookTile({
+  BookTile({
     Key? key,
     required this.bookData,
   }) : super(key: key);
@@ -206,28 +209,29 @@ class BookTile extends StatelessWidget {
       title: Text(bookData[BookConfig.bookTitle]),
       subtitle: Text(bookData[BookConfig.bookAuthor]),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RequestBookView(
-              heroKey: '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
-              bookData: Book(
-                  bookTitle: bookData[BookConfig.bookTitle],
-                  bookAuthor: bookData[BookConfig.bookAuthor],
-                  bookPublication: bookData[BookConfig.bookPublication],
-                  bookCondition: bookData[BookConfig.bookCondition],
-                  bookGenre: bookData[BookConfig.bookGenre],
-                  bookAvailability: bookData[BookConfig.bookAvailability],
-                  bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
-                  bookOwnerID: bookData[BookConfig.bookOwnerID],
-                  bookID: bookData[BookConfig.bookID],
-                  bookRating: bookData[BookConfig.bookRating],
-                  location:
-                      bookData[BookConfig.location], // Directly access GeoPoint
-                  completeAddress: bookData[BookConfig.completeAddress]),
+        if (bookData[BookConfig.bookOwnerID] == _currentUserID) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserBookDetailsView(
+                heroKey:
+                    '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
+                bookData: Book.fromMap(bookData),
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RequestBookView(
+                heroKey:
+                    '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
+                bookData: Book.fromMap(bookData),
+              ),
+            ),
+          );
+        }
       },
     );
   }

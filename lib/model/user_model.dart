@@ -4,30 +4,32 @@ import 'package:p2pbookshare/core/constants/model_constants.dart';
 /// userPhotoUrl, and provides methods to convert the object to and from a Map.
 
 class UserModel {
-  final String? userUid, userEmailAddress, userName, userPhotoUrl;
+  final String? userUid, emailAddress, displayName, profilePictureUrl, username;
 
-  UserModel({
-    required this.userUid,
-    required this.userEmailAddress,
-    required this.userName,
-    required this.userPhotoUrl,
-  });
+  UserModel(
+      {required this.userUid,
+      required this.emailAddress,
+      required this.displayName,
+      required this.profilePictureUrl,
+      this.username});
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
+      username: map[UserConstants.username],
       userUid: map[UserConstants.userUid],
-      userEmailAddress: map[UserConstants.userEmailAddress],
-      userName: map[UserConstants.userName],
-      userPhotoUrl: map[UserConstants.userPhotoUrl],
+      emailAddress: map[UserConstants.emailAddress],
+      displayName: map[UserConstants.displayName],
+      profilePictureUrl: map[UserConstants.profilePictureUrl],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       UserConstants.userUid: userUid,
-      UserConstants.userEmailAddress: userEmailAddress,
-      UserConstants.userName: userName,
-      UserConstants.userPhotoUrl: userPhotoUrl,
+      UserConstants.username: username,
+      UserConstants.emailAddress: emailAddress,
+      UserConstants.displayName: displayName,
+      UserConstants.profilePictureUrl: profilePictureUrl,
     };
   }
 }

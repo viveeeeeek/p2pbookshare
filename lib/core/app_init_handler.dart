@@ -2,14 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_logger/simple_logger.dart';
-
+import 'package:logger/logger.dart';
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 
-SimpleLogger logger = SimpleLogger();
+var logger = Logger();
 
 class AppInitHandler with ChangeNotifier {
   late final AuthorizationService _authProvider;
@@ -27,7 +26,7 @@ class AppInitHandler with ChangeNotifier {
         await _userDataProvider.loadUserDataFromPrefs();
         return true;
       } catch (e) {
-        logger.info('❌ Error loading user data: $e');
+        logger.i('❌ Error loading user data: $e');
         return false;
       }
     } else {

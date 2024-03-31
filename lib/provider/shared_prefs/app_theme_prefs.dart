@@ -102,4 +102,3 @@ class AppThemePrefs with ChangeNotifier {
     }
   }
 }
-//TODO: Remove repeated initilization of shareprefs instances. minimze it as shown in pooja bhaumik's linkedin learning course Chpter 7 Static initializers

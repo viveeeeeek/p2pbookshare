@@ -1,21 +1,22 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/core/constants/model_constants.dart';
+import 'package:p2pbookshare/core/widgets/borrow_req_detail_card.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/chat_room.dart';
+import 'package:p2pbookshare/model/book.dart';
+import 'package:p2pbookshare/model/borrow_request.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/chat/chat_view.dart';
-import 'package:p2pbookshare/view/outgoing_req/widgets/req_accepted_card.dart';
 import 'package:p2pbookshare/view/request_book/widgets/book_info_card.dart';
-import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view_model/user_book_details_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 import 'widgets/widgets.dart';
 
@@ -36,47 +37,55 @@ class UserBookDetailsView extends StatefulWidget {
 
 class _UserBookDetailsViewState extends State<UserBookDetailsView> {
   FirebaseUserService _firebaseUserService = FirebaseUserService();
-  String _receiverName = '';
   final _userBookDetailsViewModel = UserBookDetailsViewModel();
-  String _receiverId = '';
-  String _chatRoomId = '';
-  String _receiverImageUrl = '';
-  // String _currentUserId = '';
+  String _receiverName = '',
+      _receiverId = '',
+      _chatRoomId = '',
+      _receiverImageUrl = '';
 
+  /// Set the receiver details
   Future<void> setReceiverDetails(String receiverId) async {
     _receiverId = receiverId;
-    _receiverName = await _firebaseUserService
-        .getUserDetailsById(_receiverId)
-        .then((value) => value![UserConstants.userName]);
-    _receiverImageUrl = await _firebaseUserService
-        .getUserDetailsById(_receiverId)
-        .then((value) => value![UserConstants.userPhotoUrl]);
+    final userDetails =
+        await _firebaseUserService.getUserDetailsById(_receiverId);
+    _receiverName = userDetails![UserConstants.displayName];
+    _receiverImageUrl = userDetails[UserConstants.profilePictureUrl];
+  }
+
+  /// Get the receiver id and chat room id
+  /// based on the book request data
+  /// and the current user id
+  _getReceiverIdAndChatRoomId(Map<String, dynamic> bookRequestdata) async {
+    final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+    String bookId = widget.bookData.bookID!;
+
+    if (currentUserUid == bookRequestdata[BorrowRequestConfig.reqBookOwnerID]) {
+      await setReceiverDetails(
+          bookRequestdata[BorrowRequestConfig.requesterID]);
+    } else {
+      await setReceiverDetails(
+          bookRequestdata[BorrowRequestConfig.reqBookOwnerID]);
+    }
+
+    _chatRoomId =
+        ChatService.createChatRoomId(bookId, currentUserUid, _receiverId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.bookData.bookTitle),
+        title: const Text('Your book listing details'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(MdiIcons.deleteOutline),
-            onPressed: () => _userBookDetailsViewModel.deleteBookListing(
-                context,
-                widget.bookData.bookID!,
-                widget.bookData.bookCoverImageUrl),
-          ),
-        ],
       ),
       body: SafeArea(
           child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Consumer2<BookRequestService, BookListingService>(
                 builder:
                     (context, bookRequestService, bookListingService, child) {
@@ -89,8 +98,9 @@ class _UserBookDetailsViewState extends State<UserBookDetailsView> {
                               height: 25,
                             ),
                             // Book cover image & details card
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   height: 180,
@@ -115,26 +125,26 @@ class _UserBookDetailsViewState extends State<UserBookDetailsView> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                // Book Detail Card
-                                BookDetailsCard(
-                                  bookData: widget.bookData,
-                                  cardWidth: double.infinity,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                IconButton(
+                                  onPressed: () => _userBookDetailsViewModel
+                                      .deleteBookListing(
+                                          context,
+                                          widget.bookData.bookID!,
+                                          widget.bookData.bookCoverImageUrl),
+                                  icon: Icon(MdiIcons.deleteOutline),
                                 ),
                               ],
                             ),
-                            // const SizedBox(
-                            //   height: 25,
-                            // ),
-                            // // Button to delete the book from the database
-                            // OutlinedButton(
-                            //   onPressed: () =>
+                            const SizedBox(
+                              height: 6,
+                            ),
 
-                            //   child: const Text('Delete Book'),
-                            // ),
+                            // Book Detail Card
+                            BookDetailsCard(
+                              bookData: widget.bookData,
+                              cardWidth: 300,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
                           ])),
                         ];
                       },
@@ -152,178 +162,173 @@ class _UserBookDetailsViewState extends State<UserBookDetailsView> {
                             } else if (snapshot.hasData &&
                                 snapshot.data != null) {
                               final bookRequestdata = snapshot.data!;
-
                               // Request accepted card if the book request is accepted
                               if (bookRequestdata[
                                       BorrowRequestConfig.reqStatus] ==
                                   'accepted') {
-                                Future<void> setReceiverDetails(
-                                    String receiverId) async {
-                                  _receiverId = receiverId;
-                                  _receiverName = await _firebaseUserService
-                                      .getUserDetailsById(_receiverId)
-                                      .then((value) =>
-                                          value![UserConstants.userName]);
-                                  _receiverImageUrl = await _firebaseUserService
-                                      .getUserDetailsById(_receiverId)
-                                      .then((value) =>
-                                          value![UserConstants.userPhotoUrl]);
-                                }
+                                _getReceiverIdAndChatRoomId(bookRequestdata);
 
-                                _getReceiverIdAndChatRoomId() async {
-                                  final currentUserUid =
-                                      FirebaseAuth.instance.currentUser!.uid;
-                                  String bookId = widget.bookData.bookID!;
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Chat and complete exchange buttons
+                                      StreamBuilder(
+                                          stream: bookRequestService
+                                              .checkBookRequestAccepted(
+                                                  widget.bookData.bookID!),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const P2PBookShareShimmerContainer(
+                                                  height: 50,
+                                                  width: double.infinity,
+                                                  borderRadius: 15);
+                                            } else if (snapshot.hasData &&
+                                                snapshot.data != null) {
+                                              final bookRequestdata =
+                                                  snapshot.data!;
+                                              if (bookRequestdata[
+                                                      BorrowRequestConfig
+                                                          .reqStatus] ==
+                                                  'accepted') {
+                                                if (bookRequestdata[
+                                                        BorrowRequestConfig
+                                                            .reqBookOwnerID] ==
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid) {
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      FilledButton(
+                                                        child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              Icon(MdiIcons
+                                                                  .messageOutline),
+                                                              const SizedBox(
+                                                                  width: 8),
+                                                              const Text(
+                                                                'Chat borrower',
+                                                              )
+                                                            ]),
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) {
+                                                            return ChatView(
+                                                              receiverId:
+                                                                  _receiverId,
+                                                              receiverName:
+                                                                  _receiverName,
+                                                              receiverimgUrl:
+                                                                  _receiverImageUrl,
+                                                              chatRoomId:
+                                                                  _chatRoomId,
+                                                              bookId: widget
+                                                                  .bookData
+                                                                  .bookID!,
+                                                            );
+                                                          }));
+                                                        },
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return AlertDialog(
+                                                                  title: const Text(
+                                                                      'Complete exchange'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'Marking this exchange complete will relist the book and delete the borrow request and associated chat.\n\nAre you sure you want to proceed?'),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Cancel'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        _userBookDetailsViewModel.completeBookExchange(
+                                                                            context:
+                                                                                context,
+                                                                            chatRoomID:
+                                                                                _chatRoomId,
+                                                                            bookID:
+                                                                                widget.bookData.bookID!,
+                                                                            bookRequestID: bookRequestdata[BorrowRequestConfig.reqID]);
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Confirm'),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        },
+                                                        child: const Text(
+                                                            'Complete exchange'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              } else {
+                                                return const SizedBox();
+                                              }
+                                            } else {
+                                              return const SizedBox();
+                                            }
+                                          }),
 
-                                  if (currentUserUid ==
-                                      bookRequestdata[
-                                          BorrowRequestConfig.reqBookOwnerID]) {
-                                    await setReceiverDetails(bookRequestdata[
-                                        BorrowRequestConfig.requesterID]);
-                                  } else {
-                                    await setReceiverDetails(bookRequestdata[
-                                        BorrowRequestConfig.reqBookOwnerID]);
-                                  }
-
-                                  _chatRoomId = ChatService.createChatRoomId(
-                                      bookId, currentUserUid, _receiverId);
-                                }
-
-                                _getReceiverIdAndChatRoomId();
-
-                                return Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    ReqAcceptedCard(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ChatView(
-                                            receiverId: _receiverId,
-                                            receiverName: _receiverName,
-                                            receiverimgUrl: _receiverImageUrl,
-                                            chatRoomId: _chatRoomId,
-                                          );
-                                        }));
-                                      },
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Text(
+                                        'Ongoing exchange request details',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      // Current exchange request details
+                                      CurrentRequestDetails(
+                                          bookRequestModel:
+                                              BorrowRequest.fromMap(
+                                                  bookRequestdata)),
+                                    ],
+                                  ),
                                 );
                               } else {
-                                // Incoming book requests listview
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                        child: StreamBuilder(
-                                      stream: bookRequestService
-                                          .fetchRequestsForBook(
-                                              widget.bookData.bookID!),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const P2PBookShareShimmerContainer(
-                                              height: 150,
-                                              width: double.infinity,
-                                              borderRadius: 15);
-                                        } else if (!snapshot.hasData ||
-                                            snapshot.data!.isEmpty) {
-                                          return const NoRequestsWidget();
-                                        } else if (snapshot.hasData &&
-                                            snapshot.data != null) {
-                                          final bookRequestData =
-                                              snapshot.data!;
-
-                                          Future<ChatRoom>
-                                              getReceiverIdAndChatRoomId(
-                                                  Map<String, dynamic>
-                                                      bookData) async {
-                                            String currentUserId = FirebaseAuth
-                                                .instance.currentUser!.uid;
-                                            String bookId = bookData[
-                                                BorrowRequestConfig.reqBookID];
-                                            String receiverId;
-                                            if (currentUserId ==
-                                                widget.bookData.bookOwnerID) {
-                                              receiverId = bookData[
-                                                  BorrowRequestConfig
-                                                      .requesterID];
-                                            } else {
-                                              receiverId = bookData[
-                                                  BorrowRequestConfig
-                                                      .reqBookOwnerID];
-                                            }
-                                            String chatRoomId =
-                                                ChatService.createChatRoomId(
-                                                    bookId,
-                                                    currentUserId,
-                                                    receiverId);
-                                            logger.info(
-                                                '⚙️🔨Chat room id: $chatRoomId, receiverId: $receiverId, receiverName: $_receiverName, currentUserId: $currentUserId');
-                                            return ChatRoom(
-                                              userIds: [
-                                                currentUserId,
-                                                receiverId
-                                              ],
-                                              bookId: widget.bookData.bookID!,
-                                              chatRoomId: chatRoomId,
-                                              bookBorrowRequestId: bookData[
-                                                  BorrowRequestConfig.reqID],
-                                            );
-                                          }
-
-                                          return ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: bookRequestData.length,
-                                            itemBuilder: (context, index) {
-                                              final requestData =
-                                                  bookRequestData[index];
-                                              return FutureBuilder<ChatRoom>(
-                                                future:
-                                                    getReceiverIdAndChatRoomId(
-                                                        requestData),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.connectionState ==
-                                                          ConnectionState
-                                                              .done &&
-                                                      snapshot.hasData) {
-                                                    ChatRoom chatRoom =
-                                                        snapshot.data!;
-                                                    return incomingRequestCard(
-                                                      context: context,
-                                                      bookRequestData:
-                                                          requestData,
-                                                      onAccept: () =>
-                                                          _userBookDetailsViewModel
-                                                              .acceptIncomingBookRequest(
-                                                                  context,
-                                                                  chatRoom),
-                                                      onDecline: () =>
-                                                          _userBookDetailsViewModel
-                                                              .rejectIncomingBookRequest(
-                                                                  context,
-                                                                  requestData[
-                                                                      BorrowRequestConfig
-                                                                          .reqID]),
-                                                    );
-                                                  } else {
-                                                    // Show a loading indicator while the ChatRoom is being created
-                                                    return const CircularProgressIndicator();
-                                                  }
-                                                },
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return const SizedBox();
-                                        }
-                                      },
-                                    )),
-                                  ],
-                                );
+                                // Incoming borrow requests listview
+                                return IncomingReqListView(
+                                    widget: widget,
+                                    receiverName: _receiverName,
+                                    bookRequestService: bookRequestService,
+                                    userBookDetailsViewModel:
+                                        _userBookDetailsViewModel);
                               }
                             } else {
                               return Text(
@@ -335,89 +340,3 @@ class _UserBookDetailsViewState extends State<UserBookDetailsView> {
     );
   }
 }
-
-
-  /// Container to show ongouing exchange progress
-  /// with the user who requested the book
-  /// This container will show the user's details
-  /// and the status of the book exchange
-  /// (i.e. if the book is received or not)
-  /// Show progress bar for exchange prorgesss
-  /**
-                                     Container(
-                                      child: Column(children: [
-                                        const Text(
-                                          'Ongoing Exchange',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        StreamBuilder(
-                                            stream: bookRequestService
-                                                .fetchAcceptedRequestForBook(
-                                                    widget.bookData.bookID!),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const P2PBookShareShimmerContainer(
-                                                    height: 150,
-                                                    width: double.infinity,
-                                                    borderRadius: 15);
-                                              } else if (snapshot.hasData &&
-                                                  snapshot.data != null) {
-                                                final bookRequestData =
-                                                    snapshot.data!;
-                                                return ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.vertical,
-                                                  itemCount:
-                                                      bookRequestData.length,
-                                                  itemBuilder: (context, index) {
-                                                    final bookData =
-                                                        bookRequestData[index];
-                                                    return buildOngoingExchangeCard(
-                                                        context: context,
-                                                        bookRequestData: bookData,
-                                                        onBookReceived: () =>
-                                                            _userBookDetailsViewModel
-                                                                .markBookReceived(
-                                                                    context,
-                                                                    bookData[
-                                                                        BookRequestConfig.reqID]));
-                                                  },
-                                                );
-                                              } else {
-                                                return const SizedBox();
-                                              }
-                                            }),]),
-                                    ),
-                                   */
-                                  
-
-  /// Incoming requests title
-  /**
-                                     StreamBuilder(
-                                        stream:
-                                            bookRequestService.isRequestsAvailableForBook(
-                                                widget.bookData.bookID!),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData && snapshot.data == true) {
-                                            return const Padding(
-                                              padding: EdgeInsets.only(bottom: 10),
-                                    child: Text(
-                                      'Incoming Requests',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        }),
-                                    */

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
+import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/core/user_handler.dart';
@@ -36,18 +37,9 @@ class _SettingViewState extends State<SettingView> {
 
   @override
   Widget build(BuildContext context) {
-    // appBar: AppBar(
-    //   title: const Text('Settings'),
-    //   leading: IconButton(
-    //     icon: const Icon(Icons.arrow_back),
-    //     onPressed: () {
-    //       Navigator.of(context).pop();
-    //     },
-    //   ),
-    //   elevation: 0,
-    // ),
     return LayoutBuilder(builder: (context, constraints) {
       final appThemeProvider = Provider.of<AppThemeService>(context);
+      final addbookHandler = context.read<UploadBookViewModel>();
       return Scaffold(
           body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -90,6 +82,8 @@ class _SettingViewState extends State<SettingView> {
                 height: 10,
               ),
               ListTile(
+                onTap: () =>
+                    addbookHandler.showAddressPickerBottomSheet(context),
                 leading: Icon(MdiIcons.mapMarkerOutline),
                 title: const Text('Your addresses'),
                 subtitle: const Text('Edit address for book exchange'),
@@ -178,7 +172,7 @@ class _SettingViewState extends State<SettingView> {
                   ),
                 ),
                 subtitle: Text(
-                  '${_userModel.userEmailAddress}',
+                  '${_userModel.emailAddress}',
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -187,42 +181,6 @@ class _SettingViewState extends State<SettingView> {
               ),
 
               //TODO: Implement confirmation alerdialog
-
-              // SizedBox(
-              //   width: double.infinity,
-              //   height: 70,
-              //   child: OutlinedButton(
-              //     onPressed: () async {
-              //       await _settingsHandler.handleLogOut(context);
-              //     },
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       children: [
-              //         const Icon(Icons.logout_rounded),
-              //         const SizedBox(
-              //           width: 25,
-              //         ),
-              //         Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             const Text(
-              //               'Log out',
-              //               style: TextStyle(
-              //                   fontSize: 18, fontWeight: FontWeight.bold),
-              //             ),
-              //             Text(
-              //               '${_userModel.userEmailAddress}',
-              //               style: const TextStyle(
-              //                 fontSize: 14,
-              //               ),
-              //             ),
-              //           ],
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -230,5 +188,3 @@ class _SettingViewState extends State<SettingView> {
     });
   }
 }
-
-//FIXME: Logging out from app redirects to loginscreen but going back from loginscreen redirects back to the settings screen

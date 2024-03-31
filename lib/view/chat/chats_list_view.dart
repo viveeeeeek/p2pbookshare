@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
@@ -58,7 +59,9 @@ class ChatsListView extends StatelessWidget {
                 final _chatRoom = ChatRoom.fromMap(
                   snapshot.data!.docs[index].data() as Map<String, dynamic>,
                 );
+
                 logger.i('Chatroom: ${_chatRoom.toMap()}');
+
                 // Get the other user's id
                 final _otherUser = _chatRoom.userIds.firstWhere(
                   (element) => element != _currentUser!.uid,
@@ -86,12 +89,13 @@ class ChatsListView extends StatelessWidget {
                           if (snapshot.hasData) {
                             UserModel _otherUserModel = snapshot.data!;
                             return _buildChatroomListItemWidget(
-                              context,
-                              _otherUserModel,
-                              _lastMessage,
-                              _otherUser,
-                              _chatRoom,
-                            );
+                                context,
+                                _otherUserModel,
+                                _lastMessage,
+                                _otherUser,
+                                _chatRoom,
+                                // _bookID
+                                _chatRoom.bookId);
                           } else {
                             return const SizedBox.shrink();
                           }
@@ -123,7 +127,8 @@ class ChatsListView extends StatelessWidget {
       UserModel _otherUserModel,
       String lastMessage,
       String _otherUser,
-      ChatRoom _chatRoom) {
+      ChatRoom _chatRoom,
+      String bookID) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: ListTile(
@@ -132,9 +137,9 @@ class ChatsListView extends StatelessWidget {
             child: SizedBox(
               height: 50,
               width: 50,
-              child: CachedImage(imageUrl: _otherUserModel.userPhotoUrl!),
+              child: CachedImage(imageUrl: _otherUserModel.profilePictureUrl!),
             )),
-        title: Text(_otherUserModel.userName ?? ''),
+        title: Text(_otherUserModel.displayName ?? ''),
         subtitle: Row(
           children: [
             // if (lastMessage['sender_id'] == _currentUser.uid)
@@ -152,14 +157,16 @@ class ChatsListView extends StatelessWidget {
           ],
         ),
         onTap: () {
+          logger.d('Book Clicked: $bookID');
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ChatView(
                 receiverId: _otherUser,
-                receiverName: _otherUserModel.userName!,
+                receiverName: _otherUserModel.displayName!,
                 chatRoomId: _chatRoom.chatRoomId,
-                receiverimgUrl: _otherUserModel.userPhotoUrl ??
+                receiverimgUrl: _otherUserModel.profilePictureUrl ??
                     'https://via.placeholder.com/150',
+                bookId: bookID,
               ),
             ),
           );

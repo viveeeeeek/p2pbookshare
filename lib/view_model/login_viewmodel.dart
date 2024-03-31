@@ -9,7 +9,7 @@ import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_logger/simple_logger.dart';
+import 'package:logger/logger.dart';
 
 class LoginViewModel {
   Future<void> handleSignIn(BuildContext context) async {
@@ -17,7 +17,7 @@ class LoginViewModel {
         Provider.of<AuthorizationService>(context, listen: false);
     final fbUserOperations =
         Provider.of<FirebaseUserService>(context, listen: false);
-    final logger = SimpleLogger();
+    var logger = Logger();
 
     /// method to generate random 6-7 letter meaningful word from given string
     /// and use it as a username
@@ -46,18 +46,19 @@ class LoginViewModel {
       final user = authProvider.user;
       if (user != null) {
         final _username = await generateUserName(user.email!);
-        logger.info('newly generated username is $_username');
+        logger.i('newly generated username is $_username');
         UserModel userModel = UserModel(
           userUid: user.uid,
-          userEmailAddress: user.email,
-          userName: user.displayName,
-          userPhotoUrl: user.photoURL,
+          username: _username,
+          emailAddress: user.email,
+          displayName: user.displayName,
+          profilePictureUrl: user.photoURL,
         );
         final collectionExists =
             await fbUserOperations.userCollectionExists(user.uid);
         if (!collectionExists) {
           await fbUserOperations.createUserCollection(user.uid, userModel);
-          logger.info("✅collection creation is complete");
+          logger.i("✅collection creation is complete");
         }
 
         Navigator.pushReplacement(
@@ -67,21 +68,7 @@ class LoginViewModel {
                     const LandingView()));
       }
     } catch (e) {
-      logger.warning("❌Error during sign-in or user creation: $e");
+      logger.e("❌Error during sign-in or user creation: $e");
     }
   }
-
-  // isSigningIn<bool>(BuildContext context) {
-  //   final authProvider =
-  //       Provider.of<AuthorizationService>(context, listen: false);
-  //   if (authProvider.getIsSigningIn) {
-  //     logger.info('✅Is signingIn TRUE');
-  //     return true;
-  //   } else {
-  //     logger.info('❌Is signingIn FALSE');
-  //     return false;
-  //   }
-  // }
 }
-
-//TODO: Instead of creating new method for cheking is signedin directly check from authentication providers bool value righ into above function

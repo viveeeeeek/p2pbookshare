@@ -1,18 +1,20 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
-import 'package:p2pbookshare/view/address/address_list_view.dart';
-import 'package:p2pbookshare/view/upload_book/widgets/book_added_bottom_sheet.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:p2pbookshare/view/address/address_list_view.dart';
+import 'package:p2pbookshare/view/upload_book/widgets/book_added_bottom_sheet.dart';
 
 class UploadBookViewModel with ChangeNotifier {
   late final BookListingService _fbBookOperations;
@@ -112,7 +114,7 @@ class UploadBookViewModel with ChangeNotifier {
     selectedAddressLatLng = addressLatLng;
     _completeAddress = address;
     notifyListeners();
-    logger.info(
+    logger.i(
         'Address latlng & address retreived $selectedAddressLatLng $completeAddress');
   }
 

@@ -9,8 +9,9 @@ class UserHandler {
 
     return UserModel(
         userUid: userDataProvider.userModel!.userUid,
-        userEmailAddress: userDataProvider.userModel!.userEmailAddress,
-        userName: userDataProvider.userModel!.userName,
-        userPhotoUrl: userDataProvider.userModel!.userPhotoUrl);
+        username: userDataProvider.userModel!.username,
+        emailAddress: userDataProvider.userModel!.emailAddress,
+        displayName: userDataProvider.userModel!.displayName,
+        profilePictureUrl: userDataProvider.userModel!.profilePictureUrl);
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/view/home/widgets/book_card.dart';
 import 'package:p2pbookshare/view/request_book/request_book_view.dart';
-import 'package:p2pbookshare/model/book.dart';
+import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 
 class CategorizedBookList extends StatelessWidget {
   const CategorizedBookList({
@@ -93,7 +95,17 @@ Widget buildCategoryBooksWidget(
     child: GestureDetector(
       onTap: () {
         if (currentUserID == bookData[BookConfig.bookOwnerID]) {
-          logger.info('User is the owner of the book');
+          logger.i('User is the owner of the book');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserBookDetailsView(
+                heroKey:
+                    '${bookData[BookConfig.bookCoverImageUrl]}-categorizedbooklist',
+                bookData: Book.fromMap(bookData),
+              ),
+            ),
+          );
         } else {
           Navigator.push(
             context,
@@ -101,20 +113,7 @@ Widget buildCategoryBooksWidget(
               builder: (context) => RequestBookView(
                 heroKey:
                     '${bookData[BookConfig.bookCoverImageUrl]}-categorizedbooklist',
-                bookData: Book(
-                    bookTitle: bookData[BookConfig.bookTitle],
-                    bookAuthor: bookData[BookConfig.bookAuthor],
-                    bookPublication: bookData[BookConfig.bookPublication],
-                    bookCondition: bookData[BookConfig.bookCondition],
-                    bookGenre: bookData[BookConfig.bookGenre],
-                    bookAvailability: bookData[BookConfig.bookAvailability],
-                    bookCoverImageUrl: bookData[BookConfig.bookCoverImageUrl],
-                    bookOwnerID: bookData[BookConfig.bookOwnerID],
-                    bookID: bookData[BookConfig.bookID],
-                    location: bookData[
-                        BookConfig.location], // Directly access GeoPoint
-                    bookRating: bookData[BookConfig.bookRating],
-                    completeAddress: bookData[BookConfig.completeAddress]),
+                bookData: Book.fromMap(bookData),
               ),
             ),
           );

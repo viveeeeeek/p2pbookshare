@@ -2,6 +2,7 @@
 // import 'package:p2pbookshare/services/model/book.dart';
 
 import 'package:flutter/material.dart';
+
 import 'package:p2pbookshare/model/book.dart';
 
 class BookDetailsCard extends StatelessWidget {
@@ -27,10 +28,10 @@ class BookDetailsCard extends StatelessWidget {
         children: [
           Text(
             bookData.bookTitle,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              // color: Theme.of(context).colorScheme.onSecondaryContainer
             ),
           ),
           Text(
@@ -39,14 +40,6 @@ class BookDetailsCard extends StatelessWidget {
               fontSize: 14,
             ),
           ),
-          // Text(
-          //   bookData.bookTitle,
-          //   style: context.titleLarge,
-          // ),
-          // Text(
-          //   bookData.bookAuthor,
-          //   style: context.labelLarge,
-          // ),
           bookData.bookPublication != null
               ? Text(
                   bookData.bookPublication!,

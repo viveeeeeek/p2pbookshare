@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/view/chat/chats_list_view.dart';
-import 'package:p2pbookshare/view/notifications/notification_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
+import 'package:p2pbookshare/provider/others/notification_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/core/constants/app_constants.dart';
+import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
+import 'package:p2pbookshare/provider/chat/chat_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/view/chat/chats_list_view.dart';
+import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 import 'widgets/widgets.dart';
 
@@ -26,6 +28,17 @@ class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  NotificationService _notificationService = NotificationService();
+  _requestNotificationPermission() async {
+    await _notificationService.requestNotificationPermission();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _requestNotificationPermission();
+  }
 
   Widget buildCategorizedBookList(BuildContext context, String genre) {
     return Consumer<BookFetchService>(
@@ -46,7 +59,6 @@ class _HomeViewState extends State<HomeView>
     final userDataProvider = Provider.of<UserDataProvider>(context);
     final bookRequestService = Provider.of<BookRequestService>(context);
     final chatService = Provider.of<ChatService>(context);
-    final logger = Logger();
     return LayoutBuilder(builder: (context, constraints) {
       return NestedScrollView(
           floatHeaderSlivers: true,
@@ -56,7 +68,21 @@ class _HomeViewState extends State<HomeView>
                 floating: true,
                 snap: true,
                 // pinned: true,
-                title: const Text('P2P Book Share'),
+                title: Row(
+                  children: [
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                          context.onBackground, BlendMode.srcIn),
+                      child: SvgPicture.asset(
+                        'assets/images/p2pbookshare.svg',
+                        height: 26,
+                        width: 26,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    const Text('P2P Book Share'),
+                  ],
+                ),
                 forceElevated: isInnerBoxScrolled,
                 actions: [
                   P2pbookshareStreamBuilder(
@@ -87,11 +113,9 @@ class _HomeViewState extends State<HomeView>
                       }),
                   P2pbookshareStreamBuilder(
                       dataStream: chatService.hasChatroomForUser(
-                          '/chatrooms', userDataProvider.userModel!.userUid!),
+                          'chatrooms', userDataProvider.userModel!.userUid!),
                       successBuilder: (sucess) {
                         final _hasChatroomAvailable = sucess as bool;
-                        logger.i(
-                            'has chatroom available: $_hasChatroomAvailable');
                         return IconButton(
                           icon: _hasChatroomAvailable
                               ? Icon(MdiIcons.messageBadgeOutline)
@@ -111,16 +135,6 @@ class _HomeViewState extends State<HomeView>
                       errorBuilder: (error) {
                         return Text('$error');
                       })
-                  // IconButton(
-                  //   icon: Icon(MdiIcons.messageBadgeOutline),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => const ChatsListView()),
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
             ];
@@ -142,7 +156,8 @@ class _HomeViewState extends State<HomeView>
                           ),
                         ),
                         TextSpan(
-                          text: userDataProvider.userModel!.userName ?? 'User',
+                          text:
+                              userDataProvider.userModel!.displayName ?? 'User',
                           style: const TextStyle(
                             fontSize: 26,
                           ),

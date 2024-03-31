@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/enums.dart';
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
+import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/chat/border_radius.dart';
+import 'package:logger/logger.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({
@@ -18,11 +21,13 @@ class ChatView extends StatefulWidget {
     required this.receiverName,
     required this.chatRoomId,
     required this.receiverimgUrl,
+    required this.bookId,
   }) : super(key: key);
   final String receiverId;
   final String chatRoomId;
   final String receiverName;
   final String receiverimgUrl;
+  final String bookId;
 
   @override
   _ChatViewState createState() => _ChatViewState();
@@ -33,10 +38,13 @@ class _ChatViewState extends State<ChatView> {
   final FocusNode _focusNode = FocusNode();
   final _chatService = ChatService();
   final _firebaseAuth = FirebaseAuth.instance;
+  final _bookFetchService = BookFetchService();
+  var logger = Logger();
 
   @override
   void initState() {
     super.initState();
+
     _messageController.addListener(() {
       if (_messageController.text.length > 0) {
         TextInput.finishAutofillContext();
@@ -58,6 +66,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    logger.d('Book ID : ${widget.bookId}');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -79,9 +88,31 @@ class _ChatViewState extends State<ChatView> {
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                widget.receiverName,
-                style: TextStyle(color: context.onSurface),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.receiverName,
+                    style: TextStyle(color: context.onSurface),
+                  ),
+                  FutureBuilder(
+                      future:
+                          _bookFetchService.getBookDetailsById(widget.bookId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          Book book = Book.fromMap(
+                              snapshot.data as Map<String, dynamic>);
+                          return Text(
+                            book.bookTitle,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 12),
+                          );
+                        } else {
+                          return const P2PBookShareShimmerContainer(
+                              height: 10, width: 200, borderRadius: 2);
+                        }
+                      })
+                ],
               ),
             ),
           ],
@@ -97,7 +128,7 @@ class _ChatViewState extends State<ChatView> {
               switch (value) {
                 case ChatMenuValues.HELP:
                   // Handle report action
-                  logger.info('Help clicked');
+                  logger.d('Help clicked');
                   break;
                 case ChatMenuValues.FEEDBACK:
                   // Handle report action
@@ -254,22 +285,25 @@ class _ChatViewState extends State<ChatView> {
         : null;
 
     // var align message to right if the sender is the current user else align to left
-    var alignment = (message['sender_id'] == _firebaseAuth.currentUser!.uid)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
+    var alignment =
+        (message[MessageConfig.senderId] == _firebaseAuth.currentUser!.uid)
+            ? Alignment.centerRight
+            : Alignment.centerLeft;
     var messageCBubbleColor =
-        (message['sender_id'] == _firebaseAuth.currentUser!.uid)
+        (message[MessageConfig.senderId] == _firebaseAuth.currentUser!.uid)
             ? context.onPrimaryContainer
             : context.surfaceVariant;
-    var messageColor = (message['sender_id'] == _firebaseAuth.currentUser!.uid)
-        ? context.onSecondary
-        : context.onSurface;
+    var messageColor =
+        (message[MessageConfig.senderId] == _firebaseAuth.currentUser!.uid)
+            ? context.onSecondary
+            : context.onSurface;
 
-    var isSameUserAsPrev =
-        prevMessage != null && message['sender_id'] == prevMessage['sender_id'];
-    var isSameUserAsNext =
-        nextMessage != null && message['sender_id'] == nextMessage['sender_id'];
-    var isCurrentUser = message['sender_id'] == _firebaseAuth.currentUser!.uid;
+    var isSameUserAsPrev = prevMessage != null &&
+        message[MessageConfig.senderId] == prevMessage[MessageConfig.senderId];
+    var isSameUserAsNext = nextMessage != null &&
+        message[MessageConfig.senderId] == nextMessage[MessageConfig.senderId];
+    var isCurrentUser =
+        message[MessageConfig.senderId] == _firebaseAuth.currentUser!.uid;
 
     var bubbleBorderRadius = isCurrentUser
         ? (isSameUserAsPrev || isSameUserAsNext)

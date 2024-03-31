@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/address.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/address/address_list_view.dart';
+import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 
 class AddressHandler {
   static void handleAddressCompletionContinue({
@@ -61,7 +61,7 @@ class AddressHandler {
           },
         );
       } catch (e) {
-        logger.warning(e);
+        logger.e(e);
       }
     }
   }

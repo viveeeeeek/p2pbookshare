@@ -19,11 +19,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late AppInitHandler _appInitHandler;
+
   // late Future _initFuture;
 
   _initializeApp() async {
     // Initialize AppInitializer
     _appInitHandler = Provider.of<AppInitHandler>(context, listen: false);
+    //FIXME: request notification once the user is logged in and let user know why we need it
+
     await _appInitHandler.setTheme();
     bool isLoggedIn = await _appInitHandler.checkUserLogInStatus();
     return isLoggedIn; // return the result

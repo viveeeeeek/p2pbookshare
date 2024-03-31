@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/chat_room.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
-import 'package:provider/provider.dart';
 
 class UserBookDetailsViewModel {
   // late final bookRequestHandlingService;
@@ -53,7 +55,7 @@ class UserBookDetailsViewModel {
           message: 'Request declined successfully',
           actionLabel: 'Ok',
           durationInSecond: 2);
-    logger.info(
+    logger.i(
         '💡💥rejectIncomingBookRequest accessed: Request declined successfully');
   }
 
@@ -88,5 +90,33 @@ class UserBookDetailsViewModel {
         if (context.mounted) Navigator.pop(context);
       }
     }
+  }
+
+  /// complete book exchange
+  /// delete chatroom
+  /// change book borrow request status to completed
+  /// change book availibility status of book
+  completeBookExchange({
+    required BuildContext context,
+    required String chatRoomID,
+    required String bookID,
+    required String bookRequestID,
+  }) async {
+    final _bookRequestHandlingService = BookRequestService();
+    final _chatService = ChatService();
+    // Deletes the chat room
+    _chatService.deleteChatRoom(chatRoomID);
+    // Changes the book borrow request status to completed
+    _bookRequestHandlingService.completeBookBorrowRequest(
+        bookRequestID, bookID);
+
+    if (context.mounted)
+      Utils.snackBar(
+          context: context,
+          message: 'Book exchange completed successfully',
+          actionLabel: 'Ok',
+          durationInSecond: 2);
+    logger.i(
+        '💡💥completeBookExchange accessed: Book exchange completed successfully');
   }
 }

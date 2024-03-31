@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  app_settings: ^5.1.1
   cached_network_image: ^3.3.1
   cloud_firestore: ^4.10.0
   connectivity_plus: ^6.0.1
@@ -36,6 +37,7 @@ dependencies:
   dynamic_color: ^1.6.8
   firebase_auth: ^4.10.1
   firebase_core: ^2.17.0
+  firebase_messaging: ^14.7.21
   firebase_storage: ^11.3.1
   flutter:
     sdk: flutter
@@ -63,11 +65,10 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
+  logger: ^2.2.0
   # lint: ^2.2.0
   pixel_perfect: ^1.1.3
   simple_logger: ^1.9.0+3
-  logger: ^2.2.0
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 extension TimestampFormatter on Timestamp {
   String toDateOnly() {
     DateTime dateTime = this.toDate();
-    return DateFormat('EEEE, MMM d, yyyy').format(dateTime);
+    return DateFormat('MMM d, yyyy').format(dateTime);
   }
 
   String toTimeOnly() {

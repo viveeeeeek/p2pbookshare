@@ -4,10 +4,11 @@
 
 /// This class contains all the constants used in the User model.
 class UserConstants {
-  static const String userUid = 'useruid';
-  static const String userEmailAddress = 'useremail';
-  static const String userName = 'username';
-  static const String userPhotoUrl = 'userphotourl';
+  static const String userUid = 'user_uid';
+  static const String username = 'username';
+  static const String emailAddress = 'email_address';
+  static const String displayName = 'display_name';
+  static const String profilePictureUrl = 'profile_picture_url';
 }
 
 class MessageConfig {

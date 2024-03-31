@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/outgoing_req/outgoing_req_details_view.dart';
-import 'package:provider/provider.dart';
 
 class OutgoingNotificationTab extends StatelessWidget {
   const OutgoingNotificationTab({super.key, required this.currentUseruid});
@@ -41,7 +43,7 @@ class OutgoingNotificationTab extends StatelessWidget {
                           } else {
                             List<Map<String, dynamic>> booksList =
                                 snapshot.data!;
-                            logger.info('BooksList: $booksList');
+                            logger.i('BooksList: $booksList');
                             return GridView.builder(
                               shrinkWrap: false,
                               gridDelegate:
@@ -71,7 +73,7 @@ class OutgoingNotificationTab extends StatelessWidget {
                                           snapshot.data != null) {
                                         Map<String, dynamic> bookData =
                                             snapshot.data!;
-                                        logger.info('BookData: $bookData');
+                                        logger.i('BookData: $bookData');
                                         return FutureBuilder(
                                             future: BookRequestService()
                                                 .getRequestDetailsByID(
@@ -89,7 +91,7 @@ class OutgoingNotificationTab extends StatelessWidget {
                                                   snapshot.data != null) {
                                                 final bookRequestData =
                                                     snapshot.data!;
-                                                logger.info(
+                                                logger.i(
                                                     '⚓⚓BookRequestData: $bookRequestData');
                                                 return GestureDetector(
                                                   onTap: () {

@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
-
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/book.dart';
@@ -53,7 +53,7 @@ Widget NotificationCard(
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData && snapshot.data != null) {
                   Map<String, dynamic> userData = snapshot.data!;
-                  logger.info('User data: $userData');
+                  logger.i('User data: $userData');
                   final Book _bookData = Book(
                       bookTitle: bookData[BookConfig.bookTitle],
                       bookAuthor: bookData[BookConfig.bookAuthor],
@@ -104,7 +104,8 @@ Widget NotificationCard(
                               Icon(MdiIcons.accountOutline, size: 16),
                               const SizedBox(width: 5),
                               Text(
-                                userData[UserConstants.userName].toLowerCase(),
+                                userData[UserConstants.displayName]
+                                    .toLowerCase(),
                               ),
                             ],
                           ),

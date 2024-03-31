@@ -14,9 +14,9 @@ class UserDataProvider with ChangeNotifier {
     if (user != null) {
       _userModel = UserModel(
         userUid: user.uid,
-        userEmailAddress: user.email,
-        userName: user.displayName,
-        userPhotoUrl: user.photoURL,
+        emailAddress: user.email,
+        displayName: user.displayName,
+        profilePictureUrl: user.photoURL,
       );
       setUserModel(_userModel!);
       // print('💥Userdatamodel set from setter inside userdata_provider');

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/view/profile/widgets/custom_tab_bar.dart';
 import 'package:provider/provider.dart';
 
+import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
+import 'package:p2pbookshare/model/user_model.dart';
+import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:p2pbookshare/view/profile/tabs/outgoing_req/outgoing_req_tab.dart';
 import 'package:p2pbookshare/view/profile/tabs/user_books/user_books_tab.dart';
+import 'package:p2pbookshare/view/profile/widgets/custom_tab_bar.dart';
 import 'package:p2pbookshare/view/profile/widgets/profile_header.dart';
 import 'package:p2pbookshare/view/settings/setting_view.dart';
 
@@ -25,21 +29,20 @@ class _ProfileViewState extends State<ProfileView>
   Widget build(BuildContext context) {
     final userDataProvider = Provider.of<UserDataProvider>(context);
 
+    final _userService = FirebaseUserService();
+    final _currentUser = FirebaseAuth.instance.currentUser;
+
+    /// function to fetch user details using current user uid
+    Future<Map<String, dynamic>?> fetchUserDetails() async {
+      final _userData =
+          await _userService.getUserDetailsById(_currentUser!.uid);
+      return _userData;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
           actions: [
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => const NotificationView()),
-            //       );
-            // },
-            // icon: bookRequestService.isBookRequestAvailable
-            //     ? Icon(MdiIcons.bellBadgeOutline)
-            //     : Icon(MdiIcons.bellOutline)),
             IconButton(
               icon: Icon(MdiIcons.cogOutline),
               onPressed: () {
@@ -59,9 +62,19 @@ class _ProfileViewState extends State<ProfileView>
                 return [
                   SliverList(
                       delegate: SliverChildListDelegate([
-                    ProfileHeader(
-                      userModel: userDataProvider.userModel!,
-                    ),
+                    FutureBuilder(
+                        future: fetchUserDetails(),
+                        builder: ((context, snapshot) => snapshot.hasData
+                            ? ProfileHeader(
+                                userModel: UserModel.fromMap(
+                                    snapshot.data as Map<String, dynamic>))
+                            : const Padding(
+                                padding: EdgeInsets.all(15.0),
+                                child: P2PBookShareShimmerContainer(
+                                    height: 150,
+                                    width: double.infinity,
+                                    borderRadius: 25),
+                              ))),
                   ]))
                 ];
               },

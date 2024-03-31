@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:simple_logger/simple_logger.dart';
 
+import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
 
 class BookRequestService with ChangeNotifier {
@@ -33,7 +33,7 @@ class BookRequestService with ChangeNotifier {
       FirebaseFirestore.instance.collection('book_requests');
   final CollectionReference booksCollection =
       FirebaseFirestore.instance.collection('books');
-
+//TODO: Create seperate exception handling class
 // Helper method for logging errors
   void logFirestoreError(String operation, dynamic error) {
     logger.warning('Error $operation book request from Firestore: $error');
@@ -236,7 +236,9 @@ class BookRequestService with ChangeNotifier {
       String userUid) {
     try {
       Query query = bookRequestsCollection
-          .where(BorrowRequestConfig.requesterID, isEqualTo: userUid);
+          .where(BorrowRequestConfig.requesterID, isEqualTo: userUid)
+          .where(BorrowRequestConfig.reqStatus,
+              whereIn: ['pending', 'accepted']);
 
       return query.snapshots().map((querySnapshot) {
         if (querySnapshot.docs.isEmpty) {
@@ -361,6 +363,23 @@ class BookRequestService with ChangeNotifier {
       });
     } catch (e) {
       logFirestoreError('accepting', e);
+    }
+  }
+
+  /// update borrow request status to [completed]
+  /// Used in the [UserBookDetailsView] view to complete the book request
+  /// Updates the [req_status] to completed inside firestore
+  completeBookBorrowRequest(String bookRequestID, String bookID) async {
+    try {
+      // await bookRequestsCollection
+      //     .doc(bookRequestID)
+      //     .update({BorrowRequestConfig.reqStatus: 'completed'});
+      await bookRequestsCollection.doc(bookRequestID).delete();
+      await booksCollection
+          .doc(bookID)
+          .update({BookConfig.bookAvailability: true});
+    } catch (e) {
+      logFirestoreError('completing', e);
     }
   }
 }

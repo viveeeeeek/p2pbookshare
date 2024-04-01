@@ -6,7 +6,7 @@
 
     
     <application
-        android:label="p2pbookshare"
+        android:label="P2P BookShare"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

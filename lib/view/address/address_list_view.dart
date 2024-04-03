@@ -19,12 +19,12 @@ class AddressListView extends StatelessWidget {
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
+        height: MediaQuery.of(context).size.height * 0.8,
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
@@ -38,89 +38,91 @@ class AddressListView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 500,
-              child: Consumer<FirebaseUserService>(
-                builder: (context, firebaseUser, child) {
-                  return StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: firebaseUser.fetchUserAddresses(
-                      firebaseUser.getCurrentUserUid()!,
-                    ),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Return a loading indicator if data is still loading
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        // Handle the error case
-                        return Text('Error: ${snapshot.error}');
-                      } else if (!snapshot.hasData || snapshot.data == null) {
-                        // Handle the case when there is no data yet
-                        return const Text('No data available');
-                      } else {
-                        List<Map<String, dynamic>> userAddressList =
-                            snapshot.data!;
-
-                        return ListView.builder(
-                          physics: const ClampingScrollPhysics(),
-                          itemCount: userAddressList.length,
-                          itemBuilder: (context, index) {
-                            return AddressCard(
-                              street: userAddressList[index]['street'],
-                              city: userAddressList[index]['city'],
-                              state: userAddressList[index]['state'],
-                              onTap: () {
-                                addbookHandler.handleAddressSelection(
-                                  context: context,
-                                  address:
-                                      '${userAddressList[index]['street']} ${userAddressList[index]['city']} ${userAddressList[index]['state']}',
-                                  addressLatLng: LatLng(
-                                    userAddressList[index]['coordinates']
-                                        ['latitude'],
-                                    userAddressList[index]['coordinates']
-                                        ['longitude'],
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-            // Add new address button
-            Center(
-              child: SizedBox(
-                height: 60,
-                child: FilledButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Your addresses',
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
+                ),
+                // Add new address button
+                FilledButton(
                   onPressed: () async {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const LocationPickerView();
                     }));
                   },
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.add_location_outlined,
-                      ),
-                      SizedBox(
-                          width: 8), // Adjust spacing between icon and text
-                      Text(
-                        'Add new address',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
+                  child: const Text(
+                    'New address',
+                    style: TextStyle(),
                   ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SizedBox(
+                child: Consumer<FirebaseUserService>(
+                  builder: (context, firebaseUser, child) {
+                    return StreamBuilder<List<Map<String, dynamic>>>(
+                      stream: firebaseUser.fetchUserAddresses(
+                        firebaseUser.getCurrentUserUid()!,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Return a loading indicator if data is still loading
+                          return const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(child: CircularProgressIndicator()),
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          // Handle the error case
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          // Handle the case when there is no data yet
+                          return const Text('No data available');
+                        } else {
+                          List<Map<String, dynamic>> userAddressList =
+                              snapshot.data!;
+
+                          return ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: userAddressList.length,
+                            itemBuilder: (context, index) {
+                              return AddressCard(
+                                street: userAddressList[index]['street'],
+                                city: userAddressList[index]['city'],
+                                state: userAddressList[index]['state'],
+                                onTap: () {
+                                  addbookHandler.handleAddressSelection(
+                                    context: context,
+                                    address:
+                                        '${userAddressList[index]['street']} ${userAddressList[index]['city']} ${userAddressList[index]['state']}',
+                                    addressLatLng: LatLng(
+                                      userAddressList[index]['coordinates']
+                                          ['latitude'],
+                                      userAddressList[index]['coordinates']
+                                          ['longitude'],
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

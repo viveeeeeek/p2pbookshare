@@ -221,7 +221,7 @@ class UploadBookViewModel with ChangeNotifier {
 
       //HACK: Asyncronous build context
       if (!context.mounted) return;
-      bookAddedBottomSheet(context, uploadedImgUrl);
+      bookAddedBottomSheet(context, uploadedImgUrl, titleCtrl.text);
       // Clear the text controllers and other necessary cleanup
       titleCtrl.clear();
       authorCtrl.clear();

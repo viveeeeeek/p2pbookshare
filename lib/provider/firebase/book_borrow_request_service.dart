@@ -223,12 +223,12 @@ class BookRequestService with ChangeNotifier {
 
   /// Method to count total numbers of books uploaded by the user, and return the count as a stream
   /// This method is used in the [ProfileView] to display the number of books
-  // Stream<int> countNoOfBooksUploadedAsStream() {
-  //   return countDocumentsInCollectionAsStream(
-  //       collectionPath: 'books',
-  //       fieldName: 'book_owner',
-  //       fieldValue: user!.uid);
-  // }
+  Stream<int> countNoOfBooksUploadedAsStream() {
+    return countDocumentsInCollectionAsStream(
+        collectionPath: 'books',
+        fieldName: 'book_owner',
+        fieldValue: user!.uid);
+  }
 
   /// Used to get the books requested by the current user
   /// Returns a stream of list of maps

@@ -169,6 +169,7 @@ class _HomeViewState extends State<HomeView>
                 // NewBookRequestCard(
                 //   userUid: userDataProvider.userModel!.userUid!,
                 // ),
+
                 for (String genre in AppConstants.bookGenres)
                   buildCategorizedBookList(context, genre),
               ],

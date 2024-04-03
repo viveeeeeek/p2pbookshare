@@ -16,12 +16,12 @@ import 'package:p2pbookshare/core/extensions/color_extension.dart';
 //   @override
 //   Widget build(BuildContext context) {
 //     return Material(
-//       borderRadius: BorderRadius.circular(8.0), // Set the borderRadius here
-//       color: Colors.transparent,
+// borderRadius: BorderRadius.circular(8.0), // Set the borderRadius here
+// color: Colors.transparent,
 //       child: InkWell(
-//         onTap: onTap,
-//         borderRadius:
-//             BorderRadius.circular(12.0), // Match the shape of the Card
+// onTap: onTap,
+// borderRadius:
+//     BorderRadius.circular(12.0), // Match the shape of the Card
 //         child: Card(
 //           elevation: 4,
 //           shape: RoundedRectangleBorder(
@@ -60,18 +60,27 @@ class AddressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12))),
-        tileColor: context.surfaceVariant.withOpacity(0.5),
-        title: Text('$street'),
-        subtitleTextStyle: TextStyle(color: context.onSurface),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('City: $city'),
-            Text('State: $state'),
-          ],
+      child: Material(
+        borderRadius: BorderRadius.circular(8.0), // Set the borderRadius here
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius:
+              BorderRadius.circular(12.0), // Match the shape of the Card
+          child: ListTile(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            tileColor: context.surfaceVariant.withOpacity(0.5),
+            title: Text('$street'),
+            subtitleTextStyle: TextStyle(color: context.onSurface),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('City: $city'),
+                Text('State: $state'),
+              ],
+            ),
+          ),
         ),
       ),
     );

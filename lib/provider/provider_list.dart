@@ -1,4 +1,4 @@
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:flutter/material.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view_model/request_book_viewmodel.dart';
@@ -19,89 +19,84 @@ import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
-final List<ChangeNotifierProvider> appProviderList = [
-  // Authorization Service Provider
-  ChangeNotifierProvider<AuthorizationService>(
-      create: (_) => AuthorizationService()),
-  // App Theme Shared Preferences Provider
-  ChangeNotifierProvider<AppThemePrefs>(create: (_) => AppThemePrefs()),
-  // Firebase User Related Services Provider
-  ChangeNotifierProvider<FirebaseUserService>(
-      create: (_) => FirebaseUserService()),
-  // Firebase Book Request Services Provider
-  ChangeNotifierProvider<BookRequestService>(
-      create: (_) => BookRequestService()),
-  // Firebase Book Upload Services Provider
-  ChangeNotifierProvider<BookListingService>(
-      create: (_) => BookListingService()),
-  // User Data Provider Provider
-  ChangeNotifierProvider<UserDataProvider>(create: (_) => UserDataProvider()),
-  // Book Fetch Services Provider
-  ChangeNotifierProvider<BookFetchService>(create: (_) => BookFetchService()),
-  // User Data Shared Preferences Provider
-  ChangeNotifierProvider<UserDataPrefs>(create: (_) => UserDataPrefs()),
-  // App Theme Service Provider
-  ChangeNotifierProvider<AppThemeService>(create: (_) => AppThemeService()),
-  // Connectivity Provider
-  ChangeNotifierProvider<ConnectivityService>(
-      create: (_) => ConnectivityService()),
-  // Location Service Provider
-  ChangeNotifierProvider<LocationPickerViewModel>(
-    create: (context) => LocationPickerViewModel(),
-  ),
-  // Permission Service Provider
-  ChangeNotifierProvider<PermissionService>(
-    create: (context) => PermissionService(),
-  ),
-  // Gemini Service Provider
-  ChangeNotifierProvider<GeminiService>(
-    create: (context) {
-      return GeminiService();
-    },
-  ),
-  // AI Summary Shared Preferences Provider
-  ChangeNotifierProvider<AISummaryPrefs>(
-    create: (context) => AISummaryPrefs(),
-  ),
-  // Search View Model Provider
-  ChangeNotifierProvider<SearchViewModel>(
-    create: (context) => SearchViewModel(),
-  ),
-  // Add Book Handler Provider
-  ChangeNotifierProvider<UploadBookViewModel>(
-    create: (context) {
-      final fbBookServices =
-          Provider.of<BookListingService>(context, listen: false);
-      final userDataProvider =
-          Provider.of<UserDataProvider>(context, listen: false);
-      return UploadBookViewModel(fbBookServices, userDataProvider);
-    },
-  ),
-  // App Initialization Handler Provider
-  ChangeNotifierProvider<AppInitHandler>(
-    create: (context) {
-      final authProvider =
-          Provider.of<AuthorizationService>(context, listen: false);
-      final userDataProvider =
-          Provider.of<UserDataProvider>(context, listen: false);
-      final appThemeSharedPrefsServices =
-          Provider.of<AppThemePrefs>(context, listen: false);
-      final themeProvider =
-          Provider.of<AppThemeService>(context, listen: false);
-      return AppInitHandler(authProvider, userDataProvider,
-          appThemeSharedPrefsServices, themeProvider);
-    },
-  ),
-  // RequestBook ViewMdoel
-  ChangeNotifierProvider<RequestBookViewModel>(
-    create: (context) {
-      return RequestBookViewModel();
-    },
-  ),
-  // Gemini Service Provider
-  ChangeNotifierProvider<ChatService>(
-    create: (context) {
-      return ChatService();
-    },
-  ),
-];
+List<ChangeNotifierProvider> createAppProviderList(
+    bool isDarkThemeEnabled, Color? themeColor) {
+  return [
+    // Authorization Service Provider
+    ChangeNotifierProvider<AuthorizationService>(
+        create: (_) => AuthorizationService()),
+    // App Theme Shared Preferences Provider
+    ChangeNotifierProvider<AppThemePrefs>(create: (_) => AppThemePrefs()),
+    // Firebase User Related Services Provider
+    ChangeNotifierProvider<FirebaseUserService>(
+        create: (_) => FirebaseUserService()),
+    // Firebase Book Request Services Provider
+    ChangeNotifierProvider<BookRequestService>(
+        create: (_) => BookRequestService()),
+    // Firebase Book Upload Services Provider
+    ChangeNotifierProvider<BookListingService>(
+        create: (_) => BookListingService()),
+    // User Data Provider Provider
+    ChangeNotifierProvider<UserDataProvider>(create: (_) => UserDataProvider()),
+    // Book Fetch Services Provider
+    ChangeNotifierProvider<BookFetchService>(create: (_) => BookFetchService()),
+    // User Data Shared Preferences Provider
+    ChangeNotifierProvider<UserDataPrefs>(create: (_) => UserDataPrefs()),
+    // App Theme Service Provider
+    ChangeNotifierProvider<AppThemeService>(
+        create: (_) => AppThemeService(isDarkThemeEnabled, themeColor)),
+    // Connectivity Provider
+    ChangeNotifierProvider<ConnectivityService>(
+        create: (_) => ConnectivityService()),
+    // Location Service Provider
+    ChangeNotifierProvider<LocationPickerViewModel>(
+      create: (context) => LocationPickerViewModel(),
+    ),
+    // Permission Service Provider
+    ChangeNotifierProvider<PermissionService>(
+      create: (context) => PermissionService(),
+    ),
+    // Gemini Service Provider
+    ChangeNotifierProvider<GeminiService>(
+      create: (context) {
+        return GeminiService();
+      },
+    ),
+    // AI Summary Shared Preferences Provider
+    ChangeNotifierProvider<AISummaryPrefs>(
+      create: (context) => AISummaryPrefs(),
+    ),
+    // Search View Model Provider
+    ChangeNotifierProvider<SearchViewModel>(
+      create: (context) => SearchViewModel(),
+    ),
+    // Add Book Handler Provider
+    ChangeNotifierProvider<UploadBookViewModel>(
+      create: (context) {
+        final fbBookServices =
+            Provider.of<BookListingService>(context, listen: false);
+        final userDataProvider =
+            Provider.of<UserDataProvider>(context, listen: false);
+        return UploadBookViewModel(fbBookServices, userDataProvider);
+      },
+    ),
+    // App Initialization Handler Provider
+    // ChangeNotifierProvider<AppInitHandler>(
+    //   create: (context) {
+    //     return AppInitHandler();
+    //   },
+    // ),
+    // RequestBook ViewMdoel
+    ChangeNotifierProvider<RequestBookViewModel>(
+      create: (context) {
+        return RequestBookViewModel();
+      },
+    ),
+    // Gemini Service Provider
+    ChangeNotifierProvider<ChatService>(
+      create: (context) {
+        return ChatService();
+      },
+    ),
+  ];
+}

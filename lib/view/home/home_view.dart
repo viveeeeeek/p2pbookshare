@@ -29,6 +29,7 @@ class _HomeViewState extends State<HomeView>
   @override
   bool get wantKeepAlive => true;
   NotificationService _notificationService = NotificationService();
+  //FIXME: request notification once the user is logged in and let user know why we need it
   _requestNotificationPermission() async {
     await _notificationService.requestNotificationPermission();
   }

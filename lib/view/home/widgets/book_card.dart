@@ -1,6 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
+
 //FIXME: Move to global widgets
 
 class BookCard extends StatelessWidget {

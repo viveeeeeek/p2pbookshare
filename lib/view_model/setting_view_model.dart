@@ -1,7 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';

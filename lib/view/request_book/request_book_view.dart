@@ -1,9 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
@@ -11,7 +14,6 @@ import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart'
 import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:p2pbookshare/view_model/request_book_viewmodel.dart';
-
 import 'widgets/widgets.dart';
 
 /// This screen is used to display the details of a book and to request the book from the owner.

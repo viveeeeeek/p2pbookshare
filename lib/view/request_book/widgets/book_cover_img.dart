@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 
 Widget buildBookCoverImg({

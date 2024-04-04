@@ -1,4 +1,6 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
 // Source: Paisa on GitHub
 
 extension ColorHelper on BuildContext {

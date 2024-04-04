@@ -1,20 +1,22 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+// Package imports:
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/provider/others/notification_service.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/constants/app_constants.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/provider/others/notification_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:p2pbookshare/view/chat/chats_list_view.dart';
 import 'package:p2pbookshare/view/notifications/notification_view.dart';
-
 import 'widgets/widgets.dart';
 
 class HomeView extends StatefulWidget {

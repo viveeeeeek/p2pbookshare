@@ -1,17 +1,20 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/app.dart';
 import 'package:p2pbookshare/firebase_options.dart';
+import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/provider_list.dart';
-import 'package:logger/logger.dart';
+import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

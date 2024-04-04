@@ -1,9 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
@@ -13,7 +16,6 @@ import 'package:p2pbookshare/view/profile/tabs/user_books/user_books_tab.dart';
 import 'package:p2pbookshare/view/profile/widgets/custom_tab_bar.dart';
 import 'package:p2pbookshare/view/profile/widgets/profile_header.dart';
 import 'package:p2pbookshare/view/settings/setting_view.dart';
-
 import 'widgets/widgets.dart';
 
 class ProfileView extends StatefulWidget {

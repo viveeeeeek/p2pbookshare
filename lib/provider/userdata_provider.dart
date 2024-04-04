@@ -1,5 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
 

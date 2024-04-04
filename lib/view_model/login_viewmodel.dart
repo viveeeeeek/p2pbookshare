@@ -1,15 +1,21 @@
 // Create a function to handle sign-in and user creation
 // ignore_for_file: use_build_context_synchronously
 
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/view/landing_view.dart';
+
+// Package imports:
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:provider/provider.dart';
-import 'package:logger/logger.dart';
+import 'package:p2pbookshare/view/landing_view.dart';
 
 class LoginViewModel {
   Future<void> handleSignIn(BuildContext context) async {

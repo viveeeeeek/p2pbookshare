@@ -1,10 +1,15 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/others/gemini_service.dart';
 import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
-import 'package:provider/provider.dart';
 
 class AISummarycard extends StatefulWidget {
   final Book bookdata;

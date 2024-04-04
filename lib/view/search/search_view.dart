@@ -1,16 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:p2pbookshare/core/constants/app_constants.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/core/constants/app_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
-import 'package:p2pbookshare/view/request_book/request_book_view.dart';
-import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
-import 'package:p2pbookshare/view_model/search_viewmodel.dart';
-import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:provider/provider.dart';
+import 'package:p2pbookshare/view/request_book/request_book_view.dart';
+import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
+import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
+import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({

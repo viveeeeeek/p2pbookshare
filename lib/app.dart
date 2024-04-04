@@ -1,14 +1,18 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:p2pbookshare/core/theme/app_theme.dart';
+import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:p2pbookshare/view/landing_view.dart';
 import 'package:p2pbookshare/view/login/login_view.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
-import 'package:p2pbookshare/core/theme/app_theme.dart';
-import 'package:logger/logger.dart';
 
 class App extends StatefulWidget {
   const App(

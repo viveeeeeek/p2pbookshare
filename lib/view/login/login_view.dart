@@ -1,7 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:rive/rive.dart' as rive;
+
+// Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/view/login/widgets/g_signin_button.dart';
-import 'package:rive/rive.dart' as rive;
+
 //FIXME: Cancelling google-sign-in abruptly stops app. handle sign-in cancelled case
 
 class LoginView extends StatefulWidget {

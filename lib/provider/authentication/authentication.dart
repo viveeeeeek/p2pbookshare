@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,6 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';

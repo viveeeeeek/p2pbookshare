@@ -1,10 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 import 'package:p2pbookshare/view/address/widgets/address_completion_bottom_sheet.dart';
+import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 
 class LocationBottomCard extends StatelessWidget {
   const LocationBottomCard({

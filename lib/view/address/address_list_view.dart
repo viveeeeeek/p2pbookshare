@@ -1,12 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
+import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/location_picker/location_picker_view.dart';
 import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
-
 import 'widgets/address_card.dart';
 
 class AddressListView extends StatelessWidget {

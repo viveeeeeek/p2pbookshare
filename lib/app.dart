@@ -1,47 +1,52 @@
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/view/landing_view.dart';
 import 'package:p2pbookshare/view/login/login_view.dart';
-import 'package:p2pbookshare/view/splash_view.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
 import 'package:p2pbookshare/core/theme/app_theme.dart';
+import 'package:logger/logger.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  const App(
+      {super.key,
+      required this.isDarkThemeEnabled,
+      required this.isUserLoggedIn});
+  final bool isDarkThemeEnabled;
+  final bool isUserLoggedIn;
 
   @override
   State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
-  late AppInitHandler _appInitHandler;
+  late UserDataProvider _userDataProvider;
+  late AppThemePrefs appThemeSharedPrefsServices;
+  final logger = Logger();
+  bool loginStatus = false;
 
-  // late Future _initFuture;
+  initializeApp() async {
+    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    appThemeSharedPrefsServices =
+        Provider.of<AppThemePrefs>(context, listen: false);
 
-  _initializeApp() async {
-    // Initialize AppInitializer
-    _appInitHandler = Provider.of<AppInitHandler>(context, listen: false);
-    //FIXME: request notification once the user is logged in and let user know why we need it
-
-    await _appInitHandler.setTheme();
-    bool isLoggedIn = await _appInitHandler.checkUserLogInStatus();
-    return isLoggedIn; // return the result
+    _userDataProvider.loadUserDataFromPrefs();
+    appThemeSharedPrefsServices.loadIsDynamicColorEnabled();
   }
 
   @override
   void initState() {
     super.initState();
-    _initializeApp();
+    initializeApp();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AppInitHandler, AppThemeService>(
-      builder: (context, appInitHandler, themeProvider, child) {
+    return Consumer<AppThemeService>(
+      builder: (context, themeProvider, child) {
         return DynamicColorBuilder(
           builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
             final lightColorScheme = getLightColorScheme(context, lightDynamic);
@@ -62,22 +67,9 @@ class _AppState extends State<App> {
               themeMode: themeProvider.isDarkThemeEnabled
                   ? ThemeMode.dark
                   : ThemeMode.light,
-              home: FutureBuilder(
-                future: _appInitHandler.checkUserLogInStatus(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      return snapshot.data!
-                          ? const LandingView()
-                          : const LoginView();
-                    } else {
-                      return const SplashView();
-                    }
-                  } else {
-                    return const SplashView();
-                  }
-                },
-              ),
+              home: widget.isUserLoggedIn
+                  ? const LandingView()
+                  : const LoginView(),
             );
           },
         );

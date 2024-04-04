@@ -43,15 +43,29 @@ class AppThemePrefs with ChangeNotifier {
     }
   }
 
-  Future<void> loadIsDynamicColorEnabled() async {
+  // Future<void> loadIsDynamicColorEnabled() async {
+  //   try {
+  //     await initSharedPrefs();
+  //     isDynamiThemeEnabled = _prefs!.getBool('isDynamicColorSelected') ?? true;
+  //     notifyListeners();
+  //     logger.info(
+  //         'AppThemePrefs (loadIsDynamicColorEnabled): dynamic color status fetched from shared prefs $isThemeToggled');
+  //   } catch (e) {
+  //     logger.info('Error loading dynamic color: $e');
+  //   }
+  // }
+
+  Future<bool> loadIsDynamicColorEnabled() async {
     try {
       await initSharedPrefs();
       isDynamiThemeEnabled = _prefs!.getBool('isDynamicColorSelected') ?? true;
       notifyListeners();
       logger.info(
           'AppThemePrefs (loadIsDynamicColorEnabled): dynamic color status fetched from shared prefs $isThemeToggled');
+      return isDynamiThemeEnabled;
     } catch (e) {
       logger.info('Error loading dynamic color: $e');
+      return true; // Return true on error
     }
   }
 

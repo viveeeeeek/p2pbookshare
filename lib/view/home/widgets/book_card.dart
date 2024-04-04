@@ -20,7 +20,7 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3, // Adjust the elevation as needed
+      elevation: 2, // Adjust the elevation as needed
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),

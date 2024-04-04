@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 import 'package:p2pbookshare/view/address/widgets/address_completion_bottom_sheet.dart';
@@ -51,31 +49,31 @@ class LocationBottomCard extends StatelessWidget {
                         width: 400,
                         borderRadius: 10,
                       )
-                    : FilledButton(
-                        onPressed: () {
-                          addressCompletionBottomSheet(
-                              context: context,
-                              city: locationService.selectedCity!,
-                              state: locationService.selectedState);
-                        },
-                        child: SizedBox(
-                          height: 60,
-                          child: Row(
-                            children: [
-                              Icon(
-                                MdiIcons.arrowRight,
-                                color: context.onPrimary,
-                              ),
-                              Text(
-                                'Continue',
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 60,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: FilledButton(
+                                onPressed: () {
+                                  addressCompletionBottomSheet(
+                                      context: context,
+                                      city: locationService.selectedCity!,
+                                      state: locationService.selectedState);
+                                },
+                                child: Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                )),
                           ),
-                        )),
+                        ],
+                      ),
               ],
             ),
           ),

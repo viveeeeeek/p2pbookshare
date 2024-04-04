@@ -16,13 +16,22 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: FilledButton(
-        onPressed: onPressed,
-        child: Center(child: child),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(seconds: 1),
+          curve: Curves.easeInOut,
+          height: height,
+          width: width,
+          child: FilledButton(
+            onPressed: onPressed,
+            child: Center(
+              child: child,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

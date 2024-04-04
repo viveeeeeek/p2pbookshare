@@ -200,7 +200,7 @@ class _BookUploadViewState extends State<BookUploadView>
                                                 height: 5,
                                               ),
                                               const Text(
-                                                'Add Book Cover',
+                                                'Book Cover Image',
                                               )
                                             ],
                                           )
@@ -229,7 +229,9 @@ class _BookUploadViewState extends State<BookUploadView>
                 padding: const EdgeInsets.all(25.0),
                 child: SubmitButton(
                   height: 60,
-                  width: MediaQuery.of(context).size.width,
+                  width: addbookHandler.isUploading
+                      ? 120
+                      : MediaQuery.of(context).size.width * 0.8,
                   onPressed: () async {
                     addbookHandler.handleUploadBook(
                         context: context,
@@ -249,7 +251,8 @@ class _BookUploadViewState extends State<BookUploadView>
                       : Text(
                           "Submit",
                           style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 18),
                         ),
                 ),
               ),

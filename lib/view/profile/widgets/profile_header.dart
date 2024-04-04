@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
@@ -38,6 +39,7 @@ class ProfileHeader extends StatelessWidget {
               : CircularProgressIndicator(
                   color: Theme.of(context).indicatorColor,
                 ),
+
           const SizedBox(width: 25),
           const SizedBox(height: 12),
           // Username
@@ -65,6 +67,26 @@ class ProfileHeader extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(width: 10),
+              StreamBuilder(
+                  stream: BookRequestService().countNoOfBooksUploadedAsStream(),
+                  builder: (context, snapshot) {
+                    if (ConnectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      logger.e('Error loading book count');
+                      return const SizedBox();
+                    } else if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          Icon(MdiIcons.bookOutline, size: 16),
+                          Text('${snapshot.data}'),
+                        ],
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
             ],
           ),
           const SizedBox(height: 6),
@@ -82,10 +104,7 @@ class ProfileHeader extends StatelessWidget {
 
           Text(
             userModel.emailAddress!,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ), // User email address
+            style: const TextStyle(), // User email address
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ import 'package:p2pbookshare/provider/provider_list.dart';
 import 'package:logger/logger.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   var logger = Logger();
   bool IsUserLoggedIn = false;
   bool isDarkThemeEnabled = false;
@@ -51,7 +52,12 @@ void main() async {
         'active splash state | isDynamicColor $isDynamicColorEnabled |isuserLoggedIn $IsUserLoggedIn | isDarkThemeEnabled: $isDarkThemeEnabled | themeColor: $color');
   }
 
+  /// Preserves the splash screen until the app is initialized.
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   initializeApp();
+  FlutterNativeSplash.remove();
+
+  /// Initialize Firebase and load the environment variables.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -61,8 +67,8 @@ void main() async {
     persistenceEnabled: true,
   );
 
-  final appProviderList = createAppProviderList(isDarkThemeEnabled, themeColor);
   await FlutterConfig.loadEnvVariables();
+  final appProviderList = createAppProviderList(isDarkThemeEnabled, themeColor);
   runApp(MultiProvider(
       providers: appProviderList,
       child: App(

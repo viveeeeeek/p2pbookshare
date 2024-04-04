@@ -77,8 +77,3 @@ class _AppState extends State<App> {
     );
   }
 }
-  // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //   initializeApp();
-  //     logger.d(
-  //         'App.dart | isUserLoggedIn ${widget.isUserLoggedIn} | isDarkThemeEnabled: ${widget.isDarkThemeEnabled} | themeColor: ${widget.themeColor}');
-  //   });

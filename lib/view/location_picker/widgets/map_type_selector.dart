@@ -1,8 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+// Package imports:
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 
 class MapTypeSelector extends StatelessWidget {

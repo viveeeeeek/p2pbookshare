@@ -1,6 +1,9 @@
 // book_model.dart
 
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 
 class Book {

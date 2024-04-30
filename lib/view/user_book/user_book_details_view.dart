@@ -1,9 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/borrow_req_detail_card.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
@@ -17,7 +20,6 @@ import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/chat/chat_view.dart';
 import 'package:p2pbookshare/view/request_book/widgets/book_info_card.dart';
 import 'package:p2pbookshare/view_model/user_book_details_viewmodel.dart';
-
 import 'widgets/widgets.dart';
 
 //FIXME: Add confirmation dialog before accepting the book request alerting that all other requests would be rejected automatically.

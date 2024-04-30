@@ -1,9 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
-import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
+import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
 
 //TODO: Show warning dialog before accepting the book request.

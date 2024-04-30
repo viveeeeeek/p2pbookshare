@@ -1,8 +1,10 @@
 // import 'package:flutter/material.dart';
 // import 'package:p2pbookshare/services/model/book.dart';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import 'package:p2pbookshare/model/book.dart';
 
 class BookDetailsCard extends StatelessWidget {

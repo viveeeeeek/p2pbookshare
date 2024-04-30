@@ -1,22 +1,32 @@
 // Create a function to handle sign-in and user creation
 // ignore_for_file: use_build_context_synchronously
 
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/view/landing_view.dart';
+import 'package:go_router/go_router.dart';
+
+// Package imports:
+import 'package:logger/logger.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:provider/provider.dart';
-import 'package:logger/logger.dart';
 
 class LoginViewModel {
+  late AuthorizationService _authService;
+  late FirebaseUserService _fbUserService;
+  late UserDataProvider _userDataProvider;
   Future<void> handleSignIn(BuildContext context) async {
-    final authProvider =
-        Provider.of<AuthorizationService>(context, listen: false);
-    final fbUserOperations =
-        Provider.of<FirebaseUserService>(context, listen: false);
+    _authService = Provider.of<AuthorizationService>(context, listen: false);
+    _fbUserService = Provider.of<FirebaseUserService>(context, listen: false);
+    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
     var logger = Logger();
 
     /// method to generate random 6-7 letter meaningful word from given string
@@ -42,8 +52,8 @@ class LoginViewModel {
     }
 
     try {
-      await authProvider.gSignIn(context);
-      final user = authProvider.user;
+      await _authService.gSignIn(context);
+      final user = _authService.user;
       if (user != null) {
         final _username = await generateUserName(user.email!);
         logger.i('newly generated username is $_username');
@@ -54,18 +64,34 @@ class LoginViewModel {
           displayName: user.displayName,
           profilePictureUrl: user.photoURL,
         );
+
+        /// Onece user logs in, the user data is loadsed in provider to be used in app
+        _userDataProvider.setUserModel(userModel);
         final collectionExists =
-            await fbUserOperations.userCollectionExists(user.uid);
+            await _fbUserService.userCollectionExists(user.uid);
         if (!collectionExists) {
-          await fbUserOperations.createUserCollection(user.uid, userModel);
+          final _username = await generateUserName(user.email!);
+          logger.i('newly generated username is $_username');
+          await _fbUserService.createUserCollection(user.uid, userModel);
           logger.i("✅collection creation is complete");
+        } else {
+          final existingUserModel =
+              await _fbUserService.getUserDetailsById(user.uid);
+
+          /// create usermodel using Future<Map<String, dynamic>?> returned by getuserdetailsbyId
+          /// if usermodel is not null, use it, else use the newly created usermodel
+          /// if usermodel is null, it means the user is logging in for the first time
+          if (existingUserModel != null) {
+            _userDataProvider
+                .setUserModel(UserModel.fromMap(existingUserModel));
+          } else {
+            await _fbUserService.createUserCollection(user.uid, userModel);
+          }
         }
 
-        Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const LandingView()));
+        if (context.mounted) {
+          context.goNamed(AppRouterConstants.landingView);
+        }
       }
     } catch (e) {
       logger.e("❌Error during sign-in or user creation: $e");

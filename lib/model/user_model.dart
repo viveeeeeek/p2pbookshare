@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 
 /// The UserModel class represents a user with properties such as userUid, userEmail, userName, and

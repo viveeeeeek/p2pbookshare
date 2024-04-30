@@ -1,7 +1,15 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/app_init_handler.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
@@ -10,8 +18,6 @@ import 'package:p2pbookshare/model/chat_room.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:p2pbookshare/view/chat/chat_view.dart';
-import 'package:provider/provider.dart';
 
 class ChatsListView extends StatelessWidget {
   const ChatsListView({Key? key}) : super(key: key);
@@ -158,17 +164,15 @@ class ChatsListView extends StatelessWidget {
         ),
         onTap: () {
           logger.d('Book Clicked: $bookID');
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ChatView(
-                receiverId: _otherUser,
-                receiverName: _otherUserModel.displayName!,
-                chatRoomId: _chatRoom.chatRoomId,
-                receiverimgUrl: _otherUserModel.profilePictureUrl ??
-                    'https://via.placeholder.com/150',
-                bookId: bookID,
-              ),
-            ),
+          context.pushNamed(
+            AppRouterConstants.chatView,
+            pathParameters: {
+              'receiverId': _otherUser,
+              'receiverName': _otherUserModel.displayName!,
+              'chatRoomId': _chatRoom.chatRoomId,
+              'receiverimgUrl': _otherUserModel.profilePictureUrl!,
+              'bookId': bookID,
+            },
           );
         },
       ),

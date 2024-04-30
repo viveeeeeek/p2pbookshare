@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
-import 'package:provider/provider.dart';
 
 class UserHandler {
   getUser(BuildContext context) {

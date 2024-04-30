@@ -1,5 +1,6 @@
 // Model for chatroom document
 
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 
 class ChatRoom {

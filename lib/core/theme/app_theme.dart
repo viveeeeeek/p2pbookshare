@@ -1,10 +1,16 @@
 /// IMPLEMENTED DYNAMICOLOUR SWITCH WITH PROVIDER (CURRENTLY ONLY FOR DARK DYNAMIC THEME)
-import 'package:dynamic_color/dynamic_color.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
-import 'package:provider/provider.dart';
 
 ColorScheme getLightColorScheme(
     BuildContext context, ColorScheme? lightDynamic) {

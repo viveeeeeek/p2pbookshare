@@ -1,15 +1,18 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/user_handler.dart';
-import 'package:p2pbookshare/view_model/setting_view_model.dart';
-import 'package:p2pbookshare/view/settings/widgets/color_picker.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/view/settings/widgets/color_picker.dart';
+import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
+import 'package:p2pbookshare/view_model/setting_view_model.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});

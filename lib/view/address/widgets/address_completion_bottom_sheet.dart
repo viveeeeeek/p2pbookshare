@@ -1,13 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/provider/firebase/user_service.dart';
 import 'package:p2pbookshare/view/address/address_handler.dart';
 import 'package:p2pbookshare/view/upload_book/widgets/text_field.dart';
+import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 
 addressCompletionBottomSheet(
     {required BuildContext context, required String city, state}) {

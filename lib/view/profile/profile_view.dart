@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/provider/firebase/user_service.dart';
@@ -12,8 +17,6 @@ import 'package:p2pbookshare/view/profile/tabs/outgoing_req/outgoing_req_tab.dar
 import 'package:p2pbookshare/view/profile/tabs/user_books/user_books_tab.dart';
 import 'package:p2pbookshare/view/profile/widgets/custom_tab_bar.dart';
 import 'package:p2pbookshare/view/profile/widgets/profile_header.dart';
-import 'package:p2pbookshare/view/settings/setting_view.dart';
-
 import 'widgets/widgets.dart';
 
 class ProfileView extends StatefulWidget {
@@ -45,13 +48,10 @@ class _ProfileViewState extends State<ProfileView>
           actions: [
             IconButton(
               icon: Icon(MdiIcons.cogOutline),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingView()),
-                );
-              },
-            ),
+              onPressed: () => context.pushNamed(
+                AppRouterConstants.settingView,
+              ),
+            )
           ],
         ),
         body: DefaultTabController(

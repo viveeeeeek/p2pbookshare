@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 
 // class AddressCard extends StatelessWidget {

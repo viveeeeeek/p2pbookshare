@@ -1,6 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 import 'widgets.dart';
 
 Widget buildFloatingMenu() {

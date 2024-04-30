@@ -1,6 +1,11 @@
 // book_model.dart
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
+
 //TODO: Add all the required fields for book borrow request document
 //FIXME: create a app constants and put all the field names there and use it from there so that we cdan easily change it later if needed
 /// This model will be used for storing the request for borrowing the book

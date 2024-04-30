@@ -1,11 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+// Project imports:
 import 'package:p2pbookshare/view/location_picker/location_picker_handler.dart';
-
+import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
 import 'widgets/widgets.dart';
 
 class LocationPickerView extends StatefulWidget {

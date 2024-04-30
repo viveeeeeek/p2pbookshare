@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,6 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_logger/simple_logger.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
@@ -137,6 +140,7 @@ class AuthorizationService with ChangeNotifier {
 
           if (user != null) {
             _isSigningIn = false;
+            _isUserLoggedIn = true;
             await _storeUserData(context, user!, userCredential);
           } else {
             logger.warning("Sign-in failed");
@@ -178,10 +182,11 @@ class AuthorizationService with ChangeNotifier {
 
     sharedPrefsProvider.clearUserFromPrefs();
     user = null;
-
+    // Set user login status to false
+    _isUserLoggedIn = false;
     logger.info('🥲User Signed out ');
 
-    /// Navigating to homepage once successfully logged in
+    // Navigating to homepage once successfully logged in
     notifyListeners();
   }
 
@@ -204,5 +209,14 @@ class AuthorizationService with ChangeNotifier {
 
   Future<String?> getToken() async {
     return await storage.read(key: "token");
+  }
+
+  bool _isUserLoggedIn = false;
+
+  bool get isUserLoggedIn => _isUserLoggedIn;
+
+  void updateUserLoginStatus(bool isLoggedIn) {
+    _isUserLoggedIn = isLoggedIn;
+    notifyListeners();
   }
 }

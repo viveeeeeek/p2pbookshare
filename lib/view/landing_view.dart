@@ -1,12 +1,17 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:p2pbookshare/view/home/home_view.dart';
 import 'package:p2pbookshare/view/profile/profile_view.dart';
 import 'package:p2pbookshare/view/search/search_view.dart';
 import 'package:p2pbookshare/view/upload_book/upload_book_view.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
-import 'package:provider/provider.dart';
 
 class LandingView extends StatefulWidget {
   const LandingView({super.key});
@@ -81,7 +86,7 @@ class _LandingViewState extends State<LandingView> {
             ),
           ),
           child: NavigationBar(
-            // height: 70,
+            height: 75,
             onDestinationSelected: onTap,
             selectedIndex: _selectedScreenIndex,
             destinations: [

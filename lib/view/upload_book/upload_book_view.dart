@@ -1,12 +1,17 @@
 // 297 lines of code before logic/concern seperations
 // 178 lines after seperation
-import 'package:dotted_border/dotted_border.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:dotted_border/dotted_border.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:p2pbookshare/core/constants/app_constants.dart';
-import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+// Project imports:
+import 'package:p2pbookshare/core/constants/app_constants.dart';
+import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
 import 'widgets/widgets.dart';
 
 class BookUploadView extends StatefulWidget {

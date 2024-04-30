@@ -1,5 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import 'package:p2pbookshare/core/app_init_handler.dart';
 
 class AppThemeService extends ChangeNotifier {

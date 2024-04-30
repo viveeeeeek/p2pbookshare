@@ -1,9 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/constants/enums.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
@@ -12,7 +18,6 @@ import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/chat/border_radius.dart';
-import 'package:logger/logger.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({

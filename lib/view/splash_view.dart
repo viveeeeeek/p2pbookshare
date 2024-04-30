@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 
 class SplashView extends StatelessWidget {

@@ -86,7 +86,7 @@ class _LandingViewState extends State<LandingView> {
             ),
           ),
           child: NavigationBar(
-            // height: 70,
+            height: 75,
             onDestinationSelected: onTap,
             selectedIndex: _selectedScreenIndex,
             destinations: [

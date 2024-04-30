@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -15,8 +17,6 @@ import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart'
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/provider/others/notification_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
-import 'package:p2pbookshare/view/chat/chats_list_view.dart';
-import 'package:p2pbookshare/view/notifications/notification_view.dart';
 import 'widgets/widgets.dart';
 
 class HomeView extends StatefulWidget {
@@ -64,13 +64,10 @@ class _HomeViewState extends State<HomeView>
     final chatService = Provider.of<ChatService>(context);
     return LayoutBuilder(builder: (context, constraints) {
       return NestedScrollView(
-          floatHeaderSlivers: true,
           headerSliverBuilder: (context, isInnerBoxScrolled) {
             return [
               SliverAppBar(
-                floating: true,
-                snap: true,
-                // pinned: true,
+                pinned: true,
                 title: Row(
                   children: [
                     ColorFiltered(
@@ -96,14 +93,9 @@ class _HomeViewState extends State<HomeView>
                       successBuilder: (data) {
                         final bool hasBookRequests = data as bool;
                         return IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NotificationView()),
-                              );
-                            },
+                            onPressed: () => context.pushNamed(
+                                  AppRouterConstants.notificationView,
+                                ),
                             icon: hasBookRequests
                                 ? Icon(MdiIcons.bellBadgeOutline)
                                 : Icon(MdiIcons.bellOutline));
@@ -123,13 +115,9 @@ class _HomeViewState extends State<HomeView>
                           icon: _hasChatroomAvailable
                               ? Icon(MdiIcons.messageBadgeOutline)
                               : Icon(MdiIcons.messageOutline),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ChatsListView()),
-                            );
-                          },
+                          onPressed: () => context.pushNamed(
+                            AppRouterConstants.chatsListView,
+                          ),
                         );
                       },
                       waitingBuilder: () {
@@ -172,7 +160,10 @@ class _HomeViewState extends State<HomeView>
                 // NewBookRequestCard(
                 //   userUid: userDataProvider.userModel!.userUid!,
                 // ),
-
+                // Container(
+                //     height: 100,
+                //     width: 100,
+                //     color: Theme.of(context).bottomNavigationBarTheme),
                 for (String genre in AppConstants.bookGenres)
                   buildCategorizedBookList(context, genre),
               ],

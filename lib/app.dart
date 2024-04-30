@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:p2pbookshare/core/route/router.dart';
+import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -11,8 +14,6 @@ import 'package:p2pbookshare/core/theme/app_theme.dart';
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
-import 'package:p2pbookshare/view/landing_view.dart';
-import 'package:p2pbookshare/view/login/login_view.dart';
 
 class App extends StatefulWidget {
   const App(
@@ -30,21 +31,53 @@ class _AppState extends State<App> {
   late UserDataProvider _userDataProvider;
   late AppThemePrefs appThemeSharedPrefsServices;
   final logger = Logger();
-  bool loginStatus = false;
+  late AuthorizationService _authorizationService;
+  late GoRouter _appRouter;
 
-  initializeApp() async {
+  void initializeApp() async {
     _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    _authorizationService =
+        Provider.of<AuthorizationService>(context, listen: false);
     appThemeSharedPrefsServices =
         Provider.of<AppThemePrefs>(context, listen: false);
 
     _userDataProvider.loadUserDataFromPrefs();
     appThemeSharedPrefsServices.loadIsDynamicColorEnabled();
+    _authorizationService.updateUserLoginStatus(widget.isUserLoggedIn);
+    // Listen to changes in authentication status and update the AuthProvider
+
+    logger.d('_authServices: ${_authorizationService.isUserLoggedIn}');
+  }
+
+  // Helper method to create and return the appropriate app router instance
+  GoRouter _getAppRouter(bool isUserLoggedIn) {
+    return AppRouter.returnRouter(isUserLoggedIn);
   }
 
   @override
   void initState() {
     super.initState();
-    initializeApp();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initializeApp();
+      _appRouter = _getAppRouter(widget.isUserLoggedIn);
+    });
+
+    // Listen to changes in the user's login status and update the app router accordingly
+    // This is necessary to ensure that the app router is updated when the user logs in or logs out
+    _authorizationService =
+        Provider.of<AuthorizationService>(context, listen: false);
+    _appRouter = AppRouter.returnRouter(_authorizationService.isUserLoggedIn);
+    _listenToAuthenticationChanges();
+  }
+
+  void _listenToAuthenticationChanges() {
+    _authorizationService.addListener(() {
+      setState(() {
+        _appRouter =
+            AppRouter.returnRouter(_authorizationService.isUserLoggedIn);
+      });
+    });
   }
 
   @override
@@ -55,7 +88,8 @@ class _AppState extends State<App> {
           builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
             final lightColorScheme = getLightColorScheme(context, lightDynamic);
             final darkColorScheme = getDarkColorScheme(context, darkDynamic);
-            return MaterialApp(
+
+            return MaterialApp.router(
               title: 'p2pbookshare',
               debugShowCheckedModeBanner: true,
               theme: ThemeData(
@@ -71,9 +105,7 @@ class _AppState extends State<App> {
               themeMode: themeProvider.isDarkThemeEnabled
                   ? ThemeMode.dark
                   : ThemeMode.light,
-              home: widget.isUserLoggedIn
-                  ? const LandingView()
-                  : const LoginView(),
+              routerConfig: _appRouter,
             );
           },
         );

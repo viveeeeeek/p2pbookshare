@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -9,7 +10,6 @@ import 'package:p2pbookshare/provider/authentication/authentication.dart';
 import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
-import 'package:p2pbookshare/view/login/login_view.dart';
 
 class SettingViewModel {
   AppThemePrefs? _themeSharedPreferences;
@@ -70,10 +70,11 @@ class SettingViewModel {
     await userDataSharedPrefsProvider.clearUserFromPrefs();
     //HACK: This is how you handle build context across synchronous warning
     if (!context.mounted) return;
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginView()),
-      (route) => false,
-    );
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const LoginView()),
+    //   (route) => false,
+    // );
+    context.goNamed('login');
   }
 }

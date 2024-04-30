@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -12,9 +14,7 @@ import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/view/request_book/request_book_view.dart';
 import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
-import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 
 class SearchView extends StatefulWidget {
@@ -214,28 +214,23 @@ class BookTile extends StatelessWidget {
       title: Text(bookData[BookConfig.bookTitle]),
       subtitle: Text(bookData[BookConfig.bookAuthor]),
       onTap: () {
+        final key = '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen';
         if (bookData[BookConfig.bookOwnerID] == _currentUserID) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UserBookDetailsView(
-                heroKey:
-                    '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
-                bookData: Book.fromMap(bookData),
-              ),
-            ),
-          );
+          context.pushNamed(AppRouterConstants.userBookDetailsView,
+              extra: Book.fromMap(bookData), pathParameters: {'heroKey': key});
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => UserBookDetailsView(
+          //       heroKey:
+          //           '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
+          //       bookData: Book.fromMap(bookData),
+          //     ),
+          //   ),
+          // );
         } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RequestBookView(
-                heroKey:
-                    '${bookData[BookConfig.bookCoverImageUrl]}-searchscreen',
-                bookData: Book.fromMap(bookData),
-              ),
-            ),
-          );
+          context.pushNamed(AppRouterConstants.requestBookView,
+              extra: Book.fromMap(bookData), pathParameters: {'heroKey': key});
         }
       },
     );

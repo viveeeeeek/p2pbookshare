@@ -24,9 +24,9 @@ void main() async {
   Color? themeColor;
   bool isDynamicColorEnabled = false;
 
-  /// Initialize the app and load the shared preferences values for the app.
-  /// This will be used to determine the initial state of the app.
-  /// The app will be initialized with the values from the shared preferences.
+  // Initialize the app and load the shared preferences values for the app.
+  // This will be used to determine the initial state of the app.
+  // The app will be initialized with the values from the shared preferences.
   initializeApp() async {
     final AuthorizationService _authService = AuthorizationService();
 
@@ -41,7 +41,6 @@ void main() async {
     String? token = await _authService.getToken();
     if (token != null) {
       try {
-        // _userDataProvider.loadUserDataFromPrefs();
         IsUserLoggedIn = true;
       } catch (e) {
         logger.i('❌ Error loading user data: $e');
@@ -51,16 +50,14 @@ void main() async {
       IsUserLoggedIn = false;
     }
     themeColor = isDynamicColorEnabled ? null : (color ?? Colors.blue);
-    logger.d(
-        'active splash state | isDynamicColor $isDynamicColorEnabled |isuserLoggedIn $IsUserLoggedIn | isDarkThemeEnabled: $isDarkThemeEnabled | themeColor: $color');
   }
 
-  /// Preserves the splash screen until the app is initialized.
+  // Preserves the splash screen until the app is initialized.
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   initializeApp();
   FlutterNativeSplash.remove();
 
-  /// Initialize Firebase and load the environment variables.
+  // Initialize Firebase and load the environment variables.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

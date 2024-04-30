@@ -1,5 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -12,7 +14,6 @@ import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/view/outgoing_req/outgoing_req_details_view.dart';
 
 class OutgoingNotificationTab extends StatelessWidget {
   const OutgoingNotificationTab({super.key, required this.currentUseruid});
@@ -98,47 +99,55 @@ class OutgoingNotificationTab extends StatelessWidget {
                                                     '⚓⚓BookRequestData: $bookRequestData');
                                                 return GestureDetector(
                                                   onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            OutgoingReqDetailsView(
-                                                          bookrequestModel:
-                                                              BorrowRequest(
-                                                            reqBookID: bookRequestData[
-                                                                BorrowRequestConfig
-                                                                    .reqBookID],
-                                                            reqBookOwnerID:
-                                                                bookRequestData[
-                                                                    BorrowRequestConfig
-                                                                        .reqBookOwnerID],
-                                                            requesterID:
-                                                                bookRequestData[
-                                                                    BorrowRequestConfig
-                                                                        .requesterID],
-                                                            reqBookStatus:
-                                                                bookRequestData[
-                                                                    BorrowRequestConfig
-                                                                        .reqBookStatus],
-                                                            reqEndDate: bookRequestData[
-                                                                BorrowRequestConfig
-                                                                    .reqEndDate],
-                                                            reqStartDate:
-                                                                bookRequestData[
-                                                                    BorrowRequestConfig
-                                                                        .reqStartDate],
-                                                            reqID: bookRequestData[
-                                                                BorrowRequestConfig
-                                                                    .reqID],
-                                                            reqStatus: bookRequestData[
-                                                                BorrowRequestConfig
-                                                                    .reqStatus],
-                                                            timestamp: bookRequestData[
-                                                                BorrowRequestConfig
-                                                                    .timestamp],
-                                                          ),
-                                                        ),
-                                                      ),
+                                                    //       Navigator.push(
+                                                    //         context,
+                                                    //         MaterialPageRoute(
+                                                    //           builder: (context) =>
+                                                    //               OutgoingReqDetailsView(
+                                                    //             bookrequestModel:
+                                                    //                 BorrowRequest(
+                                                    //               reqBookID: bookRequestData[
+                                                    //                   BorrowRequestConfig
+                                                    //                       .reqBookID],
+                                                    //               reqBookOwnerID:
+                                                    //                   bookRequestData[
+                                                    //                       BorrowRequestConfig
+                                                    //                           .reqBookOwnerID],
+                                                    //               requesterID:
+                                                    //                   bookRequestData[
+                                                    //                       BorrowRequestConfig
+                                                    //                           .requesterID],
+                                                    //               reqBookStatus:
+                                                    //                   bookRequestData[
+                                                    //                       BorrowRequestConfig
+                                                    //                           .reqBookStatus],
+                                                    //               reqEndDate: bookRequestData[
+                                                    //                   BorrowRequestConfig
+                                                    //                       .reqEndDate],
+                                                    //               reqStartDate:
+                                                    //                   bookRequestData[
+                                                    //                       BorrowRequestConfig
+                                                    //                           .reqStartDate],
+                                                    //               reqID: bookRequestData[
+                                                    //                   BorrowRequestConfig
+                                                    //                       .reqID],
+                                                    //               reqStatus: bookRequestData[
+                                                    //                   BorrowRequestConfig
+                                                    //                       .reqStatus],
+                                                    //               timestamp: bookRequestData[
+                                                    //                   BorrowRequestConfig
+                                                    //                       .timestamp],
+                                                    //             ),
+                                                    //           ),
+                                                    //         ),
+                                                    //       );
+                                                    // //
+                                                    context.pushNamed(
+                                                      AppRouterConstants
+                                                          .outgoingRequestDetailsView,
+                                                      extra:
+                                                          BorrowRequest.fromMap(
+                                                              bookRequestData),
                                                     );
                                                   },
                                                   child: ClipRRect(

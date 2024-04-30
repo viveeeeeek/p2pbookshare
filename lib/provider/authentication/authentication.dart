@@ -140,6 +140,7 @@ class AuthorizationService with ChangeNotifier {
 
           if (user != null) {
             _isSigningIn = false;
+            _isUserLoggedIn = true;
             await _storeUserData(context, user!, userCredential);
           } else {
             logger.warning("Sign-in failed");
@@ -181,10 +182,11 @@ class AuthorizationService with ChangeNotifier {
 
     sharedPrefsProvider.clearUserFromPrefs();
     user = null;
-
+    // Set user login status to false
+    _isUserLoggedIn = false;
     logger.info('🥲User Signed out ');
 
-    /// Navigating to homepage once successfully logged in
+    // Navigating to homepage once successfully logged in
     notifyListeners();
   }
 
@@ -207,5 +209,14 @@ class AuthorizationService with ChangeNotifier {
 
   Future<String?> getToken() async {
     return await storage.read(key: "token");
+  }
+
+  bool _isUserLoggedIn = false;
+
+  bool get isUserLoggedIn => _isUserLoggedIn;
+
+  void updateUserLoginStatus(bool isLoggedIn) {
+    _isUserLoggedIn = isLoggedIn;
+    notifyListeners();
   }
 }

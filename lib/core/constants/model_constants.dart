@@ -9,6 +9,7 @@ class UserConstants {
   static const String emailAddress = 'email_address';
   static const String displayName = 'display_name';
   static const String profilePictureUrl = 'profile_picture_url';
+  static const String deviceToken = 'deviceToken';
 }
 
 class MessageConfig {

@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -57,15 +58,16 @@ void main() async {
   initializeApp();
   FlutterNativeSplash.remove();
 
-  // Initialize Firebase and load the environment variables.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ); // Initialize Firebase and load the environment variables.
 
-  // Enables offline persistence of Firebase data.
+  FirebaseMessaging.onBackgroundMessage(
+      _firebaseMessagingBackgroundHnadler); // background message handler
+
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
-  );
+  ); // Enables offline persistence of Firebase data.
 
   await FlutterConfig.loadEnvVariables();
   final appProviderList = createAppProviderList(isDarkThemeEnabled, themeColor);
@@ -75,4 +77,10 @@ void main() async {
         isUserLoggedIn: IsUserLoggedIn,
         isDarkThemeEnabled: isDarkThemeEnabled,
       )));
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHnadler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  // logger.d('Handling a background message: ${message.notification!.title}');
 }

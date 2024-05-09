@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:simple_logger/simple_logger.dart';
+import 'package:p2pbookshare/core/app_init_handler.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/user_model.dart';
 
 class FirebaseUserService with ChangeNotifier {
-  final logger = SimpleLogger();
-
   /// Get the current user's UID
   String? getCurrentUserUid() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -39,7 +37,7 @@ class FirebaseUserService with ChangeNotifier {
             .toList();
       });
     } catch (e) {
-      logger.info('Error retrieving books from Firestore: $e');
+      logger.i('Error retrieving books from Firestore: $e');
       return Stream.value([]);
     }
   }
@@ -52,7 +50,7 @@ class FirebaseUserService with ChangeNotifier {
       // Add a new document with a unique ID
       await userAddressesCollection.add(address);
     } catch (e) {
-      logger.info('Error adding address to user: $e');
+      logger.i('Error adding address to user: $e');
       // Handle the error as needed
     }
   }
@@ -66,8 +64,46 @@ class FirebaseUserService with ChangeNotifier {
           .get();
       return userCollection.exists;
     } catch (e) {
-      logger.info("Error checking user collection: $e");
+      logger.i("Error checking user collection: $e");
       return false;
+    }
+  }
+
+  /// Method to check if device token exists or not in user document
+  Future<String?> getUserDeviceToken(
+    String userUid,
+  ) async {
+    try {
+      final userCollection = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userUid)
+          .get();
+      final userData = userCollection.data() as Map<String, dynamic>;
+      if (userData.containsKey(UserConstants.deviceToken)) {
+        logger.d('Device token found: ${userData[UserConstants.deviceToken]}');
+        return userData[UserConstants.deviceToken];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      logger.i("Error checking device token: $e");
+      return null;
+    }
+  }
+
+  /// Method to update device token in user document
+  Future<void> updateUserDeviceToken(
+    String userUid,
+    String deviceToken,
+  ) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userUid)
+          .update({UserConstants.deviceToken: deviceToken});
+      logger.i('Device token updated successfully');
+    } catch (e) {
+      logger.i('Error updating device token: $e');
     }
   }
 
@@ -77,7 +113,7 @@ class FirebaseUserService with ChangeNotifier {
       await FirebaseFirestore.instance.collection('users').doc(userUid).set(
           userModel.toMap()); // Assuming toMap() converts UserModel to a Map
     } catch (e) {
-      logger.info('Error creating user collection: $e');
+      logger.i('Error creating user collection: $e');
     }
   }
 
@@ -99,7 +135,7 @@ class FirebaseUserService with ChangeNotifier {
 
       return userData;
     } catch (e) {
-      logger.info('Error retrieving user details from Firestore: $e');
+      logger.i('Error retrieving user details from Firestore: $e');
       return null;
     }
   }

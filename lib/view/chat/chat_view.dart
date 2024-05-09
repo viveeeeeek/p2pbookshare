@@ -16,7 +16,10 @@ import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
+import 'package:p2pbookshare/provider/fcm/access_token_firebase.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/provider/fcm/notification_service.dart';
 import 'package:p2pbookshare/view/chat/border_radius.dart';
 
 class ChatView extends StatefulWidget {
@@ -44,6 +47,9 @@ class _ChatViewState extends State<ChatView> {
   final _chatService = ChatService();
   final _firebaseAuth = FirebaseAuth.instance;
   final _bookFetchService = BookFetchService();
+  User _currentUser = FirebaseAuth.instance.currentUser!;
+
+  NotificationService _notificationService = NotificationService();
   var logger = Logger();
 
   @override
@@ -57,7 +63,29 @@ class _ChatViewState extends State<ChatView> {
     });
   }
 
-  void sendMessage() {
+  void sendChatNotification(String message) async {
+    final accessToken = await AccessTokenFirebase().getAccessToken();
+    final targetDeviceToken =
+        await FirebaseUserService().getUserDeviceToken(widget.receiverId);
+    if (targetDeviceToken != '' ||
+        targetDeviceToken != null && accessToken != '') {
+      _notificationService.sendChatNotification(
+          _currentUser.displayName!,
+          message,
+          accessToken,
+          targetDeviceToken!,
+          widget.chatRoomId,
+          _currentUser.uid,
+          _currentUser.displayName!,
+          _currentUser.photoURL!,
+          widget.bookId);
+      logger.i('Notification sent');
+    } else {
+      logger.i('Device token is empty');
+    }
+  }
+
+  void handleOnSubmit() {
     String message = _messageController.text.trim();
     if (message.isNotEmpty) {
       _chatService.sendMessage(
@@ -65,6 +93,8 @@ class _ChatViewState extends State<ChatView> {
         message: message,
         chatRoomId: widget.chatRoomId,
       );
+
+      sendChatNotification(message);
       _messageController.clear();
     }
   }
@@ -191,6 +221,7 @@ class _ChatViewState extends State<ChatView> {
                         1, // Set the maximum number of lines for the TextField to 1
                     textCapitalization: TextCapitalization.sentences,
                     enabled: true,
+
                     decoration: InputDecoration(
                       hintText: 'Type your message...',
                       fillColor: context.surfaceVariant.withOpacity(0.7),
@@ -208,7 +239,7 @@ class _ChatViewState extends State<ChatView> {
                   ),
                 ),
                 IconButton(
-                  onPressed: sendMessage,
+                  onPressed: handleOnSubmit,
                   icon: Icon(MdiIcons.sendOutline),
                 ),
               ],
@@ -219,6 +250,7 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
+  /// This method builds the list of messages
   Widget _buildMessagesList(String userId, String otherUserId) {
     return StreamBuilder(
         stream: _chatService.getMessages(
@@ -279,6 +311,7 @@ class _ChatViewState extends State<ChatView> {
         });
   }
 
+  /// This method builds the message item
   Widget _buildMessageItem(DocumentSnapshot document,
       DocumentSnapshot? prevDocument, DocumentSnapshot? nextDocument) {
     Map<String, dynamic> message = document.data() as Map<String, dynamic>;
@@ -318,12 +351,6 @@ class _ChatViewState extends State<ChatView> {
             ? getBorderRadiusForOtherUser(isSameUserAsPrev, isSameUserAsNext)
             : BorderRadius.circular(22.0);
 
-    // var bubbleMargin = isCurrentUser
-    //     ? isSameUserAsPrev || isSameUserAsNext
-    //         ? const EdgeInsets.symmetric(vertical: .0, horizontal: 0.0)
-    //         : const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0)
-    //     : const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0);
-
     var bubblePadding = isCurrentUser
         ? (isSameUserAsPrev || isSameUserAsNext)
             ? getPaddingForCurrentUser(isSameUserAsPrev, isSameUserAsNext)
@@ -359,31 +386,3 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 }
-
-// Textfield v2.0
-/*
-  Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    focusNode: _focusNode,
-                    // autofocus: true,
-                    maxLines: null,
-                    textCapitalization: TextCapitalization.sentences,
-                    enabled: true,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      fillColor: context.surfaceVariant.withOpacity(0.7),
-                      filled: true,
-                      suffixIcon: IconButton(
-                        onPressed: sendMessage,
-                        icon: Icon(MdiIcons.sendOutline),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide.none),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 0),
-                    ),
-                  ),
-                ),
- */

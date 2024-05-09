@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/provider/fcm/notification_service.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -24,6 +25,23 @@ class _LandingViewState extends State<LandingView> {
   int _selectedScreenIndex = 0;
 
   /// move this screenIndex inside viewModel to dynamically change the index
+
+  NotificationService _notificationService = NotificationService();
+  //FIXME: request notification once the user is logged in and let user know why we need it
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3), () {
+      _notificationService.requestNotificationPermission();
+    });
+    _notificationService.firebaseInit(context);
+    _notificationService.setupInteractMessage(context);
+    // _notificationService.isTokenRefreshed();
+    _notificationService.getDeviceToken();
+    _notificationService.subscribeToTopic('general');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -50,7 +50,7 @@ app.*.map.json
 /android/app/google-services.json
 /lib/firebase_options.dart
 # firebase cloud messaging service account
-/assets/fcm/service_account.json 
+/lib/service_account.json 
 
 # reference images for pixel perfect package
 /assets/reference/

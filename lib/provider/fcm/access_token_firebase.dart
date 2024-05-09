@@ -7,8 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class AccessTokenFirebase {
   static const String _accessTokenKey = 'fcm_access_token';
   static const String _accessTokenExpiryKey = 'fcm_access_token_expiry';
-  static const String _serviceAccountFilePath =
-      'assets/fcm/service_account.json';
+  static const String _serviceAccountFilePath = 'lib/service_account.json';
   static const String _firebaseMessagingScope =
       "https://www.googleapis.com/auth/firebase.messaging";
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();

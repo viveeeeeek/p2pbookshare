@@ -90,7 +90,6 @@ flutter:
     - assets/rive_assets/
     - assets/reference/
     - assets/images/
-    - assets/fcm/service_account.json
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

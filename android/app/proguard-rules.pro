@@ -9,3 +9,5 @@
 -keep @interface com.google.gson.annotations.SerializedName
 -keep @interface com.google.gson.annotations.Expose
 -keepattributes *Annotation*
+#FlutterConfig 
+-keep class com.billionants.p2pbookshare.BuildConfig { *; }

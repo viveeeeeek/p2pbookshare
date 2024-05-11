@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 // Package imports:
 import 'package:logger/logger.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:p2pbookshare/provider/fcm/notification_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -57,13 +58,30 @@ class LoginViewModel {
       if (user != null) {
         final _username = await generateUserName(user.email!);
         logger.i('newly generated username is $_username');
-        UserModel userModel = UserModel(
-          userUid: user.uid,
-          username: _username,
-          emailAddress: user.email,
-          displayName: user.displayName,
-          profilePictureUrl: user.photoURL,
-        );
+
+        NotificationService _notificationService = NotificationService();
+        var deviceToken = await _notificationService.getDeviceToken();
+        logger.d('Device Token: $deviceToken');
+
+        UserModel userModel;
+        if (deviceToken.isNotEmpty) {
+          userModel = UserModel(
+            userUid: user.uid,
+            username: _username,
+            emailAddress: user.email,
+            displayName: user.displayName,
+            profilePictureUrl: user.photoURL,
+            deviceToken: deviceToken,
+          );
+        } else {
+          userModel = UserModel(
+            userUid: user.uid,
+            username: _username,
+            emailAddress: user.email,
+            displayName: user.displayName,
+            profilePictureUrl: user.photoURL,
+          );
+        }
 
         /// Onece user logs in, the user data is loadsed in provider to be used in app
         _userDataProvider.setUserModel(userModel);

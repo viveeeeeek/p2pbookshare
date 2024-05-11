@@ -15,7 +15,6 @@ import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
 import 'package:p2pbookshare/provider/chat/chat_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/others/notification_service.dart';
 import 'package:p2pbookshare/provider/userdata_provider.dart';
 import 'widgets/widgets.dart';
 
@@ -30,18 +29,6 @@ class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  NotificationService _notificationService = NotificationService();
-  //FIXME: request notification once the user is logged in and let user know why we need it
-  _requestNotificationPermission() async {
-    await _notificationService.requestNotificationPermission();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _requestNotificationPermission();
-  }
 
   Widget buildCategorizedBookList(BuildContext context, String genre) {
     return Consumer<BookFetchService>(

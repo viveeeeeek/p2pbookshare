@@ -121,31 +121,31 @@ class AuthorizationService with ChangeNotifier {
         googleAuth = await googleUser?.authentication;
 
         // Validate domain organization
-        _isDomainValid = await validateDomainForSignIn(context);
+        // _isDomainValid = await validateDomainForSignIn(context);
         notifyListeners();
         logger.info('Domain validation: $_isDomainValid');
 
         // If the user's email contains the allowed domain, proceed with sign-in
-        if (_isDomainValid) {
-          final AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth?.accessToken,
-            idToken: googleAuth?.idToken,
-          );
+        // if (_isDomainValid) {
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
 
-          final UserCredential userCredential =
-              await FirebaseAuth.instance.signInWithCredential(credential);
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
 
-          user = userCredential.user;
-          notifyListeners();
+        user = userCredential.user;
+        notifyListeners();
 
-          if (user != null) {
-            _isSigningIn = false;
-            _isUserLoggedIn = true;
-            await _storeUserData(context, user!, userCredential);
-          } else {
-            logger.warning("Sign-in failed");
-          }
+        if (user != null) {
+          _isSigningIn = false;
+          _isUserLoggedIn = true;
+          await _storeUserData(context, user!, userCredential);
+        } else {
+          logger.warning("Sign-in failed");
         }
+        // }
       }
     } catch (e) {
       logger.warning("Error during sign-in: $e");

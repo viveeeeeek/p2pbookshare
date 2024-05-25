@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/view/address/widgets/address_completion_bottom_sheet.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 class LocationBottomCard extends StatelessWidget {
   const LocationBottomCard({
@@ -16,7 +16,7 @@ class LocationBottomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocationPickerViewModel>(
+    return Consumer<LocationService>(
       builder: (context, locationService, child) {
         final _isAddressAvailable =
             locationService.address == null ? false : true;

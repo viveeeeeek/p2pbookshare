@@ -11,14 +11,14 @@ import 'package:go_router/go_router.dart';
 // Package imports:
 import 'package:logger/logger.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
-import 'package:p2pbookshare/provider/fcm/notification_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/fcm/notification_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 
 class LoginViewModel {
   late AuthorizationService _authService;

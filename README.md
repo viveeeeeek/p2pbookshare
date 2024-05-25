@@ -1,6 +1,12 @@
-# p2pbookshare
+<p align="center">
+  <a href="https://github.com/viveeeeeek/p2pbookshare">
+    <img src="assets\splash\splash_logo.png" height="128">
+    <h1 align="center">P2P Book Share</h1>
+  </a>
+</p>
 
-A new Flutter project.
+
+A user-friendly Flutter app designed for college students to easily share, borrow, and lend books on campus.
 
 ## Getting Started
 

@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 // Project imports:
-import 'package:p2pbookshare/view/location_picker/location_picker_handler.dart';
 import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 import 'widgets/widgets.dart';
 
 class LocationPickerView extends StatefulWidget {
@@ -18,13 +17,12 @@ class LocationPickerView extends StatefulWidget {
 }
 
 class _LocationPickerViewState extends State<LocationPickerView> {
-  final logger = SimpleLogger();
-  LocationPickerHandler locationPickerHandler = LocationPickerHandler();
+  LocationPickerViewModel locationPickerViewModel = LocationPickerViewModel();
 
   @override
   void initState() {
     super.initState();
-    locationPickerHandler.handleLocationInitialization(context);
+    locationPickerViewModel.handleLocationInitialization(context);
   }
 
   @override
@@ -32,7 +30,7 @@ class _LocationPickerViewState extends State<LocationPickerView> {
     return Scaffold(
       floatingActionButton: buildFloatingMenu(),
       resizeToAvoidBottomInset: false,
-      body: Consumer<LocationPickerViewModel>(
+      body: Consumer<LocationService>(
         builder: (context, locationService, _) {
           return Column(
             children: [

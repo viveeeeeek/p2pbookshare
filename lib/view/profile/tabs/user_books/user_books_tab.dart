@@ -7,7 +7,7 @@ import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
 
 class UserBooksTab extends StatelessWidget {
   const UserBooksTab({super.key});

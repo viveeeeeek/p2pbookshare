@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:simple_logger/simple_logger.dart';
-
+import 'package:p2pbookshare/core/utils/logging.dart';
 // Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
@@ -17,16 +16,9 @@ class BookRequestService with ChangeNotifier {
   /// Instance of the current [User]
   final user = FirebaseAuth.instance.currentUser;
 
-  final logger = SimpleLogger();
-
   /// Flag to check if a request exists
   bool _bookRequestExists = false;
   bool get bookRequestExists => _bookRequestExists;
-  //TODO: Flag not implemeneted
-
-  /// Flag to check if the book requests are available for current user
-  bool _isBookRequestAvailable = false;
-  bool get isBookRequestAvailable => _isBookRequestAvailable;
 
   /// Flag to check if the book is available to borrow
   bool _isBookAvailableForBorrow = false;
@@ -40,7 +32,7 @@ class BookRequestService with ChangeNotifier {
 //TODO: Create seperate exception handling class
 // Helper method for logging errors
   void logFirestoreError(String operation, dynamic error) {
-    logger.warning('Error $operation book request from Firestore: $error');
+    logger.e('Error $operation book request from Firestore: $error');
   }
 
   // Helper method to build the query for the book request
@@ -112,7 +104,7 @@ class BookRequestService with ChangeNotifier {
       }
       var doc = snapshot.docs.first;
       var bookAvailability = doc[BookConfig.bookAvailability];
-      logger.info('Book availability: $bookAvailability');
+      logger.i('Book availability: $bookAvailability');
       return bookAvailability;
     });
   }
@@ -183,7 +175,7 @@ class BookRequestService with ChangeNotifier {
         return false; // Book request does not exist
       }
     } catch (e) {
-      logger.warning('Error checking existing request: $e');
+      logger.e('Error checking existing request: $e');
       return false; // Return false if an error occurs
     }
   }
@@ -320,7 +312,7 @@ class BookRequestService with ChangeNotifier {
           await bookRequestsCollection.add(bookRequestsData);
       String documentId = documentReference.id;
       await documentReference.update({BorrowRequestConfig.reqID: documentId});
-      logger.info("✅ Book request created");
+      logger.i("✅ Book request created");
       _bookRequestExists = true;
       notifyListeners();
     } catch (e) {
@@ -333,7 +325,7 @@ class BookRequestService with ChangeNotifier {
   deleteBookBorrowRequest(String requestID) async {
     try {
       await bookRequestsCollection.doc(requestID).delete();
-      logger.info('✅ Book request deleted');
+      logger.i('✅ Book request deleted');
     } catch (e) {
       logFirestoreError('deleting', e);
     }

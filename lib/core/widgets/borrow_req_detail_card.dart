@@ -9,7 +9,7 @@ import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 
 class CurrentRequestDetails extends StatelessWidget {
   const CurrentRequestDetails({super.key, required this.bookRequestModel});

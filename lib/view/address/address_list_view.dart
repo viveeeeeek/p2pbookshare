@@ -6,13 +6,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:p2pbookshare/view/location_picker/location_picker_view.dart';
 import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
 import 'widgets/address_card.dart';
 
 class AddressListView extends StatelessWidget {
-  const AddressListView({super.key});
+  const AddressListView({super.key, required this.isAddressSelectionActive});
+
+  final bool isAddressSelectionActive;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +31,16 @@ class AddressListView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                height: 5,
-                width: 45,
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-              ),
-            ),
+            // Center(
+            //   child: Container(
+            //     height: 5,
+            //     width: 45,
+            //     decoration: const BoxDecoration(
+            //       color: Colors.grey,
+            //       borderRadius: BorderRadius.all(Radius.circular(15)),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,24 +100,25 @@ class AddressListView extends StatelessWidget {
                             itemCount: userAddressList.length,
                             itemBuilder: (context, index) {
                               return AddressCard(
-                                street: userAddressList[index]['street'],
-                                city: userAddressList[index]['city'],
-                                state: userAddressList[index]['state'],
-                                onTap: () {
-                                  addbookHandler.handleAddressSelection(
-                                    context: context,
-                                    address:
-                                        '${userAddressList[index]['street']} ${userAddressList[index]['city']} ${userAddressList[index]['state']}',
-                                    addressLatLng: LatLng(
-                                      userAddressList[index]['coordinates']
-                                          ['latitude'],
-                                      userAddressList[index]['coordinates']
-                                          ['longitude'],
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                },
-                              );
+                                  street: userAddressList[index]['street'],
+                                  city: userAddressList[index]['city'],
+                                  state: userAddressList[index]['state'],
+                                  onTap: isAddressSelectionActive
+                                      ? () {
+                                          addbookHandler.handleAddressSelection(
+                                            context: context,
+                                            address:
+                                                '${userAddressList[index]['street']} ${userAddressList[index]['city']} ${userAddressList[index]['state']}',
+                                            addressLatLng: LatLng(
+                                              userAddressList[index]
+                                                  ['coordinates']['latitude'],
+                                              userAddressList[index]
+                                                  ['coordinates']['longitude'],
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                      : () {});
                             },
                           );
                         }

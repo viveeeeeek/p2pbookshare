@@ -7,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 class SearchResult extends StatelessWidget {
   const SearchResult({
@@ -18,7 +18,7 @@ class SearchResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String resultAddress = '';
-    return Consumer<LocationPickerViewModel>(
+    return Consumer<LocationService>(
       builder: (context, locationHandler, child) {
         return Visibility(
           visible: locationHandler.searchResults.isEmpty ? false : true,

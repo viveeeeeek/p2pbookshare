@@ -13,9 +13,9 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:p2pbookshare/app.dart';
 import 'package:p2pbookshare/firebase_options.dart';
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
-import 'package:p2pbookshare/provider/provider_list.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
+import 'package:p2pbookshare/services/provider_list.dart';
+import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

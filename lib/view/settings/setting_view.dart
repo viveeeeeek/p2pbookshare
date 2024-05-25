@@ -1,18 +1,19 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // Package imports:
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/core/user_handler.dart';
 import 'package:p2pbookshare/model/user_model.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/theme/app_theme_service.dart';
 import 'package:p2pbookshare/view/settings/widgets/color_picker.dart';
-import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
-import 'package:p2pbookshare/view_model/setting_view_model.dart';
+import 'package:p2pbookshare/view_model/setting_viewmodel.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -23,12 +24,18 @@ class SettingView extends StatefulWidget {
 
 class _SettingViewState extends State<SettingView> {
   late UserModel _userModel;
-  final UserHandler _userHandler = UserHandler();
   final SettingViewModel _settingsHandler = SettingViewModel();
 
   @override
   void didChangeDependencies() {
-    _userModel = _userHandler.getUser(context);
+    final userDataProvider = Provider.of<UserDataProvider>(context);
+
+    _userModel = UserModel(
+        userUid: userDataProvider.userModel!.userUid,
+        username: userDataProvider.userModel!.username,
+        emailAddress: userDataProvider.userModel!.emailAddress,
+        displayName: userDataProvider.userModel!.displayName,
+        profilePictureUrl: userDataProvider.userModel!.profilePictureUrl);
     super.didChangeDependencies();
   }
 
@@ -42,7 +49,6 @@ class _SettingViewState extends State<SettingView> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final appThemeProvider = Provider.of<AppThemeService>(context);
-      final addbookHandler = context.read<UploadBookViewModel>();
       return Scaffold(
           body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -85,8 +91,7 @@ class _SettingViewState extends State<SettingView> {
                 height: 10,
               ),
               ListTile(
-                onTap: () =>
-                    addbookHandler.showAddressPickerBottomSheet(context),
+                onTap: () => context.pushNamed(AppRouterConstants.addressView),
                 leading: Icon(MdiIcons.mapMarkerOutline),
                 title: const Text('Your addresses'),
                 subtitle: const Text('Edit address for book exchange'),

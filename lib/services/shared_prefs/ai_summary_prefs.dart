@@ -3,14 +3,12 @@ import 'dart:convert';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 
 // Package imports:
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 class AISummaryPrefs with ChangeNotifier {
-  SimpleLogger _logger = SimpleLogger();
-
   SharedPreferences? _prefs;
 
   /// The initial response from the Gemini API.
@@ -35,10 +33,10 @@ class AISummaryPrefs with ChangeNotifier {
     try {
       final summariesString = _prefs!.getString('bookSummaries');
       if (summariesString != null) {
-        _logger.info('Retrieved summariesString: $summariesString');
+        logger.i('Retrieved summariesString: $summariesString');
         final summariesMap =
             jsonDecode(summariesString) as Map<String, dynamic>;
-        _logger.info('Decoded summariesMap: $summariesMap');
+        logger.i('Decoded summariesMap: $summariesMap');
 
         // Check if the key and value types match expectations
         if (summariesMap.containsKey(bookKey)) {
@@ -46,7 +44,7 @@ class AISummaryPrefs with ChangeNotifier {
           _geminiResponse = summaryString;
           _hasSummary = true;
         } else {
-          _logger.info('missing key in summariesMap');
+          logger.i('missing key in summariesMap');
           _hasSummary = false;
           return null;
         }
@@ -60,7 +58,7 @@ class AISummaryPrefs with ChangeNotifier {
       }
       return null;
     } catch (error) {
-      _logger.info('Error fetching book summary: $error');
+      logger.i('Error fetching book summary: $error');
       _hasSummary = false;
       Future.delayed(Duration.zero, () {
         notifyListeners();
@@ -92,7 +90,7 @@ class AISummaryPrefs with ChangeNotifier {
 
         // Save the encoded summaries to shared preferences
         await _prefs!.setString('bookSummaries', encodedSummaries);
-        _logger.info(
+        logger.i(
             'AISumamryPrefs (storeSummary): Book summary saved to shared prefs for key: $bookKey');
         _hasSummary = true;
       }
@@ -103,7 +101,7 @@ class AISummaryPrefs with ChangeNotifier {
       });
     } catch (error) {
       // Handle specific errors (network, encoding, etc.)
-      _logger.info('Error saving book summary: $error');
+      logger.i('Error saving book summary: $error');
     }
   }
 
@@ -131,13 +129,13 @@ class AISummaryPrefs with ChangeNotifier {
         await _prefs!.setString('bookSummaries', encodedSummaries);
         _hasSummary = false;
         notifyListeners();
-        _logger.info(
+        logger.i(
             'AISummaryPrefs (removeSummary): Book summary deleted for key: $bookKey');
       } else {
-        _logger.info('No book summaries found in shared prefs');
+        logger.i('No book summaries found in shared prefs');
       }
     } catch (error) {
-      _logger.info('Error deleting book summary: $error');
+      logger.i('Error deleting book summary: $error');
     }
   }
 }

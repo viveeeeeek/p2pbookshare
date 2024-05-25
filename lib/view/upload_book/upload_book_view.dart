@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:dotted_border/dotted_border.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -39,7 +39,7 @@ class _BookUploadViewState extends State<BookUploadView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final addbookHandler = Provider.of<UploadBookViewModel>(context);
+    final uploadBookViewModel = Provider.of<UploadBookViewModel>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -84,7 +84,7 @@ class _BookUploadViewState extends State<BookUploadView>
                               Expanded(
                                   child: GestureDetector(
                                 onTap: () {
-                                  addbookHandler
+                                  uploadBookViewModel
                                       .showAddressPickerBottomSheet(context);
                                 },
                                 child: Container(
@@ -96,7 +96,9 @@ class _BookUploadViewState extends State<BookUploadView>
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondaryContainer),
-                                    child: addbookHandler.completeAddress == ''
+                                    child: uploadBookViewModel
+                                                .completeAddress ==
+                                            ''
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
@@ -116,7 +118,7 @@ class _BookUploadViewState extends State<BookUploadView>
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    addbookHandler
+                                                    uploadBookViewModel
                                                         .completeAddress,
                                                   ),
                                                 ),
@@ -173,27 +175,25 @@ class _BookUploadViewState extends State<BookUploadView>
                           // ! Book cover image picker
                           GestureDetector(
                               onTap: () async {
-                                await addbookHandler.handlePickImage(context);
+                                await uploadBookViewModel
+                                    .handlePickImage(context);
                               },
                               child: Center(
-                                  child: DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(15),
-                                padding: const EdgeInsets.all(6),
-                                dashPattern: const [8, 4],
-                                color: Colors.grey,
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(15)),
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
+                                    decoration: BoxDecoration(
+                                      color: context
+                                          .colorScheme.secondaryContainer
+                                          .withOpacity(0.7),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(15)),
                                     ),
                                     height: 180,
                                     width: 150,
-                                    child: addbookHandler.pickedImage == null
+                                    child: uploadBookViewModel.pickedImage ==
+                                            null
                                         ? Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -213,13 +213,13 @@ class _BookUploadViewState extends State<BookUploadView>
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             child: Image.file(
-                                              addbookHandler.pickedImage!,
+                                              uploadBookViewModel.pickedImage!,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                   ),
                                 ),
-                              )))
+                              ))
                         ],
                       )),
                 ),
@@ -234,11 +234,11 @@ class _BookUploadViewState extends State<BookUploadView>
                 padding: const EdgeInsets.all(25.0),
                 child: SubmitButton(
                   height: 60,
-                  width: addbookHandler.isUploading
+                  width: uploadBookViewModel.isUploading
                       ? 120
                       : MediaQuery.of(context).size.width * 0.8,
                   onPressed: () async {
-                    addbookHandler.handleUploadBook(
+                    uploadBookViewModel.handleUploadBook(
                         context: context,
                         titleCtrl: titleCtrl,
                         authorCtrl: authorCtrl,
@@ -246,10 +246,10 @@ class _BookUploadViewState extends State<BookUploadView>
                         // descriptionCtrl,
                         chosenCondition: chosenCondition,
                         chosenCategory: chosenCategory,
-                        completeAddress: addbookHandler.completeAddress,
-                        selectedImage: addbookHandler.pickedImage);
+                        completeAddress: uploadBookViewModel.completeAddress,
+                        selectedImage: uploadBookViewModel.pickedImage);
                   },
-                  child: addbookHandler.isUploading
+                  child: uploadBookViewModel.isUploading
                       ? CircularProgressIndicator(
                           color: Theme.of(context).colorScheme.onPrimary,
                         )

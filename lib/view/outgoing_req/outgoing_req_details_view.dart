@@ -6,17 +6,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/borrow_req_detail_card.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/book_listing_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:p2pbookshare/view/chat/chat_view.dart';
 import 'package:p2pbookshare/view/outgoing_req/widgets/req_accepted_card.dart';
 import 'package:p2pbookshare/view/outgoing_req/widgets/req_pending_card.dart';

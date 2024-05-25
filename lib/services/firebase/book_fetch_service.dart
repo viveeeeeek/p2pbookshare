@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:simple_logger/simple_logger.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
@@ -12,7 +12,6 @@ import 'package:p2pbookshare/core/constants/model_constants.dart';
 /// A service class for fetching books from Firestore.
 class BookFetchService with ChangeNotifier {
   final user = FirebaseAuth.instance.currentUser;
-  final logger = SimpleLogger();
 
   /// Gets books dynamically by category.
   ///
@@ -39,7 +38,7 @@ class BookFetchService with ChangeNotifier {
             .toList();
       });
     } catch (e) {
-      logger.info('Error retrieving books by category from Firestore: $e');
+      logger.i('Error retrieving books by category from Firestore: $e');
       return Stream.value([]);
     }
   }
@@ -67,7 +66,7 @@ class BookFetchService with ChangeNotifier {
             .toList();
       });
     } catch (e) {
-      logger.info('Error retrieving books from Firestore: $e');
+      logger.i('Error retrieving books from Firestore: $e');
       return Stream.value([]);
     }
   }
@@ -103,7 +102,7 @@ class BookFetchService with ChangeNotifier {
             .toList();
       });
     } catch (e) {
-      logger.info('Error retrieving books from Firestore: $e');
+      logger.i('Error retrieving books from Firestore: $e');
       return Stream.value([]);
     }
   }
@@ -127,7 +126,7 @@ class BookFetchService with ChangeNotifier {
 
       return bookData;
     } catch (e) {
-      logger.info('Error retrieving book details from Firestore: $e');
+      logger.i('Error retrieving book details from Firestore: $e');
       return null;
     }
   }

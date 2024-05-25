@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
+import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/theme/app_theme_service.dart';
 
 class SettingViewModel {
   AppThemePrefs? _themeSharedPreferences;

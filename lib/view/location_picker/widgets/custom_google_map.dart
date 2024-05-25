@@ -6,8 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 // Thanks to map_location_picker package for the inspiration.
 
@@ -18,7 +18,7 @@ class CustomGoogleMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocationPickerViewModel>(
+    return Consumer<LocationService>(
       builder: (context, locationService, _) {
         return GoogleMap(
           initialCameraPosition: CameraPosition(

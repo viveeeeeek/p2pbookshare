@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 import 'widgets.dart';
 
 Widget buildFloatingMenu() {
-  return Consumer<LocationPickerViewModel>(
-      builder: (context, locationProvider, child) {
+  return Consumer<LocationService>(builder: (context, locationProvider, child) {
     return Stack(
       children: [
         Positioned(

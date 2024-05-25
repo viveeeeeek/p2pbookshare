@@ -13,34 +13,13 @@ import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_config/flutter_config.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   var logger = Logger();
-
-  /// Request permission for notification
-  void requestNotificationPermission() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: true,
-      criticalAlert: true,
-      provisional: true,
-      sound: true,
-    );
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      logger.d('User granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      logger.d('User declined or has not accepted permission');
-    } else {
-      logger.d('User declined or has not accepted permission');
-    }
-  }
 
   /// Get the device token
   Future<String> getDeviceToken() async {

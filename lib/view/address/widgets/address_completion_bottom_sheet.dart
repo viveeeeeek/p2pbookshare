@@ -7,10 +7,10 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:p2pbookshare/view/address/address_handler.dart';
 import 'package:p2pbookshare/view/upload_book/widgets/text_field.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 addressCompletionBottomSheet(
     {required BuildContext context, required String city, state}) {
@@ -24,7 +24,7 @@ addressCompletionBottomSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
     ),
     builder: (BuildContext context) {
-      return Consumer2<LocationPickerViewModel, FirebaseUserService>(
+      return Consumer2<LocationService, FirebaseUserService>(
         builder: (context, locationService, firebaseUserService, child) {
           return Padding(
             padding: EdgeInsets.only(

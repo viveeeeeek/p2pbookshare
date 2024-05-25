@@ -5,22 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:p2pbookshare/provider/others/connectivity_service.dart';
-import 'package:p2pbookshare/provider/others/gemini_service.dart';
-import 'package:p2pbookshare/provider/others/permission_service.dart';
-import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/book_listing_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
+import 'package:p2pbookshare/services/others/connectivity_service.dart';
+import 'package:p2pbookshare/services/others/gemini_service.dart';
+import 'package:p2pbookshare/services/others/permission_service.dart';
+import 'package:p2pbookshare/services/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:p2pbookshare/view/upload_book/upload_book_viewmodel.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 import 'package:p2pbookshare/view_model/request_book_viewmodel.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 
@@ -54,8 +54,8 @@ List<ChangeNotifierProvider> createAppProviderList(
     ChangeNotifierProvider<ConnectivityService>(
         create: (_) => ConnectivityService()),
     // Location Service Provider
-    ChangeNotifierProvider<LocationPickerViewModel>(
-      create: (context) => LocationPickerViewModel(),
+    ChangeNotifierProvider<LocationService>(
+      create: (context) => LocationService(),
     ),
     // Permission Service Provider
     ChangeNotifierProvider<PermissionService>(

@@ -6,14 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/timestamp_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 
 final _navigateToUserBookDetailsView =

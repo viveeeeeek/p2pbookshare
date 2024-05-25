@@ -9,4 +9,5 @@ class AppRouterConstants {
   static const String userBookDetailsView = 'userBookDetailsView';
   static const String outgoingRequestDetailsView = 'outgoingRequestDetailsView';
   static const String msgView = 'msgView';
+  static const String addressView = 'addressView';
 }

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
+import 'package:p2pbookshare/view/address/address_view.dart';
 import 'package:p2pbookshare/view/chat/chat_view.dart';
 import 'package:p2pbookshare/view/chat/chats_list_view.dart';
 import 'package:p2pbookshare/view/landing_view.dart';
@@ -33,6 +34,11 @@ class AppRouter {
 
   ///list of route base for the router
   static List<RouteBase> routeBase = <RouteBase>[
+    GoRoute(
+      name: AppRouterConstants.addressView,
+      path: '/address',
+      builder: (context, state) => const AddressView(),
+    ),
     GoRoute(
       name: AppRouterConstants.loginView,
       path: '/login',

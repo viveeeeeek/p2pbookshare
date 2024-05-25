@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/no_requests_widget.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/chat_room.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/user_book/user_book_details_view.dart';
 import 'package:p2pbookshare/view/user_book/widgets/incoming_req_card.dart';
 import 'package:p2pbookshare/view_model/user_book_details_viewmodel.dart';

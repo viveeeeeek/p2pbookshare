@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 class LocationSearchBar extends StatefulWidget {
   const LocationSearchBar({super.key});
@@ -26,7 +26,7 @@ class _LocationSearchBarState extends State<LocationSearchBar> {
         decoration: BoxDecoration(
             color: context.background,
             borderRadius: const BorderRadius.all(Radius.circular(75))),
-        child: Consumer<LocationPickerViewModel>(
+        child: Consumer<LocationService>(
           builder: (context, locationService, _) {
             return TextField(
               controller: locationService.searchController,

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/notifications/notification_view.dart';
 
 class NewBookRequestCard extends StatelessWidget {

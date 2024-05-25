@@ -12,11 +12,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/firebase/book_listing_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:p2pbookshare/view/address/address_list_view.dart';
 import 'package:p2pbookshare/view/upload_book/widgets/book_added_bottom_sheet.dart';
 
@@ -48,7 +48,9 @@ class UploadBookViewModel with ChangeNotifier {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return const AddressListView();
+        return const AddressListView(
+          isAddressSelectionActive: true,
+        );
       },
     );
   }

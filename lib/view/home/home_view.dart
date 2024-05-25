@@ -6,16 +6,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:p2pbookshare/core/widgets/notifications_permission_card.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/constants/app_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'widgets/widgets.dart';
 
 class HomeView extends StatefulWidget {
@@ -122,7 +123,7 @@ class _HomeViewState extends State<HomeView>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 25, 25),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 10, 10),
                   child: Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -144,6 +145,9 @@ class _HomeViewState extends State<HomeView>
                     ),
                   ),
                 ),
+
+                // Shows the notification permission alert card if the user has not granted the permission
+                const NotifPermissionAlertCard(),
                 // NewBookRequestCard(
                 //   userUid: userDataProvider.userModel!.userUid!,
                 // ),

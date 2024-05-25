@@ -6,14 +6,14 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:p2pbookshare/core/route/router.dart';
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/theme/app_theme.dart';
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 
 class App extends StatefulWidget {
   const App(

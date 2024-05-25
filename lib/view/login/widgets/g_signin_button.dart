@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
-import 'package:p2pbookshare/provider/authentication/authentication.dart';
+import 'package:p2pbookshare/services/authentication/authentication.dart';
 import 'package:p2pbookshare/view_model/login_viewmodel.dart';
 
 class GSignInButton extends StatelessWidget {

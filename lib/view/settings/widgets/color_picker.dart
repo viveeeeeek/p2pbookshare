@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/provider/shared_prefs/app_theme_prefs.dart';
-import 'package:p2pbookshare/provider/theme/app_theme_service.dart';
+import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
+import 'package:p2pbookshare/services/theme/app_theme_service.dart';
 
 Widget colorPicker(BuildContext context, Color containerColor) {
   final themeProvider = Provider.of<AppThemeService>(context);

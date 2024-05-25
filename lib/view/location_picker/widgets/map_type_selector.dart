@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 class MapTypeSelector extends StatelessWidget {
   const MapTypeSelector({super.key});
@@ -22,7 +22,7 @@ class MapTypeSelector extends StatelessWidget {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: Consumer<LocationPickerViewModel>(
+        child: Consumer<LocationService>(
           builder: (context, locationProvider, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,

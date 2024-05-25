@@ -8,21 +8,19 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/utils/app_utils.dart';
-import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 
 class AuthorizationService with ChangeNotifier {
   User? user;
   final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
 
   final UserDataPrefs sharedPrefsProvider = UserDataPrefs();
-  final logger = SimpleLogger();
-
   GoogleSignInAuthentication? googleAuth;
   GoogleSignInAccount? googleUser;
   bool _isSigningIn = false;
@@ -123,7 +121,7 @@ class AuthorizationService with ChangeNotifier {
         // Validate domain organization
         // _isDomainValid = await validateDomainForSignIn(context);
         notifyListeners();
-        logger.info('Domain validation: $_isDomainValid');
+        logger.i('Domain validation: $_isDomainValid');
 
         // If the user's email contains the allowed domain, proceed with sign-in
         // if (_isDomainValid) {
@@ -143,12 +141,12 @@ class AuthorizationService with ChangeNotifier {
           _isUserLoggedIn = true;
           await _storeUserData(context, user!, userCredential);
         } else {
-          logger.warning("Sign-in failed");
+          logger.e("Sign-in failed");
         }
         // }
       }
     } catch (e) {
-      logger.warning("Error during sign-in: $e");
+      logger.e("Error during sign-in: $e");
       _resetSignInState();
     }
   }
@@ -184,7 +182,7 @@ class AuthorizationService with ChangeNotifier {
     user = null;
     // Set user login status to false
     _isUserLoggedIn = false;
-    logger.info('🥲User Signed out ');
+    logger.i('🥲User Signed out ');
 
     // Navigating to homepage once successfully logged in
     notifyListeners();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
-import 'package:p2pbookshare/provider/shared_prefs/user_data_prefs.dart';
+import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
 
 class UserDataProvider with ChangeNotifier {
   UserModel? _userModel;

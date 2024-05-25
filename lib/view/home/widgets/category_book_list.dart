@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';

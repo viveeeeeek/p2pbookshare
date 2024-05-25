@@ -7,13 +7,11 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
-import 'package:simple_logger/simple_logger.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 
 //! Gemini api and shared prefs inside single class not good
 /// A service class for interacting with the Gemini API.
 class GeminiService with ChangeNotifier {
-  SimpleLogger logger = SimpleLogger();
-
   /// Get the Gemini Pro API key from FlutterConfig.
   final geminiAPIKey = FlutterConfig.get('GEMINI_PRO_API_KEY');
 
@@ -29,9 +27,6 @@ class GeminiService with ChangeNotifier {
   bool _isGeneratingSummary = false;
   bool get isGeneratingSummary => _isGeneratingSummary;
 
-  /// Map to store generated summaries for each book.
-
-  /// Generate the book summary using prompt (text-to-text generation).
   /// Generate the book summary using prompt (text-to-text generation).
   Future<String> summarizeBookWithGeminiAI(
       {required String bookName,
@@ -50,7 +45,7 @@ class GeminiService with ChangeNotifier {
           "parts": [
             {
               "text": '''
-For  "${bookName}"  by $authorName: Create a concise and captivating 1-paragraph description in clear English. Summarize the plot, highlight key characters and their motivations, specify genre and tone, and mention unique elements. Use newline characters (\n) for clarity. Focus on factual information and avoid speculation.'''
+For  "$bookName"  by $authorName: Create a concise and captivating 1-paragraph description in clear English. Summarize the plot, highlight key characters and their motivations, specify genre and tone, and mention unique elements. Use newline characters (\n) for clarity. Focus on factual information and avoid speculation.'''
             }
           ]
         }
@@ -103,11 +98,11 @@ For  "${bookName}"  by $authorName: Create a concise and captivating 1-paragraph
           responseBody['candidates'][0]['content']['parts'][0]['text'];
     } else {
       _geminiResponse = '';
-      logger.warning('Unexpected response body: $responseBody');
+      logger.e('Unexpected response body: $responseBody');
     }
     _isGeneratingSummary = false;
     notifyListeners();
-    logger.info(
+    logger.i(
         "GeminiService (summarizeBookWithGeminiAI): Summary generated: ${response.body}");
 
     return _geminiResponse;

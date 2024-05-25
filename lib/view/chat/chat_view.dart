@@ -15,11 +15,11 @@ import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/fcm/access_token_firebase.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:p2pbookshare/provider/fcm/notification_service.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/fcm/access_token_firebase.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
+import 'package:p2pbookshare/services/fcm/notification_service.dart';
 import 'package:p2pbookshare/view/chat/border_radius.dart';
 
 class ChatView extends StatefulWidget {
@@ -355,11 +355,11 @@ class _ChatViewState extends State<ChatView> {
         ? (isSameUserAsPrev || isSameUserAsNext)
             ? getPaddingForCurrentUser(isSameUserAsPrev, isSameUserAsNext)
             // : const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0)
-            : const EdgeInsets.fromLTRB(20, 20, 20, 20)
+            : const EdgeInsets.fromLTRB(14, 20, 14, 20)
         : (isSameUserAsPrev || isSameUserAsNext)
             ? getPaddingForOtherUser(isSameUserAsPrev, isSameUserAsNext)
             // : const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0);
-            : const EdgeInsets.fromLTRB(20, 20, 20, 0);
+            : const EdgeInsets.fromLTRB(14, 20, 14, 0);
 
     return Container(
       padding: bubblePadding,

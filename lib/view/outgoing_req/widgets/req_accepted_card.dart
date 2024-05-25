@@ -35,7 +35,7 @@ class ReqAcceptedCard extends StatelessWidget {
             height: 5,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               FilledButton(
                   onPressed: onPressed,
@@ -44,7 +44,7 @@ class ReqAcceptedCard extends StatelessWidget {
                       children: [
                         Icon(MdiIcons.messageOutline),
                         const SizedBox(width: 8),
-                        const Text('Chat now')
+                        const Text('Chat book owner')
                       ])),
             ],
           ),

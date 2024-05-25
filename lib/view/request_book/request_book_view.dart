@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/shared_prefs/ai_summary_prefs.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/shared_prefs/ai_summary_prefs.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:p2pbookshare/view_model/request_book_viewmodel.dart';
 import 'widgets/widgets.dart';
 

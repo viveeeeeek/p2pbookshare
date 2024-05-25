@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:simple_logger/simple_logger.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/constants/model_constants.dart';
@@ -16,7 +16,6 @@ import 'package:p2pbookshare/model/book.dart';
 
 class BookListingService with ChangeNotifier {
   final user = FirebaseAuth.instance.currentUser;
-  final logger = SimpleLogger();
 
   Future<String?> uploadCoverImage(File imageFile, String fileName) async {
     final Reference storageReference =
@@ -27,7 +26,7 @@ class BookListingService with ChangeNotifier {
       final String imageUrl = await taskSnapshot.ref.getDownloadURL();
       return imageUrl;
     } catch (e) {
-      logger.info('Error uploading image to Firebase Storage: $e');
+      logger.i('Error uploading image to Firebase Storage: $e');
       return null;
     }
   }
@@ -46,9 +45,9 @@ class BookListingService with ChangeNotifier {
       DocumentReference docRef = await booksCollection.add(bookData);
       String bookId = docRef.id;
       await docRef.update({BookConfig.bookID: bookId});
-      logger.info("✅✅Book added");
+      logger.i("✅✅Book added");
     } catch (e) {
-      logger.info('Error adding book details to Firestore: $e');
+      logger.i('Error adding book details to Firestore: $e');
     }
   }
 
@@ -58,9 +57,9 @@ class BookListingService with ChangeNotifier {
     try {
       await FirebaseFirestore.instance.collection('books').doc(bookId).delete();
       await FirebaseStorage.instance.refFromURL(bookCoverImageUrl).delete();
-      logger.info("✅✅Book deleted");
+      logger.i("✅✅Book deleted");
     } catch (e) {
-      logger.info('Error deleting book details from Firestore: $e');
+      logger.i('Error deleting book details from Firestore: $e');
     }
   }
 

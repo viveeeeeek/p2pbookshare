@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 class UserDataPrefs with ChangeNotifier {
   SharedPreferences? _prefs;
-  final logger = SimpleLogger();
 /*
  Instead of initializing SharedPreferences in every method,
  we can create a private field to hold the shared preferences instance once and reuse it.
@@ -19,7 +18,6 @@ class UserDataPrefs with ChangeNotifier {
 
   //! SAVE USER TO SHARED-PREFERENCES
   Future<void> saveUserToPrefs(User? user) async {
-    //FIXME: username is not saved in shared-preferences
     await initPrefs();
     _prefs!.setString('user_id', user?.uid ?? '');
     _prefs!.setString('user_name', user?.displayName ?? '');
@@ -44,6 +42,6 @@ class UserDataPrefs with ChangeNotifier {
     _prefs!.remove('user_id');
     _prefs!.remove('user_name');
     _prefs!.remove('user_email');
-    logger.info("🗑️user data removed from shared-preferences");
+    logger.i("🗑️user data removed from shared-preferences");
   }
 }

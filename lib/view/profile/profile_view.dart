@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/user_model.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
-import 'package:p2pbookshare/provider/userdata_provider.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
+import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:p2pbookshare/view/profile/tabs/outgoing_req/outgoing_req_tab.dart';
 import 'package:p2pbookshare/view/profile/tabs/user_books/user_books_tab.dart';
 import 'package:p2pbookshare/view/profile/widgets/custom_tab_bar.dart';

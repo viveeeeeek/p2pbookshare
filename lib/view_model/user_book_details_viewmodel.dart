@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/chat_room.dart';
-import 'package:p2pbookshare/provider/chat/chat_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_listing_service.dart';
+import 'package:p2pbookshare/services/chat/chat_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_listing_service.dart';
 
 class UserBookDetailsViewModel {
   // late final bookRequestHandlingService;

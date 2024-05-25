@@ -6,12 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/app_init_handler.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/model/address.dart';
-import 'package:p2pbookshare/provider/firebase/user_service.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:p2pbookshare/view/address/address_list_view.dart';
-import 'package:p2pbookshare/view_model/location_picker_viewmodel.dart';
+import 'package:p2pbookshare/services/others/location_service.dart';
 
 class AddressHandler {
   static void handleAddressCompletionContinue({
@@ -20,8 +20,8 @@ class AddressHandler {
     required TextEditingController cityController,
     required TextEditingController stateController,
   }) {
-    LocationPickerViewModel locationService =
-        Provider.of<LocationPickerViewModel>(context, listen: false);
+    LocationService locationService =
+        Provider.of<LocationService>(context, listen: false);
     FirebaseUserService firebaseUserService =
         Provider.of<FirebaseUserService>(context, listen: false);
 
@@ -60,7 +60,9 @@ class AddressHandler {
           context: context,
           isScrollControlled: true,
           builder: (context) {
-            return const AddressListView();
+            return const AddressListView(
+              isAddressSelectionActive: true,
+            );
           },
         );
       } catch (e) {

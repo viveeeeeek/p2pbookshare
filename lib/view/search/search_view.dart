@@ -13,7 +13,7 @@ import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
 import 'package:p2pbookshare/model/book.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/search/widgets/search_app_bar.dart';
 import 'package:p2pbookshare/view_model/search_viewmodel.dart';
 

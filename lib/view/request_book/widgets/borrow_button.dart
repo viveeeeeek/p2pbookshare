@@ -11,7 +11,7 @@ import 'package:tuple/tuple.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
 import 'package:p2pbookshare/model/book.dart';
 import 'package:p2pbookshare/model/borrow_request.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
 import 'package:p2pbookshare/view/outgoing_req/outgoing_req_details_view.dart';
 
 class BorrowButton extends StatelessWidget {

@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:p2pbookshare/core/widgets/no_requests_widget.dart';
 import 'package:p2pbookshare/core/widgets/p2pbookshare_listview.dart';
-import 'package:p2pbookshare/provider/firebase/book_borrow_request_service.dart';
-import 'package:p2pbookshare/provider/firebase/book_fetch_service.dart';
+import 'package:p2pbookshare/services/firebase/book_borrow_request_service.dart';
+import 'package:p2pbookshare/services/firebase/book_fetch_service.dart';
 import 'package:p2pbookshare/view/notifications/widgets/notification_card.dart';
 
 //TODO: Add sort by date
@@ -42,37 +42,6 @@ class NotificationViewState extends State<NotificationView> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Expanded(
-                      //     child: StreamBuilder(
-                      //   stream: bookRequestService.fetchNotifications(),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const CircularProgressIndicator();
-                      //     } else if (snapshot.hasError) {
-                      //       return Center(
-                      //           child: Text('Error: ${snapshot.error}'));
-                      //     } else if (!snapshot.hasData ||
-                      //         snapshot.data!.isEmpty) {
-                      //       return const NoRequestsWidget();
-                      //     } else if (snapshot.hasData &&
-                      //         snapshot.data != null) {
-                      //       final bookRequestDocument = snapshot.data!;
-                      //       return ListView.builder(
-                      //         itemCount: bookRequestDocument.length,
-                      //         itemBuilder: (context, index) {
-                      //           final bookData = bookRequestDocument[index];
-                      //           return NotificationCard(context, bookData);
-                      //         },
-                      //       );
-                      //     } else if (snapshot.hasData &&
-                      //         snapshot.data == null) {
-                      //       return const Text('No notifications');
-                      //     } else {
-                      //       return const Text('Something went wrong :/');
-                      //     }
-                      //   },
-                      // ))
                       Expanded(
                         child: P2pbookshareStreamBuilder(
                           dataStream: bookRequestService.fetchNotifications(),

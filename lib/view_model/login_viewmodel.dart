@@ -5,12 +5,15 @@
 import 'dart:math';
 
 // Flutter imports:
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // Package imports:
-import 'package:logger/logger.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
+import 'package:p2pbookshare/core/utils/app_utils.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:p2pbookshare/services/fcm/notification_service.dart';
 import 'package:p2pbookshare/services/userdata_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,95 +27,106 @@ class LoginViewModel {
   late AuthorizationService _authService;
   late FirebaseUserService _fbUserService;
   late UserDataProvider _userDataProvider;
+
+  /// method to generate random 6-7 letter meaningful word from given string nd use it as a username
+  String generateUserName(String email) {
+    String username = email.split('@')[0];
+    String randomString = username.substring(0, min(8, username.length));
+
+    const _randomChars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const _randStringLength = 5;
+    Random _rnd = Random();
+
+    return randomString +
+        String.fromCharCodes(Iterable.generate(_randStringLength,
+            (_) => _randomChars.codeUnitAt(_rnd.nextInt(_randomChars.length))));
+  }
+
+  Future<bool> isInternetConnection(context) async {
+    final authService =
+        Provider.of<AuthorizationService>(context, listen: false);
+    // Checks if internet connection is available
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      Utils.snackBar(
+          context: context,
+          message: 'No internet connection available :/',
+          actionLabel: 'Ok',
+          durationInSecond: 2,
+          onPressed: () => {});
+      authService.setIsSigningIn(false);
+      return false;
+    } else {
+      authService.setIsSigningIn(true);
+      return true;
+    }
+  }
+
   Future<void> handleSignIn(BuildContext context) async {
     _authService = Provider.of<AuthorizationService>(context, listen: false);
     _fbUserService = Provider.of<FirebaseUserService>(context, listen: false);
     _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
-    var logger = Logger();
 
-    /// method to generate random 6-7 letter meaningful word from given string
-    /// and use it as a username
-    String generateUserName(String email) {
-      String username = email.split('@')[0];
-      String randomString = '';
-      for (int i = 0; i < 8; i++) {
-        randomString += username[i];
-      }
-
-      // Generate a random string
-      const _randomChars =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      const _randStringLength = 5; // number of characters to generate
-      Random _rnd = Random();
-
-      for (int i = 0; i < _randStringLength; i++) {
-        randomString += _randomChars[_rnd.nextInt(_randomChars.length)];
-      }
-
-      return randomString;
+    if (!await isInternetConnection(context)) {
+      return;
     }
 
     try {
       await _authService.gSignIn(context);
+
       final user = _authService.user;
       if (user != null) {
-        final _username = await generateUserName(user.email!);
-        logger.i('newly generated username is $_username');
-
-        NotificationService _notificationService = NotificationService();
-        var deviceToken = await _notificationService.getDeviceToken();
-        logger.d('Device Token: $deviceToken');
-
-        UserModel userModel;
-        if (deviceToken.isNotEmpty) {
-          userModel = UserModel(
-            userUid: user.uid,
-            username: _username,
-            emailAddress: user.email,
-            displayName: user.displayName,
-            profilePictureUrl: user.photoURL,
-            deviceToken: deviceToken,
-          );
-        } else {
-          userModel = UserModel(
-            userUid: user.uid,
-            username: _username,
-            emailAddress: user.email,
-            displayName: user.displayName,
-            profilePictureUrl: user.photoURL,
-          );
-        }
-
-        /// Onece user logs in, the user data is loadsed in provider to be used in app
-        _userDataProvider.setUserModel(userModel);
-        final collectionExists =
-            await _fbUserService.userCollectionExists(user.uid);
-        if (!collectionExists) {
-          final _username = await generateUserName(user.email!);
-          logger.i('newly generated username is $_username');
-          await _fbUserService.createUserCollection(user.uid, userModel);
-          logger.i("✅collection creation is complete");
-        } else {
-          final existingUserModel =
-              await _fbUserService.getUserDetailsById(user.uid);
-
-          /// create usermodel using Future<Map<String, dynamic>?> returned by getuserdetailsbyId
-          /// if usermodel is not null, use it, else use the newly created usermodel
-          /// if usermodel is null, it means the user is logging in for the first time
-          if (existingUserModel != null) {
-            _userDataProvider
-                .setUserModel(UserModel.fromMap(existingUserModel));
-          } else {
-            await _fbUserService.createUserCollection(user.uid, userModel);
-          }
-        }
-
-        if (context.mounted) {
-          context.goNamed(AppRouterConstants.landingView);
-        }
+        await _handleUserLogin(context, user);
       }
     } catch (e) {
       logger.e("❌Error during sign-in or user creation: $e");
     }
   }
+
+  Future<void> _handleUserLogin(BuildContext context, User user) async {
+    final _username = await generateUserName(user.email!);
+    logger.i('newly generated username is $_username');
+
+    NotificationService _notificationService = NotificationService();
+    var deviceToken = await _notificationService.getDeviceToken();
+    logger.d('Device Token: $deviceToken');
+
+    UserModel userModel = UserModel(
+      userUid: user.uid,
+      username: _username,
+      emailAddress: user.email,
+      displayName: user.displayName,
+      profilePictureUrl: user.photoURL,
+      deviceToken: deviceToken.isNotEmpty ? deviceToken : null,
+    );
+
+    _userDataProvider.setUserModel(userModel);
+    final collectionExists =
+        await _fbUserService.userCollectionExists(user.uid);
+    if (!collectionExists) {
+      await _fbUserService.createUserCollection(user.uid, userModel);
+      logger.i("✅collection creation is complete");
+    } else {
+      final existingUserModel =
+          await _fbUserService.getUserDetailsById(user.uid);
+      if (existingUserModel != null) {
+        _userDataProvider.setUserModel(UserModel.fromMap(existingUserModel));
+      } else {
+        await _fbUserService.createUserCollection(user.uid, userModel);
+      }
+    }
+
+    if (context.mounted) {
+      context.goNamed(AppRouterConstants.landingView);
+    }
+  }
 }
+
+// void _showInvalidDomainSnackBar(BuildContext context) {
+//   ScaffoldMessenger.of(context).showSnackBar(
+//     const SnackBar(
+//       content: Text('Sign-up not allowed with this email domain'),
+//     ),
+//   );
+// }

@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,7 +11,6 @@ import 'package:p2pbookshare/core/utils/logging.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:p2pbookshare/core/utils/app_utils.dart';
 import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/userdata_provider.dart';
 
@@ -25,9 +23,15 @@ class AuthorizationService with ChangeNotifier {
   GoogleSignInAccount? googleUser;
   bool _isSigningIn = false;
   bool get getIsSigningIn => _isSigningIn;
+  setIsSigningIn(bool value) {
+    _isSigningIn = value;
+    notifyListeners();
+  }
+
   bool isInternetAvlbl = false;
   // ignore: unused_field
   bool _isDomainValid = false;
+  bool get isDomainValid => _isDomainValid;
   final String _userid = '';
   String get getUserUid => _userid;
   final String _useremail = '';
@@ -44,33 +48,13 @@ class AuthorizationService with ChangeNotifier {
   }
 
   isUserSignedIn() {
-    //// Check if the user is already authenticated
+    // Check if the user is already authenticated
     if (user != null) {
-      //// User is already signed in,  You can handle this case or show a message to the user
+      // User is already signed in,  You can handle this case or show a message to the user
       return;
     }
     _isSigningIn = true;
     notifyListeners();
-  }
-
-  isInternetConnection(context) async {
-    //// Checks fi internet connection is available
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
-      Utils.snackBar(
-          context: context,
-          message: 'No internet connection available :/',
-          actionLabel: 'Ok',
-          durationInSecond: 2,
-          onPressed: () => {});
-      _isSigningIn = false; //// No internet - isSigning false
-      isInternetAvlbl = false;
-      notifyListeners();
-    } else {
-      _isSigningIn = true;
-      isInternetAvlbl = true;
-      notifyListeners();
-    }
   }
 
   /// Method to validate domain organization
@@ -78,17 +62,21 @@ class AuthorizationService with ChangeNotifier {
   /// Else, show a message or take action to inform the user they're not allowed to sign up
   /// Reset GoogleSignIn instance and state after domain restriction
   //FIXME: Instead of showing snackbar here use isDomainValid flag and show snackbar in loginHandler
-  bool validateDomainForSignIn(BuildContext context) {
+  bool validateDomainForSignIn() {
     if (!googleUser!.email.endsWith('@dypvp.edu.in')) {
       // Show a message or take action to inform the user they're not allowed to sign up
-      googleUser?.clearAuthCache();
+      // if (context.mounted) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Text('Sign-up not allowed with this email domain'),
+      //     ),
+      //   );
+      // }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sign-up not allowed with this email domain'),
-        ),
-      );
       _isSigningIn = false;
+      _isDomainValid = true;
+      logger.i('Set domain validation: $_isDomainValid');
+      googleUser?.clearAuthCache();
       // Reset GoogleSignIn instance and state after domain restriction
       googleSignIn.disconnect();
       googleSignIn.signOut();
@@ -102,29 +90,25 @@ class AuthorizationService with ChangeNotifier {
 
   Future<void> gSignIn(BuildContext context) async {
     try {
-      // Check for internet connection
-      await isInternetConnection(context);
       await isUserSignedIn();
 
-      // If internet is available then only prompt to choose google account
-      if (isInternetAvlbl) {
-        googleUser = await googleSignIn.signIn();
+      googleUser = await googleSignIn.signIn();
 
-        // If user cancels Google Sign-In, reset state and return early
-        if (googleUser == null) {
-          _resetSignInState();
-          return;
-        }
+      // If user cancels Google Sign-In, reset state and return early
+      if (googleUser == null) {
+        _resetSignInState();
+        return;
+      }
 
-        googleAuth = await googleUser?.authentication;
+      googleAuth = await googleUser?.authentication;
 
-        // Validate domain organization
-        // _isDomainValid = await validateDomainForSignIn(context);
-        notifyListeners();
-        logger.i('Domain validation: $_isDomainValid');
+      // Validate domain organization
+      _isDomainValid = await validateDomainForSignIn();
+      notifyListeners();
+      logger.i('Domain validation: $_isDomainValid');
 
-        // If the user's email contains the allowed domain, proceed with sign-in
-        // if (_isDomainValid) {
+      // If the user's email contains the allowed domain, proceed with sign-in
+      if (_isDomainValid) {
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
@@ -143,8 +127,7 @@ class AuthorizationService with ChangeNotifier {
         } else {
           logger.e("Sign-in failed");
         }
-        // }
-      }
+      } else {}
     } catch (e) {
       logger.e("Error during sign-in: $e");
       _resetSignInState();
@@ -171,9 +154,7 @@ class AuthorizationService with ChangeNotifier {
   }
 
 //! G-SIGN-OUT METHOD
-  /// Method to sign out from google and firebase
-  /// Also clearing user data from shared preferences
-  /// and flutter secured storage
+  /// Method to sign out from google and firebase Also clearing user data from shared preferences and flutter secured storage
   Future<void> gSignOut(context) async {
     await googleSignIn.signOut();
     await FirebaseAuth.instance.signOut();
@@ -189,8 +170,7 @@ class AuthorizationService with ChangeNotifier {
   }
 
 //! Storing user token & data in flutter secured storage
-  /// to check user login status in next app launch
-  /// and to keep user logged in
+  /// to check user login status in next app launch and to keep user logged in
   final storage = const FlutterSecureStorage();
   Future<void> storeTokenAndData(UserCredential userCredential) async {
     await storage.write(

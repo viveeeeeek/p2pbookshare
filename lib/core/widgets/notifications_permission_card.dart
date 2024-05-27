@@ -11,11 +11,13 @@ class NotifPermissionAlertCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PermissionService>(
-      builder: (context, permissionService, child) {
+    return Selector<PermissionService, bool>(
+      selector: (context, permissionService) =>
+          permissionService.isNotificationPermissionAvailable,
+      builder: (context, isNotificationPermissionAvailable, child) {
         logger.d(
-            'Notification permission available: ${permissionService.isNotificationPermissionAvailable}');
-        return !permissionService.isNotificationPermissionAvailable
+            'Notification permission available: ${isNotificationPermissionAvailable}');
+        return !isNotificationPermissionAvailable
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Container(

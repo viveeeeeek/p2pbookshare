@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/view_model/login_viewmodel.dart';
 
 // Package imports:
 import 'package:rive/rive.dart' as rive;
@@ -18,6 +19,7 @@ class LoginView extends StatefulWidget {
 }
 
 class LoginViewState extends State<LoginView> {
+  final _loginViewModel = LoginViewModel();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -85,9 +87,14 @@ class LoginViewState extends State<LoginView> {
                   ),
                   const SizedBox(height: 40.0),
                   Center(
-                    child: GSignInButton(
-                      height: constraints.maxHeight * 0.08,
-                      width: constraints.maxWidth * 0.8,
+                    child: Builder(
+                      builder: (context) => GSignInButton(
+                        height: constraints.maxHeight * 0.08,
+                        width: constraints.maxWidth * 0.8,
+                        onPressed: () {
+                          _loginViewModel.handleSignIn(context);
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.09),

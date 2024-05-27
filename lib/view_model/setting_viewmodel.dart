@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -75,6 +76,6 @@ class SettingViewModel {
     //   MaterialPageRoute(builder: (context) => const LoginView()),
     //   (route) => false,
     // );
-    context.goNamed('login');
+    context.goNamed(AppRouterConstants.loginView);
   }
 }

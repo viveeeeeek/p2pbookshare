@@ -62,31 +62,31 @@ class AuthorizationService with ChangeNotifier {
   /// Else, show a message or take action to inform the user they're not allowed to sign up
   /// Reset GoogleSignIn instance and state after domain restriction
   //FIXME: Instead of showing snackbar here use isDomainValid flag and show snackbar in loginHandler
-  bool validateDomainForSignIn() {
-    if (!googleUser!.email.endsWith('@dypvp.edu.in')) {
-      // Show a message or take action to inform the user they're not allowed to sign up
-      // if (context.mounted) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       content: Text('Sign-up not allowed with this email domain'),
-      //     ),
-      //   );
-      // }
+  // bool validateDomainForSignIn() {
+  //   if (!googleUser!.email.endsWith('@dypvp.edu.in')) {
+  // Show a message or take action to inform the user they're not allowed to sign up
+  // if (context.mounted) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     const SnackBar(
+  //       content: Text('Sign-up not allowed with this email domain'),
+  //     ),
+  //   );
+  // }
 
-      _isSigningIn = false;
-      _isDomainValid = true;
-      logger.i('Set domain validation: $_isDomainValid');
-      googleUser?.clearAuthCache();
-      // Reset GoogleSignIn instance and state after domain restriction
-      googleSignIn.disconnect();
-      googleSignIn.signOut();
-      notifyListeners();
-      return false; // Domain is not valid
-    } else {
-      _isDomainValid = true;
-      return true; // Domain is valid
-    }
-  }
+  //     _isSigningIn = false;
+  //     _isDomainValid = true;
+  //     logger.i('Set domain validation: $_isDomainValid');
+  //     googleUser?.clearAuthCache();
+  //     // Reset GoogleSignIn instance and state after domain restriction
+  //     googleSignIn.disconnect();
+  //     googleSignIn.signOut();
+  //     notifyListeners();
+  //     return false; // Domain is not valid
+  //   } else {
+  //     _isDomainValid = true;
+  //     return true; // Domain is valid
+  //   }
+  // }
 
   Future<void> gSignIn(BuildContext context) async {
     try {
@@ -103,31 +103,31 @@ class AuthorizationService with ChangeNotifier {
       googleAuth = await googleUser?.authentication;
 
       // Validate domain organization
-      _isDomainValid = await validateDomainForSignIn();
+      // _isDomainValid = await validateDomainForSignIn();
       notifyListeners();
       logger.i('Domain validation: $_isDomainValid');
 
       // If the user's email contains the allowed domain, proceed with sign-in
-      if (_isDomainValid) {
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
+      // if (_isDomainValid) {
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-        user = userCredential.user;
-        notifyListeners();
+      user = userCredential.user;
+      notifyListeners();
 
-        if (user != null) {
-          _isSigningIn = false;
-          _isUserLoggedIn = true;
-          await _storeUserData(context, user!, userCredential);
-        } else {
-          logger.e("Sign-in failed");
-        }
-      } else {}
+      if (user != null) {
+        _isSigningIn = false;
+        _isUserLoggedIn = true;
+        await _storeUserData(context, user!, userCredential);
+      } else {
+        logger.e("Sign-in failed");
+      }
+      // } else {}
     } catch (e) {
       logger.e("Error during sign-in: $e");
       _resetSignInState();

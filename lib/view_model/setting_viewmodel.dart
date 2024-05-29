@@ -11,6 +11,7 @@ import 'package:p2pbookshare/services/authentication/authentication.dart';
 import 'package:p2pbookshare/services/shared_prefs/app_theme_prefs.dart';
 import 'package:p2pbookshare/services/shared_prefs/user_data_prefs.dart';
 import 'package:p2pbookshare/services/theme/app_theme_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingViewModel {
   AppThemePrefs? _themeSharedPreferences;
@@ -58,17 +59,19 @@ class SettingViewModel {
   Future<void> handleLogOut(BuildContext context) async {
     final userDataSharedPrefsProvider =
         Provider.of<UserDataPrefs>(context, listen: false);
+    final sharedPrefs = await SharedPreferences.getInstance();
     final authProvider =
         Provider.of<AuthorizationService>(context, listen: false);
     await authProvider.gSignOut(context);
     await authProvider.removeTokenAndData();
+    await sharedPrefs.clear();
 // Cancel the subscription
     // try {
     //   await bookRequestService.cancelSubscription();
     // } catch (e) {
     //   logger.warning('Error cancelling subscription: $e');
     // }
-    await userDataSharedPrefsProvider.clearUserFromPrefs();
+    // await userDataSharedPrefsProvider.clearUserFromPrefs();
     //HACK: This is how you handle build context across synchronous warning
     if (!context.mounted) return;
     // Navigator.pushAndRemoveUntil(

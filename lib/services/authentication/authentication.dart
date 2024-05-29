@@ -158,13 +158,10 @@ class AuthorizationService with ChangeNotifier {
   Future<void> gSignOut(context) async {
     await googleSignIn.signOut();
     await FirebaseAuth.instance.signOut();
-
-    sharedPrefsProvider.clearUserFromPrefs();
     user = null;
     // Set user login status to false
     _isUserLoggedIn = false;
     logger.i('🥲User Signed out ');
-
     // Navigating to homepage once successfully logged in
     notifyListeners();
   }

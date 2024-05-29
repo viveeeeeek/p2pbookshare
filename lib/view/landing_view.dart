@@ -24,6 +24,7 @@ class LandingView extends StatefulWidget {
 
 class _LandingViewState extends State<LandingView> {
   int _selectedScreenIndex = 0;
+  bool _permissionRequested = false;
 
   /// move this screenIndex inside viewModel to dynamically change the index
 
@@ -32,15 +33,18 @@ class _LandingViewState extends State<LandingView> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    final _permissionService = Provider.of<PermissionService>(context);
-    Future.delayed(const Duration(seconds: 3), () {
-      _permissionService.requestNotificationPermission();
-    });
-    _notificationService.firebaseInit(context);
-    _notificationService.setupInteractMessage(context);
-    // _notificationService.isTokenRefreshed();
-    _notificationService.getDeviceToken();
-    _notificationService.subscribeToTopic('general');
+    if (!_permissionRequested) {
+      final _permissionService = Provider.of<PermissionService>(context);
+      Future.delayed(const Duration(seconds: 3), () {
+        _permissionService.requestNotificationPermission();
+      });
+      _notificationService.firebaseInit(context);
+      _notificationService.setupInteractMessage(context);
+      _notificationService.getDeviceToken();
+      _notificationService.subscribeToTopic('general');
+
+      _permissionRequested = true;
+    }
     super.didChangeDependencies();
   }
 

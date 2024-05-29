@@ -43,7 +43,8 @@ class OutgoingNotificationTab extends StatelessWidget {
                           } else if (!snapshot.hasData ||
                               snapshot.data == null ||
                               snapshot.data!.isEmpty) {
-                            return const Center(child: Text('No books found.'));
+                            return const Center(
+                                child: Text('No books requested.'));
                           } else {
                             List<Map<String, dynamic>> booksList =
                                 snapshot.data!;

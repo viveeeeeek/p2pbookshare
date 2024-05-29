@@ -8,28 +8,26 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:p2pbookshare/core/extensions/color_extension.dart';
 import 'package:p2pbookshare/services/authentication/authentication.dart';
-import 'package:p2pbookshare/view_model/login_viewmodel.dart';
 
 class GSignInButton extends StatelessWidget {
   const GSignInButton({
     super.key,
     required this.height,
     required this.width,
+    required this.onPressed,
   });
 
   final double height, width;
+  final void Function() onPressed;
   @override
   Widget build(BuildContext context) {
-    final _signInHandler = LoginViewModel();
     return Consumer<AuthorizationService>(builder: (context, authProvider, _) {
       return SizedBox(
         height: height,
         width: width,
         child: FilledButton(
           style: ElevatedButton.styleFrom(backgroundColor: context.secondary),
-          onPressed: () {
-            _signInHandler.handleSignIn(context);
-          },
+          onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

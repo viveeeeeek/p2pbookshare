@@ -1,24 +1,29 @@
-<p align="center">
-  <a href="https://github.com/viveeeeeek/p2pbookshare">
-    <img src="assets\splash\splash_logo.png" height="128">
-    <h1 align="center">P2P Book Share</h1>
-  </a>
-</p>
+<div align="center">
+<img width="192" height="192" src="assets\splash\splash_logo.png" align="center" alt="">
+
+<br><br>
 
 
+[![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/h4h13/Paisa/latest/total?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)](https://github.com/h4h13/Paisa/releases/latest)
+![GitHub Repo stars](https://img.shields.io/github/stars/viveeeeeek/1stHacktoberfest?style=for-the-badge&logo=star&logoColor=%23FFFFFF&labelColor=%23181a19&color=%23d2e3c8)
+![GitHub Release](https://img.shields.io/github/v/release/viveeeeeek/1stHacktoberfest?include_prereleases&style=for-the-badge&logo=%239acbff&logoColor=%23101318&labelColor=%23181a19&color=%23d2e3c8)
+![GitHub last commit](https://img.shields.io/github/last-commit/viveeeeeek/1stHacktoberfest?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)
+
+<br>
+
+
+
+
+
+# P2P Book Share
 A user-friendly Flutter app designed for college students to easily share, borrow, and lend books on campus.
+<br></br>
+</div>
 
-## Screenshots
+<img src="p2pbookshare-images/header-image.png" />
 
-| <img src="screenshots/login_view.jpg" width="200"/> | <img src="screenshots/home_view_notif_permission_card.jpg" width="200"/> | <img src="screenshots/search_view.jpg" width="200"/> |<img src="screenshots/upload_book_view.jpg" width="200"/> |<img src="screenshots/profile_outgoing_req_view.jpg" width="200"/> |
-|:---:|:---:|:---:|:---:|:---:|
-| Login | Home | Search | Upload Book | Profile |
 
-| <img src="screenshots/home_view.jpg" width="200"/> | <img src="screenshots/request_book_view.jpg" width="200"/> | <img src="screenshots/request_book_view_ai_summary.jpg" width="200"/> |<img src="screenshots/outgoing_request_details_view.jpg" width="200"/> |<img src="screenshots/settings_view.jpg" width="200"/> |
-|:---:|:---:|:---:|:---:|:---:|
-| Home | Request Book | AI Summary | Request Details | Settings |
-
-## Steps to build 
+### 🔨 Steps to build
 1. Clone the project:
     - Use `git clone https://github.com/viveeeeeek/p2pbookshare.git` to download the project from the GitHub repository. 
 
@@ -41,6 +46,13 @@ A user-friendly Flutter app designed for college students to easily share, borro
 
 5. Configure both debug and release builds in the app/`build.gradle` file. Create and properly set up the `key.properties` file to securely manage your signing keys and other sensitive information.
 
+    ```properties
+    keyAlias=key-alias
+    keyPassword=key-password
+    storeFile=/path/to/kestore
+    storePassword=key-store-password
+    ```
+
 6. Create a service account within the Google Cloud Console and obtain the `service_account.json` file, which is used for sending push notifications on Android. Place this file in the assets/fcm/ folder of your project.
     - Create a Service Account in Google Cloud Console
     - Navigate to the [Google Cloud Console](https://console.cloud.google.com/).
@@ -53,4 +65,15 @@ A user-friendly Flutter app designed for college students to easily share, borro
     - Choose "JSON" format and click "Create".
     - Download the `service_account.json` file.
     - Place the downloaded `service_account.json` file in the `assets/fcm/` folder of your Flutter project.
+
+
+### License
+
+    Copyright (c) 2024, VivekS.
+    All rights reserved.
+    
+    This source code is licensed under the GPLv3-style license found in the
+    LICENSE file in the root directory of this source tree.
+
+
 

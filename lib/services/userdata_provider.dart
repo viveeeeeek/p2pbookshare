@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/utils/logging.dart';
 
 // Project imports:
 import 'package:p2pbookshare/model/user_model.dart';
@@ -24,6 +25,13 @@ class UserDataProvider with ChangeNotifier {
       // print('💥Userdatamodel set from setter inside userdata_provider');
     }
 
+    notifyListeners();
+  }
+
+  /// clear the usermodel
+  void clearUserData() {
+    _userModel = null;
+    logger.i('Userdata cleared');
     notifyListeners();
   }
 

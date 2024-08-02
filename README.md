@@ -4,10 +4,10 @@
 <br><br>
 
 
-[![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/h4h13/Paisa/latest/total?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)](https://github.com/h4h13/Paisa/releases/latest)
-![GitHub Repo stars](https://img.shields.io/github/stars/viveeeeeek/1stHacktoberfest?style=for-the-badge&logo=star&logoColor=%23FFFFFF&labelColor=%23181a19&color=%23d2e3c8)
-![GitHub Release](https://img.shields.io/github/v/release/viveeeeeek/1stHacktoberfest?include_prereleases&style=for-the-badge&logo=%239acbff&logoColor=%23101318&labelColor=%23181a19&color=%23d2e3c8)
-![GitHub last commit](https://img.shields.io/github/last-commit/viveeeeeek/1stHacktoberfest?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)
+[![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/viveeeeeek/p2pbookshare/latest/total?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)](https://github.com/viveeeeeek/p2pbookshare/releases/latest)
+![GitHub Repo stars](https://img.shields.io/github/stars/viveeeeeek/p2pbookshare?style=for-the-badge&logo=star&logoColor=%23FFFFFF&labelColor=%23181a19&color=%23d2e3c8)
+![GitHub Release](https://img.shields.io/github/v/release/viveeeeeek/p2pbookshare?include_prereleases&style=for-the-badge&logo=%239acbff&logoColor=%23101318&labelColor=%23181a19&color=%23d2e3c8)
+![GitHub last commit](https://img.shields.io/github/last-commit/viveeeeeek/p2pbookshare?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)
 
 <br>
 
@@ -67,7 +67,7 @@ A user-friendly Flutter app designed for college students to easily share, borro
     - Place the downloaded `service_account.json` file in the `assets/fcm/` folder of your Flutter project.
 
 
-### License
+### [License](./LICENSE.txt)
 
     Copyright (c) 2024, VivekS.
     All rights reserved.

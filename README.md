@@ -15,15 +15,26 @@
 
 
 
-# P2P Book Share
+# P2P BookShare
 A user-friendly Flutter app designed for college students to easily share, borrow, and lend books on campus.
 <br></br>
 </div>
 
 <img src="p2pbookshare-images/header-image.png" />
 
+## Features
 
-### 🔨 Steps to build
+- 🤖 **AI-Generated Summaries**: Get concise and insightful book summaries powered by Gemini.
+- 🎨 **Material & Dynamic Theming**: Enjoy a visually appealing interface with adaptive color schemes, including light and dark modes.
+- 💬 **Chat Integration**: Seamlessly communicate with other users for smooth book exchanges.
+- 🗺️ **Google Maps Integration**: Easily select and share locations for meetups and book exchanges.
+- 🔍 **Advanced Search**: Quickly find your favorite books and authors using the powerful search bar.
+- 📲 **Push Notifications**: Stay informed with real-time notifications for chat messages.
+
+
+
+
+## 🔨 Steps to build
 1. Clone the project:
     - Use `git clone https://github.com/viveeeeeek/p2pbookshare.git` to download the project from the GitHub repository. 
 
@@ -66,8 +77,11 @@ A user-friendly Flutter app designed for college students to easily share, borro
     - Download the `service_account.json` file.
     - Place the downloaded `service_account.json` file in the `assets/fcm/` folder of your Flutter project.
 
+## Contribution
 
-### [License](./LICENSE.txt)
+Your contributions to P2P BookShare are greatly appreciated! Whether you’re reporting a bug, suggesting a feature, or submitting a pull request, we welcome your input. For significant changes, please open an issue first to discuss your proposed modifications.
+
+## [License](./LICENSE.txt)
 
     Copyright (c) 2024, VivekS.
     All rights reserved.

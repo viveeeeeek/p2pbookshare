@@ -72,3 +72,9 @@ class BookConfig {
   static const String location = 'book_exchange_location';
   static const String completeAddress = 'book_exchange_address';
 }
+
+class BookRatingConfig {
+  static const String bookId = 'book_id';
+  static const String userId = 'user_id';
+  static const String rating = 'rating';
+}

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:p2pbookshare/view/outgoing_req/widgets/rating_bar.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -127,6 +128,11 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
                             const SizedBox(
                               height: 25,
                             ),
+                            RatingBar(
+                              userId: widget.bookrequestModel!.requesterID,
+                              bookId: widget.bookrequestModel!.reqBookID,
+                              requestID: widget.bookrequestModel!.reqID!,
+                            ),
                             StreamBuilder(
                                 stream: bookRequestService.getRequestStatusbyID(
                                     widget.bookrequestModel!.reqID!),
@@ -200,6 +206,8 @@ class _OutgoingReqDetailsViewState extends State<OutgoingReqDetailsView> {
   }
 }
 
+/// Rating bar widget
+
 Widget buildBookDetailsCard(BuildContext context, String bookID) {
   return FutureBuilder(
       future: BookFetchService().getBookDetailsById(bookID),
@@ -251,34 +259,3 @@ Widget buildBookDetailsCard(BuildContext context, String bookID) {
         }
       });
 }
-
-// Widget buildBookOwnerName(BuildContext context, String bookOwnerID) {
-//   return FutureBuilder(
-//       future: FirebaseUserService().getUserDetailsById(bookOwnerID),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const P2PBookShareShimmerContainer(
-//               height: 20, width: 250, borderRadius: 2);
-//         }
-//         if (snapshot.hasError) {
-//           return Center(child: Text('Error: ${snapshot.error}'));
-//         }
-//         final userData = snapshot.data;
-//         return Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Icon(
-//               MdiIcons.accountOutline,
-//               size: 18,
-//             ),
-//             const SizedBox(
-//               width: 6,
-//             ),
-//             Text(
-//               '${userData!['username'] ?? 'Lorem Ipsum'}',
-//               //    style: const TextStyle(fontSize: 18),
-//             ),
-//           ],
-//         );
-//       });
-// }

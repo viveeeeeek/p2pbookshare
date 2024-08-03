@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -7,6 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:p2pbookshare/core/widgets/notifications_permission_card.dart';
+import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
+import 'package:p2pbookshare/model/user_model.dart';
+import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -30,24 +34,39 @@ class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  late UserDataProvider userDataProvider;
+  final _userService = FirebaseUserService();
+  final _currentUser = FirebaseAuth.instance.currentUser;
+  // late final currentUserID;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    userDataProvider = Provider.of<UserDataProvider>(context);
+    // currentUserID = userDataProvider.userModel!.userUid!;
+    super.didChangeDependencies();
+  }
 
   Widget buildCategorizedBookList(BuildContext context, String genre) {
     return Consumer<BookFetchService>(
       builder: (context, bookFetchServices, _) {
         return CategorizedBookList(
-          context: context,
-          stream: bookFetchServices.getCategoryWiseBooks(genre),
-          currentUserID:
-              Provider.of<UserDataProvider>(context).userModel!.userUid!,
-        );
+            context: context,
+            stream: bookFetchServices.getCategoryWiseBooks(genre),
+            currentUserID: _currentUser!.uid);
       },
     );
+  }
+
+  /// function to fetch user details using current user uid
+  Future<Map<String, dynamic>?> fetchUserDetails() async {
+    final _userData = await _userService.getUserDetailsById(_currentUser!.uid);
+
+    return _userData;
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final userDataProvider = Provider.of<UserDataProvider>(context);
     final bookRequestService = Provider.of<BookRequestService>(context);
     final chatService = Provider.of<ChatService>(context);
     return LayoutBuilder(builder: (context, constraints) {
@@ -123,28 +142,46 @@ class _HomeViewState extends State<HomeView>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 10, 10),
-                  child: Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: 'Welcome,\n',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
+                    padding: const EdgeInsets.fromLTRB(20, 0, 10, 10),
+                    child: FutureBuilder(
+                      future: fetchUserDetails(),
+                      builder: (context, snapshot) {
+                        String _currentUserDisplayName = '';
+                        Widget _displayNameWidget;
+
+                        if (snapshot.hasData) {
+                          final userModel = UserModel.fromMap(
+                              snapshot.data as Map<String, dynamic>);
+                          _currentUserDisplayName = userModel.displayName!;
+                          _displayNameWidget = Text(
+                            _currentUserDisplayName,
+                            style: const TextStyle(
+                              fontSize: 26,
+                            ),
+                          );
+                        } else {
+                          _displayNameWidget =
+                              const P2PBookShareShimmerContainer(
+                                  height: 50, width: 175, borderRadius: 15);
+                        }
+
+                        return Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              const TextSpan(
+                                text: 'Welcome,\n',
+                                style: TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const WidgetSpan(child: SizedBox(height: 20)),
+                              WidgetSpan(child: _displayNameWidget),
+                            ],
                           ),
-                        ),
-                        TextSpan(
-                          text:
-                              userDataProvider.userModel!.displayName ?? 'User',
-                          style: const TextStyle(
-                            fontSize: 26,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                        );
+                      },
+                    )),
 
                 // Shows the notification permission alert card if the user has not granted the permission
                 const NotifPermissionAlertCard(),

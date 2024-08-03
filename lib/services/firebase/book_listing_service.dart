@@ -62,18 +62,4 @@ class BookListingService with ChangeNotifier {
       logger.i('Error deleting book details from Firestore: $e');
     }
   }
-
-  // /// Method to update the book details in the Firestore
-  // /// update book availability status
-  // Future<void> updateBookAvailabilityStatus(
-  //     String bookId, bool isAvailable) async {
-  //   try {
-  //     await FirebaseFirestore.instance.collection('books').doc(bookId).update({
-  //       BookConfig.bookAvailability: isAvailable,
-  //     });
-  //     logger.info("✅✅Book availability status updated");
-  //   } catch (e) {
-  //     logger.info('Error updating book availability status in Firestore: $e');
-  //   }
-  // }
 }

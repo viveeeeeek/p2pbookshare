@@ -1,29 +1,23 @@
+<!-- ---------- Header ---------- -->
 <div align="center">
-<img width="192" height="192" src="assets\splash\splash_logo.png" align="center" alt="">
+  <img width="192" height="192" src="assets\splash\splash_logo.png" align="center" alt="">
+  <h1>P2P BoookShare</h1>
+<p>A user-friendly Flutter app for college students to share and borrow books on campus.</p>
 
-<br><br>
-
-
+<!-- ---------- Badges ---------- -->
 [![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/viveeeeeek/p2pbookshare/latest/total?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)](https://github.com/viveeeeeek/p2pbookshare/releases/latest)
 ![GitHub Repo stars](https://img.shields.io/github/stars/viveeeeeek/p2pbookshare?style=for-the-badge&logo=star&logoColor=%23FFFFFF&labelColor=%23181a19&color=%23d2e3c8)
 ![GitHub Release](https://img.shields.io/github/v/release/viveeeeeek/p2pbookshare?include_prereleases&style=for-the-badge&logo=%239acbff&logoColor=%23101318&labelColor=%23181a19&color=%23d2e3c8)
 ![GitHub last commit](https://img.shields.io/github/last-commit/viveeeeeek/p2pbookshare?style=for-the-badge&labelColor=%23181a19&color=%23d2e3c8)
-
-<br>
-
-
-
-
-
-# P2P BookShare
-A user-friendly Flutter app designed for college students to easily share, borrow, and lend books on campus.
-<br></br>
 </div>
 
+<!-- ---------- Banner Image ---------- -->
+<br></br>
 <img src="p2pbookshare-images/header-image.png" />
+<br></br>
 
+<!-- ---------- Features ---------- -->
 ## Features
-
 - 🤖 **AI-Generated Summaries**: Get concise and insightful book summaries powered by Gemini.
 - 🎨 **Material & Dynamic Theming**: Enjoy a visually appealing interface with adaptive color schemes, including light and dark modes.
 - 💬 **Chat Integration**: Seamlessly communicate with other users for smooth book exchanges.
@@ -31,9 +25,7 @@ A user-friendly Flutter app designed for college students to easily share, borro
 - 🔍 **Advanced Search**: Quickly find your favorite books and authors using the powerful search bar.
 - 📲 **Push Notifications**: Stay informed with real-time notifications for chat messages.
 
-
-
-
+<!-- ---------- Get Started ---------- -->
 ## 🔨 Steps to build
 1. Clone the project:
     - Use `git clone https://github.com/viveeeeeek/p2pbookshare.git` to download the project from the GitHub repository. 
@@ -77,10 +69,14 @@ A user-friendly Flutter app designed for college students to easily share, borro
     - Download the `service_account.json` file.
     - Place the downloaded `service_account.json` file in the `assets/fcm/` folder of your Flutter project.
 
+<!-- ---------- Contribution ---------- -->
 ## Contribution
+***All contributions are very welcome!***
+* Bug reports and feature requests can be submitted [here](https://github.com/viveeeeeek/p2pbookshare/issues).
+* If you are a developer and wish to contribute to the app, please **fork** the project and submit a [pull request
+  ](https://help.github.com/articles/about-pull-requests/). 
 
-Your contributions to P2P BookShare are greatly appreciated! Whether you’re reporting a bug, suggesting a feature, or submitting a pull request, we welcome your input. For significant changes, please open an issue first to discuss your proposed modifications.
-
+<!-- ---------- License ---------- -->
 ## [License](./LICENSE.txt)
 
     Copyright (c) 2024, VivekS.

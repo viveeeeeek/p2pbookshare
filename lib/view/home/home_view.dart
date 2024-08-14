@@ -8,9 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:p2pbookshare/core/widgets/notifications_permission_card.dart';
-import 'package:p2pbookshare/core/widgets/p2pbookshare_shimmer_container.dart';
-import 'package:p2pbookshare/model/user_model.dart';
 import 'package:p2pbookshare/services/firebase/user_service.dart';
+import 'package:p2pbookshare/view/home/widgets/top_rated_books_carousel.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -37,6 +36,16 @@ class _HomeViewState extends State<HomeView>
   late UserDataProvider userDataProvider;
   final _userService = FirebaseUserService();
   final _currentUser = FirebaseAuth.instance.currentUser;
+  final CarouselController _carouselViewController =
+      CarouselController(initialItem: 1);
+  final BookFetchService bookFetchService = BookFetchService();
+
+  @override
+  void dispose() {
+    _carouselViewController.dispose();
+    super.dispose();
+  }
+
   // late final currentUserID;
   @override
   void didChangeDependencies() {
@@ -141,7 +150,32 @@ class _HomeViewState extends State<HomeView>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                TopRatedBookscarousel(
+                    topBooksFuture: bookFetchService.getTopRatedBooks()),
+                const SizedBox(
+                  height: 25,
+                ),
+
+                // Shows the notification permission alert card if the user has not granted the permission
+                const NotifPermissionAlertCard(),
+                // NewBookRequestCard(
+                //   userUid: userDataProvider.userModel!.userUid!,
+                // ),
+                // Container(
+                //     height: 100,
+                //     width: 100,
+                //     color: Theme.of(context).bottomNavigationBarTheme),
+                for (String genre in AppConstants.bookGenres)
+                  buildCategorizedBookList(context, genre),
+              ],
+            ),
+          ));
+    });
+  }
+}
+
+/**
+   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 10, 10),
                     child: FutureBuilder(
                       future: fetchUserDetails(),
@@ -182,21 +216,4 @@ class _HomeViewState extends State<HomeView>
                         );
                       },
                     )),
-
-                // Shows the notification permission alert card if the user has not granted the permission
-                const NotifPermissionAlertCard(),
-                // NewBookRequestCard(
-                //   userUid: userDataProvider.userModel!.userUid!,
-                // ),
-                // Container(
-                //     height: 100,
-                //     width: 100,
-                //     color: Theme.of(context).bottomNavigationBarTheme),
-                for (String genre in AppConstants.bookGenres)
-                  buildCategorizedBookList(context, genre),
-              ],
-            ),
-          ));
-    });
-  }
-}
+ */

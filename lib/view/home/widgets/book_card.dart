@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:p2pbookshare/core/extensions/color_extension.dart';
 
 // Project imports:
 import 'package:p2pbookshare/core/widgets/p2pbookshare_cached_image.dart';
@@ -21,7 +22,8 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2, // Adjust the elevation as needed
+      elevation: 0, // Adjust the elevation as needed
+      color: context.secondaryContainer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),

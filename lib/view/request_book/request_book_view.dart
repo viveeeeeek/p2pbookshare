@@ -43,15 +43,16 @@ class _RequestBookViewState extends State<RequestBookView> {
     /// Selects date range and confirms it before sending the actual book borrow request.
     handleDateRangeSelection(BuildContext context) async {
       Future.delayed(const Duration(milliseconds: 500), () {
-        return Utils.alertDialog(
-            context: context,
-            title: 'Select Borrow Duration',
-            description:
-                'Please choose the date range for which you wish to borrow the book',
-            actionText: 'Ok',
-            onConfirm: () {
-              Navigator.of(context).pop();
-            });
+        if (context.mounted)
+          return Utils.alertDialog(
+              context: context,
+              title: 'Select Borrow Duration',
+              description:
+                  'Please choose the date range for which you wish to borrow the book',
+              actionText: 'Ok',
+              onConfirm: () {
+                Navigator.of(context).pop();
+              });
       });
 
       final bool _isDateRangeSelected =

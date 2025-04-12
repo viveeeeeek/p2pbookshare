@@ -35,7 +35,8 @@ class NewBookRequestCard extends StatelessWidget {
                       padding: const EdgeInsets.all(15.0),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: context.primaryContainer.withOpacity(0.5),
+                          color:
+                              context.primaryContainer.withValues(alpha: 0.5),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(16))),
                       child: Column(

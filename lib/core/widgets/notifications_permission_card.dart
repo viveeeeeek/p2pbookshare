@@ -35,8 +35,9 @@ class NotifPermissionAlertCard extends StatelessWidget {
                           child: Icon(
                             MdiIcons.bellAlertOutline,
                             size: 135, // adjust the size as needed
-                            color: context.onErrorContainer.withOpacity(
-                                0.1), // change color and opacity as needed
+                            color: context.onErrorContainer.withValues(
+                                alpha:
+                                    0.1), // change color and opacity as needed
                           ),
                         ),
                         Padding(

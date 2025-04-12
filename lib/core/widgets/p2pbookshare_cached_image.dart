@@ -22,8 +22,8 @@ class CachedImage extends StatelessWidget {
       imageUrl: imageUrl,
       fit: BoxFit.cover,
       placeholder: (context, url) => Shimmer.fromColors(
-        baseColor: context.secondaryContainer.withOpacity(0.2),
-        highlightColor: context.secondaryContainer.withOpacity(0.7),
+        baseColor: context.secondaryContainer.withValues(alpha: 0.2),
+        highlightColor: context.secondaryContainer.withValues(alpha: 0.7),
         child: Material(
           elevation: 4.0,
           shape: RoundedRectangleBorder(

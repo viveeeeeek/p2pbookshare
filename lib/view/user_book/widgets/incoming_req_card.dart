@@ -38,8 +38,8 @@ Widget incomingRequestCard(
                   vertical: 3,
                   horizontal: 10), // Add padding for better spacing
 
-              tileColor: context.primaryContainer.withOpacity(
-                  0.3), // Set a background color for better visibility
+              tileColor: context.primaryContainer.withValues(
+                  alpha: 0.3), // Set a background color for better visibility
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14), // Add rounded corners
               ),
@@ -65,7 +65,8 @@ Widget incomingRequestCard(
                       Container(
                         height: 50,
                         width: 1,
-                        color: context.onPrimaryContainer.withOpacity(0.5),
+                        color:
+                            context.onPrimaryContainer.withValues(alpha: 0.5),
                       ),
                       const SizedBox(width: 10),
                       Column(

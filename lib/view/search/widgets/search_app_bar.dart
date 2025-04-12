@@ -70,7 +70,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 builder: (context, searchViewModel, child) {
                   return AppBar(
                     backgroundColor:
-                        context.secondaryContainer.withOpacity(0.5),
+                        context.secondaryContainer.withValues(alpha: 0.5),
                     scrolledUnderElevation: 0,
                     automaticallyImplyLeading:
                         false, // This line removes the back button

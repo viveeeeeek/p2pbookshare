@@ -186,7 +186,7 @@ class _BookUploadViewState extends State<BookUploadView>
                                     decoration: BoxDecoration(
                                       color: context
                                           .colorScheme.secondaryContainer
-                                          .withOpacity(0.7),
+                                          .withValues(alpha: 0.7),
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(15)),
                                     ),

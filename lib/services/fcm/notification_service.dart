@@ -135,7 +135,7 @@ class NotificationService {
       logger.d(
           'Got a message!\n Title: ${message.notification!.title}\n Body: ${message.notification!.body}\n Data type: ${message.data['type']}\n Data chatroomId: ${message.data['chatroomId']}');
       if (Platform.isAndroid) {
-        initLocalNotifications(context, message);
+        if (context.mounted) initLocalNotifications(context, message);
         showNotifications(message);
       }
     });

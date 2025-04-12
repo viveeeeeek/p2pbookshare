@@ -15,10 +15,14 @@ class P2PBookShareShimmerContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-        baseColor:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2),
-        highlightColor:
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.7),
+        baseColor: Theme.of(context)
+            .colorScheme
+            .secondaryContainer
+            .withValues(alpha: 0.2),
+        highlightColor: Theme.of(context)
+            .colorScheme
+            .secondaryContainer
+            .withValues(alpha: 0.7),
         child: Container(
           height: height,
           decoration: BoxDecoration(

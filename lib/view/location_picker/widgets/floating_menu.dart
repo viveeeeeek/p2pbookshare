@@ -19,10 +19,10 @@ Widget buildFloatingMenu() {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               // color: Theme.of(context).cardColor,
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   spreadRadius: 0,
                   blurRadius: 1,
                   offset: const Offset(

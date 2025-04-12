@@ -43,7 +43,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.billionants.p2pbookshare"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
     // ndkVersion flutter.ndkVersion
     //Flutter tends to choose the appropriate default versions for various tools and dependencies, including the Android NDK, based on the Flutter SDK's configurations. However, some plugins or dependencies within Flutter packages might specify a minimum required version of the Android NDK that differs from the default.
     // Even if your Flutter project is configured to use the latest NDK version by default, certain plugins or libraries might require specific NDK versions. When you encounter a warning or error related to the NDK version, it typically means that one of the dependencies or plugins in your project explicitly needs a different version than the default.
@@ -57,7 +57,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -137,12 +137,7 @@ android {
     buildConfig true
     }
 
-       // Add this block to show deprecation warnings
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:deprecation"
-        // Optional: Make deprecation warnings fail the build
-        // options.compilerArgs << "-Werror:deprecation"
-    }
+    
 }
 
 flutter {

@@ -75,7 +75,7 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
          // Create a resValue that can be used in AndroidManifest.xml
-        resValue "string", "GOOGLE_MAPS_API", envProperties.getProperty("GOOGLE_MAPS_API_KEY", "")
+        resValue "string", "GOOGLE_MAPS_API", envProperties.getProperty("GOOGLE_MAPS_API", "")
     }
 
     signingConfigs {

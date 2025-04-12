@@ -171,7 +171,7 @@ class NotificationService {
 
     // Handle messages when the app is in the background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
-      handleMessage(context, event);
+      if (context.mounted) handleMessage(context, event);
     });
   }
 

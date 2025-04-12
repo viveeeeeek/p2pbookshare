@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +69,7 @@ void main() async {
     persistenceEnabled: true,
   ); // Enables offline persistence of Firebase data.
 
-  await FlutterConfig.loadEnvVariables();
+  await dotenv.load(fileName: ".env");
   final appProviderList = createAppProviderList(isDarkThemeEnabled, themeColor);
   runApp(MultiProvider(
       providers: appProviderList,

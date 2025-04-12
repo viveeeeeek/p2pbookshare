@@ -54,3 +54,6 @@ app.*.map.json
 
 # reference images for pixel perfect package
 /assets/reference/
+
+# added in latest flutter 3.29.2
+/android/app/.cxx

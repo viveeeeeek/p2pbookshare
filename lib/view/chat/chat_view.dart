@@ -224,7 +224,7 @@ class _ChatViewState extends State<ChatView> {
 
                     decoration: InputDecoration(
                       hintText: 'Type your message...',
-                      fillColor: context.surfaceVariant.withOpacity(0.7),
+                      fillColor: context.surfaceVariant.withValues(alpha: 0.7),
                       filled: true,
                       suffixIcon: IconButton(
                         onPressed: () {},
@@ -282,7 +282,7 @@ class _ChatViewState extends State<ChatView> {
                     height: 200,
                     width: 200,
                     decoration: BoxDecoration(
-                      color: context.secondary.withOpacity(0.2),
+                      color: context.secondary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(100.0),
                     ),
                     child: Transform.scale(
@@ -373,7 +373,7 @@ class _ChatViewState extends State<ChatView> {
             borderRadius: bubbleBorderRadius,
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.0),
+                  color: Colors.black.withValues(alpha: 0.0),
                   blurRadius: 5,
                   spreadRadius: 2)
             ]),

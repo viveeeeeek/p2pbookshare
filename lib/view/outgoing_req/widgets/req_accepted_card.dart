@@ -17,7 +17,7 @@ class ReqAcceptedCard extends StatelessWidget {
       width: 380,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: context.primaryContainer.withOpacity(0.5),
+        color: context.primaryContainer.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(

@@ -73,7 +73,7 @@ class AddressCard extends StatelessWidget {
           child: ListTile(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            tileColor: context.surfaceVariant.withOpacity(0.5),
+            tileColor: context.surfaceVariant.withValues(alpha: 0.5),
             title: Text('$street'),
             subtitleTextStyle: TextStyle(color: context.onSurface),
             subtitle: Column(

@@ -130,4 +130,27 @@ class BookFetchService with ChangeNotifier {
       return null;
     }
   }
+
+  /// fetch top 7 books with highest book_rating
+  Stream<List<Map<String, dynamic>>> getTopRatedBooks() {
+    try {
+      CollectionReference booksCollection =
+          FirebaseFirestore.instance.collection('books');
+      Query query = booksCollection
+          .orderBy(BookConfig.bookRating, descending: true)
+          .limit(6);
+
+      return query.snapshots().map((querySnapshot) {
+        if (querySnapshot.docs.isEmpty) {
+          return [];
+        }
+        return querySnapshot.docs
+            .map((document) => document.data() as Map<String, dynamic>)
+            .toList();
+      });
+    } catch (e) {
+      logger.i('Error retrieving top rated books from Firestore: $e');
+      return Stream.value([]);
+    }
+  }
 }

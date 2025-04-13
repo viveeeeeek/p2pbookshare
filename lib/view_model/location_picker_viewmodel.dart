@@ -25,7 +25,7 @@ class LocationPickerViewModel {
     } catch (e) {
       logger.e('❌handleLocationInitialization error: $e');
       Future.delayed(Duration.zero, () {
-        Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
       });
     }
   }

@@ -5,13 +5,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:p2pbookshare/core/constants/app_route_constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_config/flutter_config.dart';
 import 'package:p2pbookshare/core/constants/model_constants.dart';
 import 'package:p2pbookshare/services/firebase/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,7 +135,7 @@ class NotificationService {
       logger.d(
           'Got a message!\n Title: ${message.notification!.title}\n Body: ${message.notification!.body}\n Data type: ${message.data['type']}\n Data chatroomId: ${message.data['chatroomId']}');
       if (Platform.isAndroid) {
-        initLocalNotifications(context, message);
+        if (context.mounted) initLocalNotifications(context, message);
         showNotifications(message);
       }
     });
@@ -171,7 +171,7 @@ class NotificationService {
 
     // Handle messages when the app is in the background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
-      handleMessage(context, event);
+      if (context.mounted) handleMessage(context, event);
     });
   }
 
@@ -185,7 +185,7 @@ class NotificationService {
       String receiverName,
       String receiverimgUrl,
       String bookId) async {
-    final firebaseProjectId = FlutterConfig.get('FIREBASAE_PROJECT_ID');
+    final firebaseProjectId = dotenv.get('FIREBASAE_PROJECT_ID');
     final fcmNotificationEndpoint =
         'https://fcm.googleapis.com/v1/projects/$firebaseProjectId/messages:send';
 

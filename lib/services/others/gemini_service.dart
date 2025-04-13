@@ -3,9 +3,9 @@ import 'dart:convert';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Package imports:
-import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:p2pbookshare/core/utils/logging.dart';
 
@@ -13,7 +13,7 @@ import 'package:p2pbookshare/core/utils/logging.dart';
 /// A service class for interacting with the Gemini API.
 class GeminiService with ChangeNotifier {
   /// Get the Gemini Pro API key from FlutterConfig.
-  final geminiAPIKey = FlutterConfig.get('GEMINI_PRO_API_KEY');
+  final geminiAPIKey = dotenv.get('GEMINI_PRO_API_KEY');
 
   /// API endpoint for generating text-to-text using Gemini.
   String get apiEndPoint =>

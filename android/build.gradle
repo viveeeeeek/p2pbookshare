@@ -7,8 +7,23 @@ allprojects {
 
 rootProject.buildDir = '../build'
 subprojects {
-     project.buildDir = "${rootProject.buildDir}/${project.name}"
-     project.evaluationDependsOn(':app')
+    /// Temporary fix for apk release build failing after upgrading to flutter 3.24.0
+    /// As mentioned in github issue https://github.com/livekit/client-sdk-flutter/issues/569#issuecomment-2275686786
+    afterEvaluate { project ->
+       if (project.plugins.hasPlugin("com.android.application") ||
+               project.plugins.hasPlugin("com.android.library")) {
+           project.android {
+               compileSdkVersion 35
+               buildToolsVersion "35.0.1"
+            //    compileOptions {
+            //         sourceCompatibility JavaVersion.VERSION_11
+            //         targetCompatibility JavaVersion.VERSION_11
+            //     }
+           }
+        }
+    }
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
 }
 
 tasks.register("clean", Delete) {

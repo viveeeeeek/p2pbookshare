@@ -22,8 +22,17 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-// to use dotenv inside androidmanifest.xml
-apply from: project(':flutter_config').projectDir.getPath()+'/dotenv.gradle'
+//HACK: to use dotenv inside androidmanifest.xml
+// apply from: project(':flutter_config').projectDir.getPath()+'/dotenv.gradle'
+
+// Add this at the top of the file
+def envProperties = new Properties()
+def envFile = rootProject.file('../.env')
+if (envFile.exists()) {
+    envFile.withReader('UTF-8') { reader ->
+        envProperties.load(reader)
+    }
+}
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -34,19 +43,21 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.billionants.p2pbookshare"
     compileSdkVersion flutter.compileSdkVersion
+    ndkVersion = "27.0.12077973"
     // ndkVersion flutter.ndkVersion
     //Flutter tends to choose the appropriate default versions for various tools and dependencies, including the Android NDK, based on the Flutter SDK's configurations. However, some plugins or dependencies within Flutter packages might specify a minimum required version of the Android NDK that differs from the default.
     // Even if your Flutter project is configured to use the latest NDK version by default, certain plugins or libraries might require specific NDK versions. When you encounter a warning or error related to the NDK version, it typically means that one of the dependencies or plugins in your project explicitly needs a different version than the default.
-    // To resolve this issue, you need to manually adjust the ndkVersion in your build.gradle file to match the required version specified in the warning or error message. This ensures that the particular dependency or plugin is compatible with the correct NDK version.
-    ndkVersion "25.1.8937393"
+    // To resolve this issue, you need to manually adjust the ndkVersion in your    build.gradle file to match the required version specified in the warning or error message. This ensures that the particular dependency or plugin is compatible with the correct NDK version.
 
     compileOptions {
+         // Enable core library desugaring
+        coreLibraryDesugaringEnabled true // Dependency ':flutter_local_notifications' requires core library desugaring enabled for :app.
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -63,6 +74,8 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+         // Create a resValue that can be used in AndroidManifest.xml
+        resValue "string", "GOOGLE_MAPS_API", envProperties.getProperty("GOOGLE_MAPS_API", "")
     }
 
     signingConfigs {
@@ -119,6 +132,12 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    buildFeatures {
+    buildConfig true
+    }
+
+    
 }
 
 flutter {
@@ -126,5 +145,7 @@ flutter {
 }
 
 dependencies {
+    // Add this line for desugaring
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation platform('com.google.firebase:firebase-bom:32.3.1')
 }

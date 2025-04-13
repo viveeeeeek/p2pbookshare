@@ -22,7 +22,8 @@ class CurrentRequestDetails extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey.withOpacity(0.5), width: 1),
+          border:
+              Border.all(color: Colors.grey.withValues(alpha: 0.5), width: 1),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
@@ -54,7 +55,7 @@ class CurrentRequestDetails extends StatelessWidget {
                     Container(
                       height: 50,
                       width: 1,
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Colors.grey.withValues(alpha: 0.5),
                     ),
                     const SizedBox(width: 10),
                     Column(
@@ -82,7 +83,7 @@ class CurrentRequestDetails extends StatelessWidget {
             indent: 0,
             endIndent: 0,
             thickness: 1,
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withValues(alpha: 0.5),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),

@@ -26,7 +26,7 @@ class Utils {
       ),
     );
     Future.delayed(Duration(seconds: durationInSecond), () {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      if (context.mounted) ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
   }
 
